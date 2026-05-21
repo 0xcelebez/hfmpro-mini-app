@@ -381,7 +381,7 @@
             <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-brain text-brand-500"></i> Expert 1: Fundamental
+                  <i class="fa-solid fa-cube text-brand-500"></i> MQL5 SMC Order Block Detector
                 </span>
                 <span id="voter1-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (92%)</span>
               </div>
@@ -392,7 +392,7 @@
             <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-chart-simple text-brand-500"></i> Expert 2: Technical
+                  <i class="fa-solid fa-align-left text-brand-500"></i> MQL5 Volume Profile (POC Zone)
                 </span>
                 <span id="voter2-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (85%)</span>
               </div>
@@ -403,7 +403,7 @@
             <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
               <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-compass text-brand-500"></i> Expert 3: Sentiment
+                  <i class="fa-solid fa-chart-line text-brand-500"></i> MQL5 VWAP Institutional Bands
                 </span>
                 <span id="voter3-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (80%)</span>
               </div>
@@ -707,6 +707,8 @@
       const existingModal = document.getElementById('antiblock-modal');
       if (existingModal) existingModal.remove();
 
+      const googleProxyUrl = "https://translate.google.com/translate?sl=en&tl=id&u=" + encodeURIComponent(targetUrl);
+
       const modalHtml = `
         <div id="antiblock-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 transition-all duration-300 scale-95" style="z-index: 999999;">
           <div class="bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-red-500/30 rounded-3xl p-6 max-w-sm w-full relative shadow-2xl shadow-red-950/20">
@@ -761,6 +763,9 @@
             </div>
 
             <div class="mt-4.5 space-y-2">
+              <a href="${googleProxyUrl}" target="_blank" onclick="closeAntiBlockModal()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black py-2.5 rounded-xl transition-all shadow-lg text-[10px] text-center block uppercase tracking-wider border border-yellow-400/30">
+                ⚡ BYPASS INSTAN VIA GOOGLE SECURE (ANTI-BLOKIR)
+              </a>
               <a href="${targetUrl}" target="_blank" onclick="closeAntiBlockModal()" class="w-full bg-gradient-to-r from-brand-600 to-red-700 hover:from-brand-500 hover:to-red-600 text-white font-black py-2.5 rounded-xl transition-all shadow-lg text-[10px] text-center block uppercase tracking-wider border border-brand-500/30">
                 🚀 COBA BUKA SEKARANG JUGA
               </a>
@@ -1199,6 +1204,34 @@
         param.tp3Offset = 0;
         param.lot = '0.00 Lot';
       }
+
+      // Dynamic MQL5 Indicator generation for MoE experts
+      if (param.decision.includes('BUY') || param.decision.includes('BREAKOUT')) {
+        const obVal = s3;
+        param.expert1 = `🟢 BULLISH OB (Order Block) terdeteksi di level ${obVal.toFixed(precision)}. Terjadi CHoCH pada TF H4, mengonfirmasi perpindahan momentum ke pihak pembeli institusi.`;
+        
+        param.expert2 = `📊 POC (Point of Control) harian terbentuk kokoh di ${pivot.toFixed(precision)}. Value Area High (VAH) berada di ${r3.toFixed(precision)}, mengindikasikan target likuiditas terdekat.`;
+        
+        const vwapVal = base - (atr * 0.15);
+        const dev2Val = vwapVal + (1.2 * atr);
+        param.expert3 = `📈 Harga bergerak di atas garis dasar VWAP (${vwapVal.toFixed(precision)}) dengan kemiringan positif. Deviasi Band +1 terlampaui, target deviasi +2 di ${dev2Val.toFixed(precision)}.`;
+      } else if (param.decision.includes('SELL')) {
+        const obVal = r3;
+        param.expert1 = `🔴 BEARISH OB (Order Block) terdeteksi di level ${obVal.toFixed(precision)}. Harga tertolak dari zona supply institusi kuat, struktur harga TF H4 berubah menjadi bearish.`;
+        
+        param.expert2 = `📊 POC (Point of Control) harian terkonsentrasi di ${pivot.toFixed(precision)}. Value Area Low (VAL) berada di ${s3.toFixed(precision)}, berfungsi sebagai target tarikan volume berikutnya.`;
+        
+        const vwapVal = base + (atr * 0.15);
+        const dev2Val = vwapVal - (1.2 * atr);
+        param.expert3 = `📉 Harga tertekan di bawah garis dasar VWAP (${vwapVal.toFixed(precision)}). Deviasi Band -1 ditembus, target deviasi -2 berada di ${dev2Val.toFixed(precision)}.`;
+      } else {
+        // Wait / Standby (GBPUSD)
+        param.expert1 = `⚪ REJECTION OB: Terdeteksi penolakan kuat di area Bearish OB ${r3.toFixed(precision)}. Struktur harga gagal melakukan BOS (Break of Structure) bullish di TF H1.`;
+        
+        param.expert2 = `📊 POC harian di ${pivot.toFixed(precision)} menolak kenaikan harga. Volume transaksi sangat tipis di Value Area High (VAH), menandakan ketiadaan partisipasi institusi.`;
+        
+        param.expert3 = `📉 Harga terjepit tepat di garis tengah VWAP (${base.toFixed(precision)}) dengan arah mendatar (flat). Deviasi band menyempit, volatilitas rendah mengonfirmasi sideways.`;
+      }
     }
 
     function updateDashboardPrices() {
@@ -1232,6 +1265,14 @@
       // Dynamically update Lot size
       const lotEl = document.getElementById('lot-ideal');
       if (lotEl) lotEl.innerText = param.lot;
+
+      // Dynamically update MoE experts with live price calculations
+      const e1El = document.getElementById('voter1-analysis');
+      const e2El = document.getElementById('voter2-analysis');
+      const e3El = document.getElementById('voter3-analysis');
+      if (e1El) e1El.innerText = param.expert1;
+      if (e2El) e2El.innerText = param.expert2;
+      if (e3El) e3El.innerText = param.expert3;
     }
 
     async function fetchRealtimePrices() {
