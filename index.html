@@ -1000,12 +1000,19 @@
       }
     }
 
-    // Initial load
-    window.onload = function() {
+    // Bulletproof direct invocation as soon as script compiles
+    function initializeApp() {
       selectAsset('XAUUSD', 'METAL');
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
-    };
+      writeLog("Cuandology HFM PRO AI Engine Initialized successfully.");
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
   </script>
 </body>
 </html>
