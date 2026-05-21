@@ -199,19 +199,31 @@
             <!-- Assets Matrix Grid -->
             <div class="grid grid-cols-2 gap-2 mb-3.5">
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all">
-                <span>XAU/USD</span>
+                <div class="flex flex-col items-start">
+                  <span>XAU/USD</span>
+                  <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-all">Loading...</span>
+                </div>
                 <i class="fa-solid fa-coins text-red-400"></i>
               </button>
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-                <span>EUR/USD</span>
+                <div class="flex flex-col items-start">
+                  <span>EUR/USD</span>
+                  <span id="price-EURUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
+                </div>
                 <i class="fa-solid fa-euro-sign text-gray-400"></i>
               </button>
               <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-                <span>BTC/USD</span>
+                <div class="flex flex-col items-start">
+                  <span>BTC/USD</span>
+                  <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
+                </div>
                 <i class="fa-brands fa-bitcoin text-red-400"></i>
               </button>
               <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-                <span>GBP/USD</span>
+                <div class="flex flex-col items-start">
+                  <span>GBP/USD</span>
+                  <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
+                </div>
                 <i class="fa-solid fa-sterling-sign text-red-400"></i>
               </button>
             </div>
@@ -835,10 +847,21 @@
       document.querySelectorAll('.asset-btn').forEach(btn => {
         btn.className = "asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100";
       });
-      
+
+      // Update all price tags to inactive styles
+      document.querySelectorAll('.price-val').forEach(el => {
+        el.className = "price-val text-[10px] text-gray-500 font-semibold transition-all";
+      });
+
       const activeBtn = document.getElementById(`btn-${pair}`);
       if (activeBtn) {
         activeBtn.className = "asset-btn bg-black text-white border border-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all shadow-sm";
+      }
+
+      // Update the active price tag to active style
+      const activePriceEl = document.getElementById(`price-${pair}`);
+      if (activePriceEl) {
+        activePriceEl.className = "price-val text-[10px] text-gray-300 font-bold transition-all";
       }
 
       // Load static data
@@ -882,14 +905,7 @@
       }
 
       // Format targets
-      const base = param.basePrice;
-      const precision = type === 'FOREX' ? 5 : 2;
-      
-      document.getElementById('entry-price').innerText = isWait ? '-' : base.toFixed(precision);
-      document.getElementById('sl-price').innerText = isWait ? '-' : (base + param.slOffset).toFixed(precision);
-      document.getElementById('tp1-price').innerText = isWait ? '-' : (base + param.tp1Offset).toFixed(precision);
-      document.getElementById('tp2-price').innerText = isWait ? '-' : (base + param.tp2Offset).toFixed(precision);
-      document.getElementById('tp3-price').innerText = isWait ? '-' : (base + param.tp3Offset).toFixed(precision);
+      updateDashboardPrices();
       document.getElementById('lot-ideal').innerText = param.lot;
 
       // Volatility indices
@@ -953,6 +969,96 @@
       writeLog(`Successfully loaded ${pair} model configuration parameters.`);
     }
 
+    function updateDashboardPrices() {
+      const pair = currentAsset;
+      const param = assetParameters[pair];
+      if (!param) return;
+      
+      const isWait = pair === 'GBPUSD';
+      const base = param.basePrice;
+      const precision = currentType === 'FOREX' ? 5 : 2;
+      
+      const entryEl = document.getElementById('entry-price');
+      const slEl = document.getElementById('sl-price');
+      const tp1El = document.getElementById('tp1-price');
+      const tp2El = document.getElementById('tp2-price');
+      const tp3El = document.getElementById('tp3-price');
+      
+      if (entryEl) entryEl.innerText = isWait ? '-' : base.toFixed(precision);
+      if (slEl) slEl.innerText = isWait ? '-' : (base + param.slOffset).toFixed(precision);
+      if (tp1El) tp1El.innerText = isWait ? '-' : (base + param.tp1Offset).toFixed(precision);
+      if (tp2El) tp2El.innerText = isWait ? '-' : (base + param.tp2Offset).toFixed(precision);
+      if (tp3El) tp3El.innerText = isWait ? '-' : (base + param.tp3Offset).toFixed(precision);
+    }
+
+    async function fetchRealtimePrices() {
+      // 1. Fetch Gold (PAXG) and Bitcoin (BTC) from CoinGecko
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin&vs_currencies=usd');
+        if (response.ok) {
+          const data = await response.json();
+          if (data['pax-gold'] && data['pax-gold'].usd) {
+            const oldPrice = assetParameters.XAUUSD.basePrice;
+            const newPrice = data['pax-gold'].usd;
+            assetParameters.XAUUSD.basePrice = newPrice;
+            updatePriceUI('XAUUSD', newPrice, oldPrice);
+          }
+          if (data.bitcoin && data.bitcoin.usd) {
+            const oldPrice = assetParameters.BTCUSD.basePrice;
+            const newPrice = data.bitcoin.usd;
+            assetParameters.BTCUSD.basePrice = newPrice;
+            updatePriceUI('BTCUSD', newPrice, oldPrice);
+          }
+        }
+      } catch (e) {
+        console.warn("CoinGecko fetch failed:", e);
+      }
+
+      // 2. Fetch EURUSD and GBPUSD from Open ER API
+      try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.rates) {
+            if (data.rates.EUR) {
+              const oldPrice = assetParameters.EURUSD.basePrice;
+              const newPrice = 1 / data.rates.EUR;
+              assetParameters.EURUSD.basePrice = newPrice;
+              updatePriceUI('EURUSD', newPrice, oldPrice);
+            }
+            if (data.rates.GBP) {
+              const oldPrice = assetParameters.GBPUSD.basePrice;
+              const newPrice = 1 / data.rates.GBP;
+              assetParameters.GBPUSD.basePrice = newPrice;
+              updatePriceUI('GBPUSD', newPrice, oldPrice);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("OpenER fetch failed:", e);
+      }
+
+      // 3. Update active asset's dashboard prices
+      updateDashboardPrices();
+    }
+
+    function updatePriceUI(pair, newPrice, oldPrice) {
+      const el = document.getElementById(`price-${pair}`);
+      if (!el) return;
+      
+      const precision = (pair === 'EURUSD' || pair === 'GBPUSD') ? 5 : 2;
+      el.innerText = newPrice.toFixed(precision);
+      
+      const isActive = (currentAsset === pair);
+      if (newPrice > oldPrice) {
+        el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-emerald-300' : 'text-emerald-600'}`;
+      } else if (newPrice < oldPrice) {
+        el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-red-300' : 'text-red-500'}`;
+      } else {
+        el.className = `price-val text-[10px] font-semibold transition-all ${isActive ? 'text-gray-300' : 'text-gray-500'}`;
+      }
+    }
+
     function triggerRefresh() {
       writeLog("Requesting Mixture of Experts parallel voting process...");
       const btn = document.getElementById('refresh-btn');
@@ -1012,6 +1118,11 @@
       selectAsset('XAUUSD', 'METAL');
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
+      
+      // Start Realtime Price Engine
+      fetchRealtimePrices();
+      setInterval(fetchRealtimePrices, 10000); // Poll every 10 seconds (highly optimized/rate-limit safe)
+      
       writeLog("Cuandology HFM PRO AI Engine Initialized successfully.");
     }
 
