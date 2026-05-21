@@ -118,6 +118,7 @@
       <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-all">Dashboard</button>
         <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">Forex Market</button>
+        <button onclick="switchTab('mql5-tools')" id="btn-tab-mql5-tools" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">MT5 MT4 Scripts</button>
         <button onclick="switchTab('hfm-broker')" id="btn-tab-hfm-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">HFM Register</button>
       </div>
 
@@ -170,6 +171,10 @@
     <button onclick="switchTab('forex-market')" id="nav-forex-market" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
       <i class="fa-solid fa-globe text-lg"></i>
       <span>Forex Market</span>
+    </button>
+    <button onclick="switchTab('mql5-tools')" id="nav-mql5-tools" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+      <i class="fa-solid fa-code text-lg"></i>
+      <span>MT5 Tools</span>
     </button>
     <button onclick="switchTab('hfm-broker')" id="nav-hfm-broker" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
       <i class="fa-solid fa-award text-lg"></i>
@@ -591,6 +596,85 @@
 
     </div>
 
+    <!-- TAB 4: MQL5 & MT5 ALGORITHMIC HUB -->
+    <div id="tab-mql5-tools" class="tab-content hidden flex flex-col gap-4">
+      
+      <!-- HERO TITLE -->
+      <div class="premium-card rounded-2xl p-5 flex flex-col md:flex-row items-center gap-5">
+        <div class="w-16 h-16 rounded-2xl bg-black p-1 shadow-md border border-gray-800 flex items-center justify-center overflow-hidden shrink-0 text-white text-3xl font-black">
+          <i class="fa-solid fa-code text-brand-500 animate-pulse"></i>
+        </div>
+        <div class="text-center md:text-left">
+          <h3 class="text-lg font-black text-gray-900 flex items-center justify-center md:justify-start gap-1.5">
+            MQL5 Algorithmic Hub <span class="bg-red-50 text-brand-600 text-[9px] font-black px-1.5 py-0.5 rounded-full border border-red-100 shadow-inner">MT5 ONLY</span>
+          </h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-xl font-medium leading-relaxed">Akses gratis kode sumber indikator dan script penasihat ahli (Expert Advisors) terbaik langsung dari repositori mql5.com. Salin, kompilasi di MetaEditor 5, dan jalankan langsung pada platform trading desktop MetaTrader 5 Kanda.</p>
+        </div>
+      </div>
+
+      <!-- SELECTION OF TOOLS -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        
+        <!-- CARD 1: MT5 AUTO-EXECUTION SCRIPT -->
+        <div class="premium-card rounded-2xl p-5 flex flex-col gap-3 justify-between bg-white border border-gray-100 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-black shadow-inner">
+                <i class="fa-solid fa-bolt"></i>
+              </span>
+              <h4 class="text-sm font-bold text-gray-900">MT5 Auto-Execution & Risk Script</h4>
+            </div>
+            <p class="text-xs text-gray-500 leading-relaxed mb-3">Script otomatis untuk mengeksekusi posisi trading (BUY/SELL) langsung di MT5. Secara cerdas menghitung Lot ideal berdasarkan persentase resiko saldo (misalnya 1% risk) dan otomatis memasang Stop Loss serta Take Profit sesuai sinyal presisi Cuandology.</p>
+            <div class="text-[10px] text-gray-400 font-mono mb-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
+              📁 Tempatkan di: <span class="text-gray-600 font-bold font-mono">MQL5/Scripts/</span>
+            </div>
+          </div>
+          <button onclick="showCodeModal('script-code')" class="w-full bg-black hover:bg-gray-900 text-white font-extrabold text-xs py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
+            <i class="fa-solid fa-file-code"></i> LIHAT KODE SUMBER
+          </button>
+        </div>
+
+        <!-- CARD 2: MT5 CAMARILLA INDICATOR -->
+        <div class="premium-card rounded-2xl p-5 flex flex-col gap-3 justify-between bg-white border border-gray-100 shadow-sm">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-50 text-brand-500 flex items-center justify-center text-xs font-black shadow-inner">
+                <i class="fa-solid fa-chart-simple"></i>
+              </span>
+              <h4 class="text-sm font-bold text-gray-900">MT5 Camarilla S3/R3 Pivot Indicator</h4>
+            </div>
+            <p class="text-xs text-gray-500 leading-relaxed mb-3">Indikator kustom untuk menggambar garis Pivot, Support S3, dan Resistance R3 Camarilla secara otomatis pada chart MT5 Kanda. Level ini merupakan zona likuiditas utama tempat terjadinya pantulan harga (*reversal*) dan breakout institusi.</p>
+            <div class="text-[10px] text-gray-400 font-mono mb-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
+              📁 Tempatkan di: <span class="text-gray-600 font-bold font-mono">MQL5/Indicators/</span>
+            </div>
+          </div>
+          <button onclick="showCodeModal('indicator-code')" class="w-full bg-black hover:bg-gray-900 text-white font-extrabold text-xs py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 active:scale-[0.98]">
+            <i class="fa-solid fa-file-code"></i> LIHAT KODE SUMBER
+          </button>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE CODE DISPLAY AREA -->
+      <div id="code-viewer-container" class="premium-card rounded-2xl p-4.5 bg-[#0f172a] border border-[#1e293b] hidden flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+            <span id="code-file-name" class="text-[11px] text-slate-400 font-mono ml-2 font-bold">MQL5_Script.mq5</span>
+          </div>
+          <button onclick="copyCodeContent()" id="copy-code-btn" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-[10px] px-3 py-1.5 rounded-lg transition-all flex items-center gap-1">
+            <i class="fa-regular fa-copy"></i> SALIN KODE
+          </button>
+        </div>
+        <div class="relative overflow-hidden rounded-xl">
+          <pre class="overflow-x-auto text-[11px] text-slate-300 font-mono p-3 bg-slate-950/50 max-h-96 leading-relaxed select-all" id="code-display-block"></pre>
+        </div>
+      </div>
+
+    </div>
+
   </main>
 
   <!-- RE-ENGINEERING CONTEXT SYSTEM LOGS -->
@@ -672,7 +756,7 @@
       }
 
       // Update mobile nav active state
-      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-hfm-broker'];
+      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-hfm-broker', 'nav-mql5-tools'];
       navIds.forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
@@ -1111,6 +1195,185 @@
         dot.className = "w-1.5 h-1.5 rounded-full bg-gray-300";
         label.className = "text-gray-400 font-semibold";
       }
+    }
+
+    // MQL5 Algorithmic Hub Code Repository
+    const mqlCodes = {
+      'script-code': {
+        fileName: 'CuandologyAutoTradeScript.mq5',
+        code: `//+------------------------------------------------------------------+
+//|                                     CuandologyAutoTradeScript.mq5 |
+//|                                  Copyright 2026, CUANOLOGY Corp. |
+//|                                             https://cuanology.ai |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2026, CUANOLOGY Corp."
+#property link      "https://cuanology.ai"
+#property version   "1.00"
+#property script_show_inputs
+
+#include <Trade\\Trade.mqh>
+
+input string   SignalID     = "XAUUSD"; // Asset Pair (e.g. XAUUSD)
+input double   RiskPercent  = 1.0;      // Risk Per Trade (%)
+input double   EntryPrice   = 0.0;      // Entry Price (or 0 for Current Market)
+input double   StopLoss     = 0.0;      // Stop Loss Price (Absolute)
+input double   TakeProfit1  = 0.0;      // Take Profit Price (Absolute)
+
+CTrade trade;
+
+void OnStart()
+{
+   double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+   double riskAmount = balance * (RiskPercent / 100.0);
+   
+   double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   double tickSize = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   double lotStep = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+   double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+   double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+   
+   if(StopLoss == 0.0) {
+      Print("[ERROR] Stop Loss cannot be 0. Please specify SL to calculate Lot size.");
+      return;
+   }
+   
+   double entry = (EntryPrice > 0) ? EntryPrice : ask;
+   double slDiffPoints = MathAbs(entry - StopLoss) / tickSize;
+   double lotSize = (riskAmount) / (slDiffPoints * tickValue * tickSize);
+   
+   lotSize = MathFloor(lotSize / lotStep) * lotStep;
+   if(lotSize < minLot) lotSize = minLot;
+   if(lotSize > maxLot) lotSize = maxLot;
+   
+   Print("[CUANOLOGY ENGINE] Balance: $", balance, " | Risk Amount: $", riskAmount);
+   Print("[CUANOLOGY ENGINE] Calculated Lot Size: ", lotSize);
+   
+   if(EntryPrice == 0.0) {
+      if(StopLoss < ask) {
+         trade.Buy(lotSize, _Symbol, ask, StopLoss, TakeProfit1, "Cuandology Auto-Signal");
+         Print("[SUCCESS] Market BUY Order Sent.");
+      } else {
+         trade.Sell(lotSize, _Symbol, bid, StopLoss, TakeProfit1, "Cuandology Auto-Signal");
+         Print("[SUCCESS] Market SELL Order Sent.");
+      }
+   } else {
+      if(StopLoss < EntryPrice) {
+         trade.BuyLimit(lotSize, EntryPrice, _Symbol, StopLoss, TakeProfit1, ORDER_TIME_GTC, 0, "Cuandology Auto-Signal");
+         Print("[SUCCESS] Buy Limit Pending Order Set.");
+      } else {
+         trade.SellLimit(lotSize, EntryPrice, _Symbol, StopLoss, TakeProfit1, ORDER_TIME_GTC, 0, "Cuandology Auto-Signal");
+         Print("[SUCCESS] Sell Limit Pending Order Set.");
+      }
+   }
+}`
+      },
+      'indicator-code': {
+        fileName: 'CuandologyCamarilla.mq5',
+        code: `//+------------------------------------------------------------------+
+//|                                         CuandologyCamarilla.mq5  |
+//|                                  Copyright 2026, CUANOLOGY Corp. |
+//|                                             https://cuanology.ai |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2026, CUANOLOGY Corp."
+#property link      "https://cuanology.ai"
+#property version   "1.00"
+#property indicator_chart_window
+
+input int      DaysToCalculate = 20; // Number of history days to show
+
+void OnStart() {}
+
+int OnInit()
+{
+   Print("[CUANOLOGY] Camarilla Pivot Indicator Initialized.");
+   return(INIT_SUCCEEDED);
+}
+
+int OnCalculate(const int rates_total,
+                const int prev_calculated,
+                const datetime &time[],
+                const double &open[],
+                const double &high[],
+                const double &low[],
+                const double &close[],
+                const long &tick_volume[],
+                const long &volume[],
+                const int &spread[])
+{
+   MqlRates rates[];
+   ArraySetAsSeries(rates, true);
+   int copied = CopyRates(_Symbol, PERIOD_D1, 0, DaysToCalculate, rates);
+   
+   if(copied <= 0) return(0);
+   
+   // Formula Camarilla calculations
+   double dHigh  = rates[1].high;
+   double dLow   = rates[1].low;
+   double dClose = rates[1].close;
+   double dRange = dHigh - dLow;
+   
+   double pivot = (dHigh + dLow + dClose) / 3.0;
+   double r3 = dClose + dRange * 1.1 / 4.0;
+   double s3 = dClose - dRange * 1.1 / 4.0;
+   
+   ObjectDelete(0, "Cam_Pivot");
+   ObjectDelete(0, "Cam_R3");
+   ObjectDelete(0, "Cam_S3");
+   
+   ObjectCreate(0, "Cam_Pivot", OBJ_HLINE, 0, 0, pivot);
+   ObjectSetInteger(0, "Cam_Pivot", OBJPROP_COLOR, clrDarkGray);
+   ObjectSetInteger(0, "Cam_Pivot", OBJPROP_STYLE, STYLE_DOT);
+   
+   ObjectCreate(0, "Cam_R3", OBJ_HLINE, 0, 0, r3);
+   ObjectSetInteger(0, "Cam_R3", OBJPROP_COLOR, clrRoyalBlue);
+   ObjectSetInteger(0, "Cam_R3", OBJPROP_STYLE, STYLE_DASH);
+   
+   ObjectCreate(0, "Cam_S3", OBJ_HLINE, 0, 0, s3);
+   ObjectSetInteger(0, "Cam_S3", OBJPROP_COLOR, clrCrimson);
+   ObjectSetInteger(0, "Cam_S3", OBJPROP_STYLE, STYLE_DASH);
+   
+   return(rates_total);
+}`
+      }
+    };
+
+    let activeCodeKey = '';
+
+    function showCodeModal(key) {
+      activeCodeKey = key;
+      const data = mqlCodes[key];
+      if (!data) return;
+      
+      const container = document.getElementById('code-viewer-container');
+      const display = document.getElementById('code-display-block');
+      const filename = document.getElementById('code-file-name');
+      const btn = document.getElementById('copy-code-btn');
+      
+      filename.innerText = data.fileName;
+      display.textContent = data.code;
+      btn.innerHTML = '<i class="fa-regular fa-copy"></i> SALIN KODE';
+      
+      container.classList.remove('hidden');
+      container.scrollIntoView({ behavior: 'smooth' });
+      writeLog(`Viewing MQL5 source code file: ${data.fileName}`);
+    }
+
+    function copyCodeContent() {
+      const data = mqlCodes[activeCodeKey];
+      if (!data) return;
+      
+      navigator.clipboard.writeText(data.code).then(() => {
+        const btn = document.getElementById('copy-code-btn');
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> ✓ BERHASIL DISALIN!';
+        writeLog(`Source code for ${data.fileName} copied to clipboard.`);
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-regular fa-copy"></i> SALIN KODE';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
     }
 
     // Bulletproof direct invocation as soon as script compiles
