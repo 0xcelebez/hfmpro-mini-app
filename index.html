@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>[ CUANOLOGY | HFM PRO AI ] — Signal Intelligence Dashboard</title>
   
-  <!-- CSS Library Integration -->
+  <!-- CSS & JS Library Integration -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- TradingView Library -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -73,12 +76,16 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .premium-card:hover {
-      border-color: #ef4444/30;
+      border-color: rgba(239, 68, 68, 0.2);
       box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.04), 0 8px 16px -6px rgba(0, 0, 0, 0.03);
+    }
+    .active-nav-btn {
+      color: #ef4444 !important;
+      font-weight: 800 !important;
     }
   </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col">
+<body class="font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
 
   <!-- TOP BRANDING NAVIGATION -->
   <header class="border-b border-gray-200 bg-white px-3 py-2.5 sticky top-0 z-50 shadow-sm">
@@ -105,6 +112,13 @@
         <div id="tg-user-avatar-mobile" class="md:hidden flex items-center gap-1.5">
           <img id="user-photo-mobile" src="" alt="user" class="w-8 h-8 rounded-full border border-brand-500 hidden" />
         </div>
+      </div>
+
+      <!-- Desktop Tab Buttons inside header (hidden on mobile) -->
+      <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
+        <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-all">Dashboard</button>
+        <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">Forex Market</button>
+        <button onclick="switchTab('hfm-broker')" id="btn-tab-hfm-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">HFM Register</button>
       </div>
 
       <!-- Row 2: Clock & Market Sessions (centered on mobile, right-aligned on desktop) -->
@@ -147,225 +161,423 @@
     </div>
   </header>
 
-  <!-- MAIN APP GRID CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-3 grid grid-cols-1 lg:grid-cols-12 gap-3.5">
+  <!-- BOTTOM NAVIGATION BAR FOR MOBILE (fixed bottom) -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 flex justify-around py-2.5 px-4 shadow-lg md:hidden">
+    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px]">
+      <i class="fa-solid fa-chart-line text-lg"></i>
+      <span>Dashboard</span>
+    </button>
+    <button onclick="switchTab('forex-market')" id="nav-forex-market" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+      <i class="fa-solid fa-globe text-lg"></i>
+      <span>Forex Market</span>
+    </button>
+    <button onclick="switchTab('hfm-broker')" id="nav-hfm-broker" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+      <i class="fa-solid fa-award text-lg"></i>
+      <span>HFM Register</span>
+    </button>
+  </div>
 
-    <!-- LEFT SIDEBAR: SELECTORS AND SIGNAL CARD (cols-4) -->
-    <section class="lg:col-span-4 flex flex-col gap-3.5">
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3">
 
-      <!-- ASSET DIRECTORY SELECTOR -->
-      <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-3.5">
+    <!-- TAB 1: INTERACTIVE SIGNAL DASHBOARD (DEFAULT) -->
+    <div id="tab-dashboard" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-3.5">
+      
+      <!-- LEFT SIDEBAR: SELECTORS AND SIGNAL CARD (cols-4) -->
+      <section class="lg:col-span-4 flex flex-col gap-3.5">
+
+        <!-- ASSET DIRECTORY SELECTOR -->
+        <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3.5">
+              <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
+                <i class="fa-solid fa-folder-tree text-brand-500"></i> Market Selection
+              </h3>
+              <span class="text-[9px] bg-red-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
+            </div>
+
+            <!-- Assets Matrix Grid -->
+            <div class="grid grid-cols-2 gap-2 mb-3.5">
+              <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all">
+                <span>XAU/USD</span>
+                <i class="fa-solid fa-coins text-red-400"></i>
+              </button>
+              <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+                <span>EUR/USD</span>
+                <i class="fa-solid fa-euro-sign text-gray-400"></i>
+              </button>
+              <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+                <span>BTC/USD</span>
+                <i class="fa-brands fa-bitcoin text-red-400"></i>
+              </button>
+              <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+                <span>GBP/USD</span>
+                <i class="fa-solid fa-sterling-sign text-red-400"></i>
+              </button>
+            </div>
+
+            <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-brand-600 to-red-500 hover:from-brand-500 hover:to-red-400 text-white font-extrabold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-brand-100 transition-all active:scale-[0.98]">
+              <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER MoE ANALYSIS
+            </button>
+          </div>
+        </div>
+
+        <!-- CORE TRADING SIGNAL CARD -->
+        <div class="premium-card rounded-2xl p-4 relative overflow-hidden flex-1 flex flex-col justify-between">
+          <!-- Glowing gradient effect in background -->
+          <div id="signal-glow" class="absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300"></div>
+
+          <div>
+            <!-- Signal Badge & Grade -->
+            <div class="flex items-center justify-between mb-3.5">
+              <span class="text-[10px] font-extrabold text-gray-400 tracking-wider uppercase">Target Signal Output</span>
+              <span id="signal-grade" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner">GRADE A</span>
+            </div>
+
+            <!-- Final Signal Decision -->
+            <div class="mb-4 text-center py-4 bg-gray-50/70 border border-gray-150 rounded-xl">
+              <div id="signal-decision-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full text-[10px] font-bold mb-1 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> ACTIVE SIGNAL
+              </div>
+              <h2 id="signal-decision" class="text-2xl font-black tracking-tight text-emerald-600 mt-1">🎯 BUY NOW</h2>
+              <p id="signal-confidence" class="text-[11px] text-gray-500 mt-0.5 font-mono">Confidence Score: 88% | Risk: LOW</p>
+            </div>
+
+            <!-- Target Execution Parameters -->
+            <div class="space-y-2.5 font-mono text-sm">
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-right-to-bracket text-gray-400"></i> ENTRY</span>
+                <span id="entry-price" class="text-xs font-bold text-gray-900">2334.50</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-circle-stop text-brand-500"></i> STOP LOSS</span>
+                <span id="sl-price" class="text-xs font-bold text-brand-600">2322.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 1</span>
+                <span id="tp1-price" class="text-xs font-bold text-gray-900">2345.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 2</span>
+                <span id="tp2-price" class="text-xs font-bold text-gray-900">2355.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 3</span>
+                <span id="tp3-price" class="text-xs font-bold text-gray-900">2370.00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-scale-balanced text-brand-500"></i> LOT IDEAL</span>
+                <span id="lot-ideal" class="text-xs font-bold text-gray-900">0.05 Lot</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3.5 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400">
+            <span>Target Engine: MT5 Signaling</span>
+            <span>No-Lag Execution ✓</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- MIDDLE PANEL: INTERACTIVE CHART & MARKET GEOMETRY (cols-5) -->
+      <section class="lg:col-span-5 flex flex-col gap-3.5">
+
+        <!-- TRADINGVIEW LIGHTWEIGHT ADVANCED CHART DISPLAY -->
+        <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
+          <div class="flex items-center justify-between mb-2">
             <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-              <i class="fa-solid fa-folder-tree text-brand-500"></i> Market Selection
+              <i class="fa-solid fa-chart-line text-brand-500"></i> Interactive Market Geometry
             </h3>
-            <span class="text-[9px] bg-red-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
+            <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
           </div>
 
-          <!-- Assets Matrix Grid -->
-          <div class="grid grid-cols-2 gap-2 mb-3.5">
-            <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all">
-              <span>XAU/USD</span>
-              <i class="fa-solid fa-coins text-red-400"></i>
-            </button>
-            <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-              <span>EUR/USD</span>
-              <i class="fa-solid fa-euro-sign text-gray-400"></i>
-            </button>
-            <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-              <span>BTC/USD</span>
-              <i class="fa-brands fa-bitcoin text-red-400"></i>
-            </button>
-            <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
-              <span>GBP/USD</span>
-              <i class="fa-solid fa-sterling-sign text-red-400"></i>
-            </button>
+          <!-- Timeframe Buttons Selector (PRO UPGRADE) -->
+          <div class="flex items-center justify-between gap-1 mb-3 bg-gray-50 p-1 border border-gray-150 rounded-xl font-mono text-[10px]">
+            <span class="text-[9px] text-gray-400 font-black uppercase pl-1.5">TIMEFRAME</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">5m</button>
+              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold px-2 py-0.5 rounded-md transition-all shadow-sm">15m</button>
+              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">30m</button>
+              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">1H</button>
+              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">4H</button>
+              <button onclick="changeTimeframe('D')" id="tf-D" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">MTF</button>
+            </div>
           </div>
 
-          <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-brand-600 to-red-500 hover:from-brand-500 hover:to-red-400 text-white font-extrabold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-brand-100 transition-all active:scale-[0.98]">
-            <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER MoE ANALYSIS
+          <!-- Real Chart TradingView Container -->
+          <div class="relative flex-1 min-h-[250px] max-h-[350px] bg-gray-50/50 border border-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+            <div id="tradingview-container" class="w-full h-full">
+              <div id="tradingview_chart" class="w-full h-full"></div>
+            </div>
+          </div>
+
+          <!-- Instantly read stats grid -->
+          <div class="grid grid-cols-3 gap-2 mt-3 text-center text-xs font-mono">
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
+              <span class="text-[9px] text-gray-400 block uppercase">ATR Volatility</span>
+              <span id="atr-value" class="text-xs font-bold text-gray-800">4.25</span>
+            </div>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
+              <span class="text-[9px] text-gray-400 block uppercase">ADR (10D) Range</span>
+              <span id="adr-value" class="text-xs font-bold text-gray-800">22.80</span>
+            </div>
+            <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
+              <span class="text-[9px] text-gray-400 block uppercase">Trend Slope</span>
+              <span id="slope-value" class="text-xs font-bold text-emerald-600">+0.145 (Bullish)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- DETECTOR RE-ENGINEERING -->
+        <div class="premium-card rounded-2xl p-4">
+          <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2 mb-3">
+            <i class="fa-solid fa-satellite-dish text-brand-500"></i> Instant SMC & VSA Detectors
+          </h3>
+          
+          <div class="space-y-2 text-xs font-mono">
+            <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
+              <span class="text-gray-600"><i class="fa-solid fa-water-ladder text-brand-500 mr-1.5"></i> Liquidity Sweep</span>
+              <span id="liquidity-sweep-status" class="text-emerald-600 font-bold">🟢 BULLISH SWEEP CONFIRMED [S3]</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
+              <span class="text-gray-600"><i class="fa-solid fa-scale-unbalanced-flip text-brand-500 mr-1.5"></i> Volume Spread Analysis</span>
+              <span id="vsa-status" class="text-emerald-600 font-bold">💼 INSTITUTIONAL ABSORPTION DETECTED</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
+              <span class="text-gray-600"><i class="fa-solid fa-network-wired text-brand-500 mr-1.5"></i> Camarilla Pivot Levels</span>
+              <span id="camarilla-status" class="text-gray-700 font-semibold">S3: 2322.40 | Pivot: 2331.10 | R3: 2341.20</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT PANEL: MIXTURE OF EXPERTS MOE VOTING DETAIL (cols-3) -->
+      <section class="lg:col-span-3 flex flex-col gap-3.5">
+
+        <!-- PARALLEL COGNITION PANEL -->
+        <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
+          <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2 mb-3.5">
+            <i class="fa-solid fa-users-viewfinder text-brand-500"></i> MoE Voting Cognition
+          </h3>
+
+          <!-- Experts Rows -->
+          <div class="space-y-3 flex-1">
+            <!-- Expert 1 -->
+            <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-brain text-brand-500"></i> Expert 1: Fundamental
+                </span>
+                <span id="voter1-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (92%)</span>
+              </div>
+              <p id="voter1-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">DXY melemah tertekan data ketenagakerjaan AS, memicu aliran Safe Haven masif ke emas.</p>
+            </div>
+
+            <!-- Expert 2 -->
+            <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-chart-simple text-brand-500"></i> Expert 2: Technical
+                </span>
+                <span id="voter2-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (85%)</span>
+              </div>
+              <p id="voter2-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">Struktur market Break of Structure (BOS) bullish, harga memantul dari Order Block H4.</p>
+            </div>
+
+            <!-- Expert 3 -->
+            <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-compass text-brand-500"></i> Expert 3: Sentiment
+                </span>
+                <span id="voter3-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (80%)</span>
+              </div>
+              <p id="voter3-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">Volume bursa berjangka melonjak dengan akumulasi agresif pada level support institusi.</p>
+            </div>
+          </div>
+
+          <!-- CRO Validator Interdictor -->
+          <div class="mt-3.5 pt-3.5 border-t border-gray-100">
+            <div class="p-3 bg-gradient-to-br from-brand-5/40 to-white border border-brand-100 rounded-xl relative overflow-hidden">
+              <div class="absolute -right-8 -bottom-8 w-16 h-16 bg-brand-500/5 rounded-full blur-xl"></div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-extrabold text-brand-600 flex items-center gap-1.5">
+                  <i class="fa-solid fa-shield-halved"></i> Chief Risk Officer (CRO)
+                </span>
+                <span id="cro-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">APPROVED</span>
+              </div>
+              <p id="cro-analysis" class="text-[10px] text-gray-500 leading-relaxed font-mono">Risk-Reward ratio ideal (>2.5R). Likuiditas bursa terjaga tinggi dengan level proteksi SL sangat ketat di bawah Swing Low harian.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- TAB 2: FOREX MARKET TRACKER & TICKER -->
+    <div id="tab-forex-market" class="tab-content hidden flex flex-col gap-3.5">
+      
+      <!-- HFM PREMIUM BROKER BANNER -->
+      <div class="bg-gradient-to-br from-brand-600 via-red-500 to-black text-white rounded-2xl p-5 shadow-lg relative overflow-hidden">
+        <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+        <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">HFM</div>
+        <span class="bg-white/20 text-white border border-white/30 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">OFFICIAL BROKER PARTNER</span>
+        <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama HFM Markets</h3>
+        <p class="text-xs md:text-sm text-red-100 mt-1 max-w-xl">Dapatkan Akun Premium Tanpa Swap, Eksekusi Tercepat, dan Spread Terendah di Indonesia. Nikmati deposit instan menggunakan Bank Lokal.</p>
+        
+        <div class="flex flex-wrap gap-2 mt-4.5">
+          <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-red-600 hover:bg-red-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
+            <i class="fa-solid fa-user-plus"></i> Daftar Akun Live HFM
+          </a>
+          <button onclick="switchTab('hfm-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
+            <i class="fa-solid fa-circle-info"></i> Pelajari Benefit Broker
           </button>
         </div>
       </div>
 
-      <!-- CORE TRADING SIGNAL CARD -->
-      <div class="premium-card rounded-2xl p-4.5 relative overflow-hidden flex-1 flex flex-col justify-between">
-        <!-- Glowing gradient effect in background -->
-        <div id="signal-glow" class="absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300"></div>
-
-        <div>
-          <!-- Signal Badge & Grade -->
-          <div class="flex items-center justify-between mb-3.5">
-            <span class="text-[10px] font-extrabold text-gray-400 tracking-wider uppercase">Target Signal Output</span>
-            <span id="signal-grade" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner">GRADE A</span>
-          </div>
-
-          <!-- Final Signal Decision -->
-          <div class="mb-4 text-center py-4 bg-gray-50/70 border border-gray-150 rounded-xl">
-            <div id="signal-decision-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full text-[10px] font-bold mb-1 shadow-inner">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> ACTIVE SIGNAL
-            </div>
-            <h2 id="signal-decision" class="text-2xl font-black tracking-tight text-emerald-600 mt-1">🎯 BUY NOW</h2>
-            <p id="signal-confidence" class="text-[11px] text-gray-500 mt-0.5 font-mono">Confidence Score: 88% | Risk: LOW</p>
-          </div>
-
-          <!-- Target Execution Parameters -->
-          <div class="space-y-2.5 font-mono text-sm">
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-right-to-bracket text-gray-400"></i> ENTRY</span>
-              <span id="entry-price" class="text-xs font-bold text-gray-900">2334.50</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-circle-stop text-brand-500"></i> STOP LOSS</span>
-              <span id="sl-price" class="text-xs font-bold text-brand-600">2322.00</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 1</span>
-              <span id="tp1-price" class="text-xs font-bold text-gray-900">2345.00</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 2</span>
-              <span id="tp2-price" class="text-xs font-bold text-gray-900">2355.00</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-500"></i> TAKE PROFIT 3</span>
-              <span id="tp3-price" class="text-xs font-bold text-gray-900">2370.00</span>
-            </div>
-            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-              <span class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-scale-balanced text-brand-500"></i> LOT IDEAL</span>
-              <span id="lot-ideal" class="text-xs font-bold text-gray-900">0.05 Lot</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-3.5 pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-400">
-          <span>Target Engine: MT5 Signaling</span>
-          <span>No-Lag Execution ✓</span>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- MIDDLE PANEL: INTERACTIVE CHART & MARKET GEOMETRY (cols-5) -->
-    <section class="lg:col-span-5 flex flex-col gap-3.5">
-
-      <!-- TRADING CHART DISPLAY -->
-      <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-chart-line text-brand-500"></i> Market Geometry & Volatility
-          </h3>
-          <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
-        </div>
-
-        <!-- Real Chart Canvas (Height limited to fit mobile properly) -->
-        <div class="relative flex-1 min-h-[220px] max-h-[300px] bg-gray-50/50 border border-gray-100 rounded-xl p-1.5 flex items-center justify-center">
-          <canvas id="tradingChart" class="w-full h-full"></canvas>
-        </div>
-
-        <!-- Instantly read stats grid -->
-        <div class="grid grid-cols-3 gap-2 mt-3 text-center text-xs font-mono">
-          <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
-            <span class="text-[9px] text-gray-400 block uppercase">ATR Volatility</span>
-            <span id="atr-value" class="text-xs font-bold text-gray-800">4.25</span>
-          </div>
-          <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
-            <span class="text-[9px] text-gray-400 block uppercase">ADR (10D) Range</span>
-            <span id="adr-value" class="text-xs font-bold text-gray-800">22.80</span>
-          </div>
-          <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
-            <span class="text-[9px] text-gray-400 block uppercase">Trend Slope</span>
-            <span id="slope-value" class="text-xs font-bold text-emerald-600">+0.145 (Bullish)</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- DETECTOR RE-ENGINEERING -->
+      <!-- FOREX MARKET OVERVIEW WIDGET -->
       <div class="premium-card rounded-2xl p-4">
-        <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2 mb-3">
-          <i class="fa-solid fa-satellite-dish text-brand-500"></i> Instant SMC & VSA Detectors
-        </h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
+            <i class="fa-solid fa-globe text-brand-500"></i> Forex Market Overview
+          </h3>
+          <span class="text-[9px] bg-red-50 text-brand-600 border border-brand-100 font-black px-2.5 py-0.5 rounded-full">REALTIME PIP VALUES</span>
+        </div>
+
+        <!-- Forex Ticker Directory -->
+        <div class="overflow-x-auto rounded-xl border border-gray-100 shadow-inner">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 font-extrabold">
+                <th class="p-3">ASSET</th>
+                <th class="p-3">BID</th>
+                <th class="p-3">ASK</th>
+                <th class="p-3">CHANGE</th>
+                <th class="p-3">TREND STATUS</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 font-mono text-gray-800">
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-red-500 font-black">XAUUSD</span> (Gold)
+                </td>
+                <td class="p-3 font-bold text-gray-900">2334.50</td>
+                <td class="p-3 font-bold text-gray-900">2334.95</td>
+                <td class="p-3 text-emerald-600 font-bold">+1.25%</td>
+                <td class="p-3"><span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🟢 STRONG BUY</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-red-500 font-black">EURUSD</span> (Euro)
+                </td>
+                <td class="p-3 font-bold text-gray-900">1.08540</td>
+                <td class="p-3 font-bold text-gray-900">1.08548</td>
+                <td class="p-3 text-emerald-600 font-bold">+0.14%</td>
+                <td class="p-3"><span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🟢 BUY</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-red-500 font-black">GBPUSD</span> (Sterling)
+                </td>
+                <td class="p-3 font-bold text-gray-900">1.26850</td>
+                <td class="p-3 font-bold text-gray-900">1.26861</td>
+                <td class="p-3 text-gray-400 font-bold">0.00%</td>
+                <td class="p-3"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">⚪ WAIT / FLAT</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-red-500 font-black">USDJPY</span> (Yen)
+                </td>
+                <td class="p-3 font-bold text-gray-900">156.402</td>
+                <td class="p-3 font-bold text-gray-900">156.415</td>
+                <td class="p-3 text-red-600 font-bold">-0.32%</td>
+                <td class="p-3"><span class="bg-red-50 text-brand-600 border border-brand-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 BEARISH</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-red-500 font-black">AUDUSD</span> (Aussie)
+                </td>
+                <td class="p-3 font-bold text-gray-900">0.66820</td>
+                <td class="p-3 font-bold text-gray-900">0.66829</td>
+                <td class="p-3 text-emerald-600 font-bold">+0.42%</td>
+                <td class="p-3"><span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🟢 BUY</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: HFM BROKER PREMIUM LANDING & BENEFITS -->
+    <div id="tab-hfm-broker" class="tab-content hidden flex flex-col gap-4">
+      
+      <!-- HERO PARTNER PROFILE -->
+      <div class="premium-card rounded-2xl p-5 flex flex-col md:flex-row items-center gap-5">
+        <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-md border border-gray-150 flex items-center justify-center overflow-hidden shrink-0">
+          <img src="logo.jpg" alt="HFM PRO AI Logo" class="w-full h-full object-contain rounded-lg" />
+        </div>
+        <div class="text-center md:text-left">
+          <h3 class="text-lg font-black text-gray-900">Broker Mitra Resmi HFM Markets</h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-xl">HFM (HotForex) adalah broker global pemenang penghargaan yang teregulasi secara internasional. Menyediakan platform trading inovatif, instrumen derivatif bursa terlengkap, dan jaminan keamanan dana terpercaya.</p>
+        </div>
+      </div>
+
+      <!-- FEATURES SPECIFICATIONS MATRIX -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
         
-        <div class="space-y-2 text-xs font-mono">
-          <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
-            <span class="text-gray-600"><i class="fa-solid fa-water-ladder text-brand-500 mr-1.5"></i> Liquidity Sweep</span>
-            <span id="liquidity-sweep-status" class="text-emerald-600 font-bold">🟢 BULLISH SWEEP CONFIRMED [S3]</span>
+        <!-- CARD 1 -->
+        <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+            <h4 class="text-sm font-bold text-gray-900">100% Credit Bonus</h4>
           </div>
-          <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
-            <span class="text-gray-600"><i class="fa-solid fa-scale-unbalanced-flip text-brand-500 mr-1.5"></i> Volume Spread Analysis</span>
-            <span id="vsa-status" class="text-emerald-600 font-bold">💼 INSTITUTIONAL ABSORPTION DETECTED</span>
-          </div>
-          <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl">
-            <span class="text-gray-600"><i class="fa-solid fa-network-wired text-brand-500 mr-1.5"></i> Camarilla Pivot Levels</span>
-            <span id="camarilla-status" class="text-gray-700 font-semibold">S3: 2322.40 | Pivot: 2331.10 | R3: 2341.20</span>
-          </div>
+          <p class="text-xs text-gray-500 leading-normal">Gandakan modal dan margin perdagangan Anda secara langsung dengan Bonus Kredit 100% saat Anda melakukan pendanaan awal di HFM.</p>
         </div>
+
+        <!-- CARD 2 -->
+        <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+              <i class="fa-solid fa-moon"></i>
+            </div>
+            <h4 class="text-sm font-bold text-gray-900">No Swap Account</h4>
+          </div>
+          <p class="text-xs text-gray-500 leading-normal">Trading tanpa biaya bunga inap (swap-free) khusus bagi seluruh trader asal Indonesia. Bebas menahan posisi buy/sell selama berbulan-bulan.</p>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h4 class="text-sm font-bold text-gray-900">Eksekusi Super Cepat</h4>
+          </div>
+          <p class="text-xs text-gray-500 leading-normal">Eksekusi order tanpa jeda (*no-lag execution*) langsung terhubung ke liquidity provider utama dengan spread terendah mulai dari 0.0 Pips.</p>
+        </div>
+
       </div>
 
-    </section>
-
-    <!-- RIGHT PANEL: MIXTURE OF EXPERTS MOE VOTING DETAIL (cols-3) -->
-    <section class="lg:col-span-3 flex flex-col gap-3.5">
-
-      <!-- PARALLEL COGNITION PANEL -->
-      <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
-        <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2 mb-3.5">
-          <i class="fa-solid fa-users-viewfinder text-brand-500"></i> MoE Voting Cognition
-        </h3>
-
-        <!-- Experts Rows -->
-        <div class="space-y-3 flex-1">
-          <!-- Expert 1 -->
-          <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                <i class="fa-solid fa-brain text-brand-500"></i> Expert 1: Fundamental
-              </span>
-              <span id="voter1-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (92%)</span>
-            </div>
-            <p id="voter1-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">DXY melemah tertekan data ketenagakerjaan AS, memicu aliran Safe Haven masif ke emas.</p>
-          </div>
-
-          <!-- Expert 2 -->
-          <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                <i class="fa-solid fa-chart-simple text-brand-500"></i> Expert 2: Technical
-              </span>
-              <span id="voter2-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (85%)</span>
-            </div>
-            <p id="voter2-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">Struktur market Break of Structure (BOS) bullish, harga memantul dari Order Block H4.</p>
-          </div>
-
-          <!-- Expert 3 -->
-          <div class="p-3 bg-gray-50/70 border border-gray-100 rounded-xl relative">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                <i class="fa-solid fa-compass text-brand-500"></i> Expert 3: Sentiment
-              </span>
-              <span id="voter3-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">BUY (80%)</span>
-            </div>
-            <p id="voter3-analysis" class="text-[11px] text-gray-500 leading-normal font-mono">Volume bursa berjangka melonjak dengan akumulasi agresif pada level support institusi.</p>
-          </div>
+      <!-- BIG REGISTRATION ACTION BUTTON -->
+      <div class="premium-card rounded-2xl p-5.5 text-center bg-gray-50 border border-gray-150 relative overflow-hidden">
+        <h4 class="text-lg font-black text-gray-900 leading-tight">Siap Memaksimalkan Profit Logika Kanda?</h4>
+        <p class="text-xs text-gray-500 mt-1 max-w-lg mx-auto">Klik tombol di bawah ini untuk menuju portal pendaftaran akun live HFM. Daftarkan diri Anda di bawah rujukan mitra kami untuk mendapatkan jaminan keamanan VIP dan sinyal presisi MoE v4.0.</p>
+        
+        <div class="mt-4.5">
+          <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" target="_blank" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-black text-sm py-3 px-6 rounded-xl transition-all shadow-md shadow-brand-100 hover:shadow-lg active:scale-95">
+            <i class="fa-solid fa-rocket animate-bounce"></i> DAFTAR AKUN LIVE SEKARANG
+          </a>
         </div>
-
-        <!-- CRO Validator Interdictor -->
-        <div class="mt-3.5 pt-3.5 border-t border-gray-100">
-          <div class="p-3 bg-gradient-to-br from-brand-50/40 to-white border border-brand-100 rounded-xl relative overflow-hidden">
-            <div class="absolute -right-8 -bottom-8 w-16 h-16 bg-brand-500/5 rounded-full blur-xl"></div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs font-extrabold text-brand-600 flex items-center gap-1.5">
-                <i class="fa-solid fa-shield-halved"></i> Chief Risk Officer (CRO)
-              </span>
-              <span id="cro-action" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner">APPROVED</span>
-            </div>
-            <p id="cro-analysis" class="text-[10px] text-gray-500 leading-relaxed font-mono">Risk-Reward ratio ideal (>2.5R). Likuiditas bursa terjaga tinggi dengan level proteksi SL sangat ketat di bawah Swing Low harian.</p>
-          </div>
-        </div>
+        <p class="text-[10px] text-gray-400 mt-2 font-mono">Referral Partner ID: 30524829 • HFM Official Securities Partner</p>
       </div>
 
-    </section>
+    </div>
 
   </main>
 
@@ -421,10 +633,100 @@
       console.warn("Telegram WebApp API not available/loaded in desktop browser.", e);
     }
 
-    // Interactive chart variables
-    let chartInstance = null;
-    let currentAsset = 'XAUUSD';
-    let currentType = 'METAL';
+    // Tab switcher logic
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+      });
+      // Show requested tab
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      // Update desktop buttons active state
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all";
+      });
+      const activeDeskBtn = document.getElementById(`btn-tab-${tabId}`);
+      if (activeDeskBtn) {
+        activeDeskBtn.className = "tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-all";
+      }
+
+      // Update mobile nav active state
+      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-hfm-broker'];
+      navIds.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.className = "flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] transition-all";
+        }
+      });
+      const activeMobileBtn = document.getElementById(`nav-${tabId}`);
+      if (activeMobileBtn) {
+        activeMobileBtn.className = "flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px] transition-all active-nav-btn";
+      }
+      
+      // Auto reload TradingView chart if switching to dashboard
+      if (tabId === 'dashboard') {
+        loadTradingViewChart(currentAsset, currentTimeframe);
+      }
+      
+      writeLog(`Switched application tab view to: ${tabId.toUpperCase()}`);
+    }
+
+    // Timeframe selector logic
+    let currentTimeframe = '15'; // Default to 15m
+    function changeTimeframe(tf) {
+      currentTimeframe = tf;
+      
+      // Update active state of buttons
+      document.querySelectorAll('.tf-btn').forEach(btn => {
+        btn.className = "tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all";
+      });
+      const activeBtn = document.getElementById(`tf-${tf}`);
+      if (activeBtn) {
+        activeBtn.className = "tf-btn bg-black text-white font-extrabold px-2 py-0.5 rounded-md transition-all shadow-sm";
+      }
+      
+      // Reload TradingView Chart
+      loadTradingViewChart(currentAsset, tf);
+      writeLog(`Timeframe updated to: ${tf === 'D' ? 'DAILY (MTF)' : tf + 'M'}`);
+    }
+
+    // Advanced TradingView Chart Loader
+    function loadTradingViewChart(pair, timeframe) {
+      let tvSymbol = "OANDA:XAUUSD";
+      if (pair === 'EURUSD') tvSymbol = "FX:EURUSD";
+      if (pair === 'BTCUSD') tvSymbol = "BINANCE:BTCUSDT";
+      if (pair === 'GBPUSD') tvSymbol = "FX:GBPUSD";
+
+      // Recreate widget inside container to prevent sizing errors
+      const container = document.getElementById('tradingview-container');
+      if (!container) return;
+      container.innerHTML = '<div id="tradingview_chart" class="w-full h-full"></div>';
+
+      try {
+        new TradingView.widget({
+          "autosize": true,
+          "symbol": tvSymbol,
+          "interval": timeframe,
+          "timezone": "Asia/Jakarta",
+          "theme": "light",
+          "style": "1", // Candlestick style
+          "locale": "id",
+          "enable_publishing": false,
+          "hide_side_toolbar": true,
+          "allow_symbol_change": false,
+          "container_id": "tradingview_chart",
+          "save_image": false,
+          "show_popup_button": false,
+          "studies": [
+            "RSI@tv-basicstudies",
+            "MASimple@tv-basicstudies"
+          ],
+        });
+      } catch(e) {
+        console.error("TradingView failed to initialize:", e);
+      }
+    }
 
     // Market Asset Parameters
     const assetParameters = {
@@ -517,69 +819,6 @@
         chartData: [1.26900, 1.26750, 1.26800, 1.26650, 1.26850, 1.26800, 1.26850]
       }
     };
-
-    function writeLog(message) {
-      const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
-      document.getElementById('log-display').innerText = `[${time}] ${message}`;
-    }
-
-    function renderChart(data, label, type) {
-      const ctx = document.getElementById('tradingChart').getContext('2d');
-      
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-
-      const decision = assetParameters[label].decision;
-      let borderColor = '#9ca3af'; // gray/neutral
-      let bgColor = 'rgba(156, 163, 175, 0.05)';
-      
-      if (decision.includes('BUY')) {
-        borderColor = '#10b981'; // emerald-500
-        bgColor = 'rgba(16, 185, 129, 0.08)';
-      } else if (decision.includes('SELL')) {
-        borderColor = '#ef4444'; // red-500
-        bgColor = 'rgba(239, 68, 68, 0.08)';
-      }
-
-      chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['M15-6', 'M15-5', 'M15-4', 'M15-3', 'M15-2', 'M15-1', 'Live Price'],
-          datasets: [{
-            label: label,
-            data: data,
-            borderColor: borderColor,
-            borderWidth: 2.5,
-            pointBackgroundColor: '#ffffff',
-            pointBorderColor: borderColor,
-            pointBorderWidth: 2.5,
-            pointRadius: 4.5,
-            pointHoverRadius: 6.5,
-            backgroundColor: bgColor,
-            fill: true,
-            tension: 0.3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            x: {
-              grid: { color: '#f3f4f6' },
-              ticks: { color: '#4b5563', font: { family: 'JetBrains Mono', size: 9 } }
-            },
-            y: {
-              grid: { color: '#f3f4f6' },
-              ticks: { color: '#4b5563', font: { family: 'JetBrains Mono', size: 9 } }
-            }
-          }
-        }
-      });
-    }
 
     function selectAsset(pair, type) {
       currentAsset = pair;
@@ -702,7 +941,8 @@
         styleBadgeByText(croBadge, "APPROVED");
       }
 
-      renderChart(param.chartData, pair, type);
+      // Load live TradingView widget chart
+      loadTradingViewChart(pair, currentTimeframe);
       writeLog(`Successfully loaded ${pair} model configuration parameters.`);
     }
 
