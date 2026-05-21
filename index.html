@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[ CUANOLOGY | HFM PRO ] — Signal Intelligence Dashboard</title>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Telegram Web App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fbf4',
+              100: '#ddf7e5',
+              200: '#bdf0cd',
+              300: '#8ce3aa',
+              400: '#52ce7f',
+              500: '#2db35f',
+              600: '#20934c',
+              700: '#1c743f',
+              800: '#1b5d35',
+              900: '#174c2d',
+              950: '#0b2a18',
+            },
+            dark: {
+              950: '#030712',
+              900: '#0b0f19',
+              800: '#111827',
+              700: '#1f2937',
+              600: '#374151',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #030712;
+      color: #f3f4f6;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f2937;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased bg-dark-950 text-gray-100 min-h-screen flex flex-col">
+
+  <!-- TOP BRANDING NAVIGATION -->
+  <header class="border-b border-dark-800 bg-dark-900 px-4 py-3 sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <!-- Logo and Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-tr from-brand-600 to-emerald-400 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-950/50">
+          <i class="fa-solid fa-chart-line text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-gray-100 to-brand-400 bg-clip-text text-transparent flex items-center gap-1.5">
+            𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-400">|</span> 𝐇𝐅𝐌 𝐏𝐑𝐎
+          </h1>
+          <p class="text-xs text-gray-400 flex items-center gap-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+            MoE Signal Engine v4.0-Beta • <span id="tg-username">Guest Mode</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Stats / Badges -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="bg-dark-800/80 border border-dark-700/50 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs">
+          <span class="text-gray-400">Gemini Flash:</span>
+          <span class="text-brand-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[10px]"></i> ACTIVE
+          </span>
+        </div>
+        <div class="bg-dark-800/80 border border-dark-700/50 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs">
+          <span class="text-gray-400">Fallback:</span>
+          <span class="text-indigo-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-[10px]"></i> GROQ MoE (120B)
+          </span>
+        </div>
+        <div id="tg-user-avatar" class="hidden sm:flex items-center gap-2 border-l border-dark-700 pl-3">
+          <img id="user-photo" src="" alt="user" class="w-8 h-8 rounded-full border border-brand-500 hidden" />
+          <span id="user-first-name" class="text-xs font-semibold text-brand-400"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP GRID CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+    <!-- LEFT SIDEBAR: SELECTORS AND SIGNAL CARD (cols-4) -->
+    <section class="lg:col-span-4 flex flex-col gap-4">
+
+      <!-- ASSET SELECTOR & SYSTEM CONTROLS -->
+      <div class="bg-dark-900 border border-dark-800 rounded-xl p-4 shadow-xl">
+        <h3 class="text-sm font-extrabold tracking-wider text-brand-400 uppercase mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-cubes"></i> MARKET SELECTION
+        </h3>
+        
+        <div class="grid grid-cols-2 gap-2 mb-4">
+          <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-brand-950/40 border border-brand-500/50 text-brand-300 font-bold text-xs py-2.5 px-3 rounded-lg flex items-center justify-between transition-all">
+            <span>XAU/USD</span>
+            <i class="fa-solid fa-coins text-yellow-500"></i>
+          </button>
+          <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-dark-800 border border-dark-700/50 text-gray-300 font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-between transition-all hover:bg-dark-700/30">
+            <span>EUR/USD</span>
+            <i class="fa-solid fa-euro-sign text-blue-400"></i>
+          </button>
+          <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-dark-800 border border-dark-700/50 text-gray-300 font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-between transition-all hover:bg-dark-700/30">
+            <span>BTC/USD</span>
+            <i class="fa-brands fa-bitcoin text-orange-400"></i>
+          </button>
+          <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-dark-800 border border-dark-700/50 text-gray-300 font-semibold text-xs py-2.5 px-3 rounded-lg flex items-center justify-between transition-all hover:bg-dark-700/30">
+            <span>GBP/USD</span>
+            <i class="fa-solid fa-sterling-sign text-emerald-400"></i>
+          </button>
+        </div>
+
+        <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-white font-extrabold text-xs py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-brand-950/30 transition-all active:scale-[0.98]">
+          <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER MoE ANALYSIS
+        </button>
+      </div>
+
+      <!-- CORE TRADING SIGNAL CARD -->
+      <div class="bg-dark-900 border border-dark-800 rounded-xl p-5 shadow-xl relative overflow-hidden flex-1 flex flex-col justify-between">
+        <!-- Glowing gradient effect in background -->
+        <div class="absolute -right-16 -top-16 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl"></div>
+        <div id="signal-glow" class="absolute -left-16 -bottom-16 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+
+        <div>
+          <!-- Signal Badge & Grade -->
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold text-gray-400 tracking-widest uppercase">Target Signal Output</span>
+            <span id="signal-grade" class="bg-brand-950 border border-brand-500 text-brand-400 font-extrabold text-sm px-3 py-1 rounded-full shadow-inner">GRADE A</span>
+          </div>
+
+          <!-- Final Signal Decision -->
+          <div class="mb-5 text-center py-4 bg-dark-950/50 border border-dark-800 rounded-xl">
+            <div id="signal-decision-badge" class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-950 border border-brand-500/50 text-brand-400 rounded-full text-xs font-bold mb-1">
+              <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span> ACTIVE SIGNAL
+            </div>
+            <h2 id="signal-decision" class="text-3xl font-black tracking-tight text-brand-400 mt-1">🎯 BUY NOW</h2>
+            <p id="signal-confidence" class="text-xs text-gray-400 mt-1 font-mono">Confidence Score: 88% | Risk: LOW</p>
+          </div>
+
+          <!-- Target Execution Parameters -->
+          <div class="space-y-3 font-mono">
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-right-to-bracket text-brand-400"></i> ENTRY</span>
+              <span id="entry-price" class="text-sm font-bold text-gray-100">2334.50</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-circle-stop text-red-400"></i> STOP LOSS</span>
+              <span id="sl-price" class="text-sm font-bold text-red-400">2322.00</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-400"></i> TAKE PROFIT 1</span>
+              <span id="tp1-price" class="text-sm font-bold text-brand-400">2345.00</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-400"></i> TAKE PROFIT 2</span>
+              <span id="tp2-price" class="text-sm font-bold text-emerald-400">2355.00</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-bullseye text-brand-400"></i> TAKE PROFIT 3</span>
+              <span id="tp3-price" class="text-sm font-bold text-emerald-300">2370.00</span>
+            </div>
+            <div class="flex justify-between items-center py-1.5 border-b border-dark-800">
+              <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-scale-balanced text-indigo-400"></i> LOT IDEAL</span>
+              <span id="lot-ideal" class="text-sm font-bold text-indigo-300">0.05 Lot</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-dark-800/50 flex items-center justify-between text-[11px] text-gray-500">
+          <span>Target Engine: MT5 Signaling</span>
+          <span>No-Lag Execution ✓</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MIDDLE PANEL: INTERACTIVE CHART & MARKET GEOMETRY (cols-5) -->
+    <section class="lg:col-span-5 flex flex-col gap-4">
+
+      <!-- TRADING CHART DISPLAY -->
+      <div class="bg-dark-900 border border-dark-800 rounded-xl p-4 shadow-xl flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-extrabold tracking-wider text-brand-400 uppercase flex items-center gap-2">
+            <i class="fa-solid fa-chart-candlestick"></i> MARKET GEOMETRY & VOLATILITY
+          </h3>
+          <span id="chart-pair-label" class="text-xs font-mono bg-dark-950 border border-dark-800 px-2.5 py-1 rounded text-brand-300 font-bold">XAUUSD [METAL]</span>
+        </div>
+
+        <!-- Chart Canvas Container -->
+        <div class="relative flex-1 min-h-[250px] bg-dark-950/40 border border-dark-800 rounded-xl p-2 flex items-center justify-center">
+          <canvas id="tradingChart" class="w-full h-full"></canvas>
+        </div>
+
+        <!-- Indicator Quick Info Grid -->
+        <div class="grid grid-cols-3 gap-2 mt-4 font-mono text-center">
+          <div class="bg-dark-950 border border-dark-800 rounded-lg p-2">
+            <span class="text-[10px] text-gray-400 block uppercase">ATR Volatility</span>
+            <span id="atr-value" class="text-xs font-bold text-gray-100">4.25</span>
+          </div>
+          <div class="bg-dark-950 border border-dark-800 rounded-lg p-2">
+            <span class="text-[10px] text-gray-400 block uppercase">ADR (10D) Range</span>
+            <span id="adr-value" class="text-xs font-bold text-gray-100">22.80</span>
+          </div>
+          <div class="bg-dark-950 border border-dark-800 rounded-lg p-2">
+            <span class="text-[10px] text-gray-400 block uppercase">Trend Slope</span>
+            <span id="slope-value" class="text-xs font-bold text-brand-400">+0.145 (Bullish)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECHNICAL DETECTORS PANEL -->
+      <div class="bg-dark-900 border border-dark-800 rounded-xl p-4 shadow-xl">
+        <h3 class="text-sm font-extrabold tracking-wider text-brand-400 uppercase mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-satellite-dish"></i> INSTANT SMC & VSA DETECTORS
+        </h3>
+        
+        <div class="space-y-2.5 text-xs font-mono">
+          <div class="flex items-center justify-between p-2.5 bg-dark-950 border border-dark-800 rounded-lg">
+            <span class="text-gray-400"><i class="fa-solid fa-water-ladder text-emerald-400 mr-1.5"></i> Liquidity Sweep</span>
+            <span id="liquidity-sweep-status" class="text-brand-400 font-bold">🟢 BULLISH SWEEP CONFIRMED [R3]</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-dark-950 border border-dark-800 rounded-lg">
+            <span class="text-gray-400"><i class="fa-solid fa-scale-unbalanced-flip text-indigo-400 mr-1.5"></i> Volume Spread Analysis</span>
+            <span id="vsa-status" class="text-brand-300 font-bold">💼 INSTITUTIONAL ABSORPTION DETECTED</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 bg-dark-950 border border-dark-800 rounded-lg">
+            <span class="text-gray-400"><i class="fa-solid fa-network-wired text-blue-400 mr-1.5"></i> Camarilla Pivot Levels</span>
+            <span id="camarilla-status" class="text-gray-200">S3: 2322.40 | Pivot: 2331.10 | R3: 2341.20</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT PANEL: MIXTURE OF EXPERTS MOE VOTING DETAIL (cols-3) -->
+    <section class="lg:col-span-3 flex flex-col gap-4">
+
+      <!-- MOE VOTERS PANEL -->
+      <div class="bg-dark-900 border border-dark-800 rounded-xl p-4 shadow-xl flex-1 flex flex-col">
+        <h3 class="text-sm font-extrabold tracking-wider text-brand-400 uppercase mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-users-viewfinder"></i> MoE VOTING COGNITION
+        </h3>
+
+        <!-- Experts Rows -->
+        <div class="space-y-4 flex-1">
+          <!-- Expert 1 -->
+          <div class="p-3 bg-dark-950/70 border border-dark-800 rounded-xl relative">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-gray-100 flex items-center gap-1.5">
+                <i class="fa-solid fa-brain text-blue-400"></i> Expert 1: Fundamental
+              </span>
+              <span id="voter1-action" class="bg-brand-950 border border-brand-500/50 text-brand-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">BUY (92%)</span>
+            </div>
+            <p id="voter1-analysis" class="text-[11px] text-gray-400 leading-relaxed font-mono">DXY melemah tertekan data ketenagakerjaan AS, memicu aliran Safe Haven masif ke emas.</p>
+          </div>
+
+          <!-- Expert 2 -->
+          <div class="p-3 bg-dark-950/70 border border-dark-800 rounded-xl relative">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-gray-100 flex items-center gap-1.5">
+                <i class="fa-solid fa-chart-simple text-purple-400"></i> Expert 2: Technical
+              </span>
+              <span id="voter2-action" class="bg-brand-950 border border-brand-500/50 text-brand-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">BUY (85%)</span>
+            </div>
+            <p id="voter2-analysis" class="text-[11px] text-gray-400 leading-relaxed font-mono">Struktur market Break of Structure (BOS) bullish, harga memantul dari Order Block H4.</p>
+          </div>
+
+          <!-- Expert 3 -->
+          <div class="p-3 bg-dark-950/70 border border-dark-800 rounded-xl relative">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-gray-100 flex items-center gap-1.5">
+                <i class="fa-solid fa-compass text-orange-400"></i> Expert 3: Sentiment
+              </span>
+              <span id="voter3-action" class="bg-brand-950 border border-brand-500/50 text-brand-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">BUY (80%)</span>
+            </div>
+            <p id="voter3-analysis" class="text-[11px] text-gray-400 leading-relaxed font-mono">Volume bursa berjangka melonjak dengan akumulasi agresif pada level support institusi.</p>
+          </div>
+        </div>
+
+        <!-- CRO Validator Interdictor -->
+        <div class="mt-4 pt-4 border-t border-dark-800">
+          <div class="p-3 bg-gradient-to-br from-brand-950/40 to-dark-950 border border-brand-500/30 rounded-xl relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-16 h-16 bg-brand-500/5 rounded-full blur-xl"></div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-extrabold text-brand-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-brand-400"></i> Chief Risk Officer (CRO)
+              </span>
+              <span id="cro-action" class="bg-brand-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full">APPROVED</span>
+            </div>
+            <p id="cro-analysis" class="text-[11px] text-brand-300 font-mono leading-relaxed">Risk-Reward ratio ideal (>2.5R). Likuiditas bursa terjaga tinggi dengan level proteksi SL sangat ketat di bawah Swing Low harian.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- LIVE SYSTEM EXECUTION OUTPUT LOG (JetBrains Mono) -->
+  <footer class="bg-dark-900 border-t border-dark-800 px-4 py-3 font-mono text-[11px]">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-gray-500">
+      <div class="flex items-center gap-2">
+        <span class="text-brand-500 font-bold">SYSTEM LOG:</span>
+        <span id="log-display" class="text-gray-400">[09:07:50] HFM Pro Engine v4.0 loaded successfully. Waiting for voter query...</span>
+      </div>
+      <div>
+        <span>© 2026 CUANOLOGY AI • Strategic Wealth Logic</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CORE JAVASCRIPT: SIMULATOR ENGINE AND TELEGRAM INTEGRATION -->
+  <script>
+    // Initialize Telegram Web App SDK
+    let tgUser = null;
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const webapp = window.Telegram.WebApp;
+        webapp.ready();
+        webapp.expand();
+        tgUser = webapp.initDataUnsafe.user;
+        if (tgUser) {
+          document.getElementById('tg-username').innerText = '@' + (tgUser.username || tgUser.first_name);
+          document.getElementById('tg-user-avatar').classList.remove('hidden');
+          document.getElementById('user-first-name').innerText = tgUser.first_name;
+          if (tgUser.photo_url) {
+            const photoEl = document.getElementById('user-photo');
+            photoEl.src = tgUser.photo_url;
+            photoEl.classList.remove('hidden');
+          }
+          writeLog("Telegram Mini App Session active for user " + tgUser.first_name);
+        }
+      }
+    } catch (e) {
+      console.warn("Telegram WebApp API not available/loaded in desktop browser.", e);
+    }
+
+    // Interactive chart variables
+    let chartInstance = null;
+    let currentAsset = 'XAUUSD';
+    let currentType = 'METAL';
+
+    // Market Asset Parameters
+    const assetParameters = {
+      XAUUSD: {
+        basePrice: 2334.50,
+        grade: 'GRADE A',
+        decision: '🎯 BUY NOW',
+        confidence: '88% | Risk: LOW',
+        slOffset: -12.50,
+        tp1Offset: 10.50,
+        tp2Offset: 20.50,
+        tp3Offset: 35.50,
+        lot: '0.05 Lot',
+        atr: '4.25',
+        adr: '22.80',
+        slope: '+0.145 (Bullish)',
+        sweep: '🟢 BULLISH SWEEP CONFIRMED [S3]',
+        vsa: '💼 INSTITUTIONAL ABSORPTION DETECTED',
+        camarilla: 'S3: 2322.40 | Pivot: 2331.10 | R3: 2341.20',
+        expert1: 'DXY melemah tertekan data ketenagakerjaan AS, memicu aliran Safe Haven masif ke emas.',
+        expert2: 'Struktur market Break of Structure (BOS) bullish, harga memantul dari Order Block H4.',
+        expert3: 'Volume bursa berjangka melonjak dengan akumulasi agresif pada level support institusi.',
+        cro: 'Risk-Reward ratio ideal (>2.5R). Likuiditas bursa terjaga tinggi dengan level proteksi SL sangat ketat di bawah Swing Low harian.',
+        chartData: [2322.10, 2324.50, 2320.90, 2328.00, 2326.40, 2330.10, 2334.50]
+      },
+      EURUSD: {
+        basePrice: 1.08540,
+        grade: 'GRADE B',
+        decision: '🎯 BUY NOW',
+        confidence: '74% | Risk: MEDIUM',
+        slOffset: -0.00350,
+        tp1Offset: 0.00280,
+        tp2Offset: 0.00550,
+        tp3Offset: 0.00900,
+        lot: '0.10 Lot',
+        atr: '0.00045',
+        adr: '0.00680',
+        slope: '+0.00012 (Mild Bullish)',
+        sweep: '⚪ NO SWEEP DETECTED',
+        vsa: '💼 LOW LIQUIDITY / CONSOLIDATION',
+        camarilla: 'S3: 1.08120 | Pivot: 1.08440 | R3: 1.08720',
+        expert1: 'Zona Euro mencatat kenaikan tipis inflasi inti, memberi daya tahan bagi EUR terhadap USD.',
+        expert2: 'Trendline H1 tertembus ke arah atas, namun resistance harian masih kuat.',
+        expert3: 'Order flow institusi seimbang, indikasi pola re-akumulasi minor.',
+        cro: 'Approved dengan sizing lot normal. Likuiditas Euro kuat namun volatilitas harian rendah.',
+        chartData: [1.08210, 1.08180, 1.08320, 1.08290, 1.08450, 1.08410, 1.08540]
+      },
+      BTCUSD: {
+        basePrice: 66840.00,
+        grade: 'GRADE A+',
+        decision: '🔥 BUY / BREAKOUT',
+        confidence: '95% | Risk: MEDIUM',
+        slOffset: -1250.00,
+        tp1Offset: 1500.00,
+        tp2Offset: 3200.00,
+        tp3Offset: 6000.00,
+        lot: '0.02 Lot',
+        atr: '850.00',
+        adr: '3400.00',
+        slope: '+450.20 (Strong Bullish)',
+        sweep: '🟢 LIQUIDITY SWEEP AT 65500',
+        vsa: '🔥 BULLISH ACCUMULATION (CLIMAX)',
+        camarilla: 'S3: 65200 | Pivot: 66100 | R3: 67300',
+        expert1: 'Whale inflow ke cold storage mencatat rekor tertinggi, suplai sirkulasi bursa mengering.',
+        expert2: 'Ascending Triangle breakout terkonfirmasi di TF H4 dengan volume solid.',
+        expert3: 'Pasar spot dominan melakukan pembelian harga pasar (taker buy) di atas order block.',
+        cro: 'High win probability! Target TP3 diproyeksikan mengejar likuiditas short-seller di area 72k.',
+        chartData: [64800, 65100, 64900, 65800, 65600, 66300, 66840]
+      },
+      GBPUSD: {
+        basePrice: 1.26850,
+        grade: 'GRADE C',
+        decision: '⚪ WAIT / STANDBY',
+        confidence: '51% | Risk: HIGH',
+        slOffset: 0,
+        tp1Offset: 0,
+        tp2Offset: 0,
+        tp3Offset: 0,
+        lot: '0.00 Lot',
+        atr: '0.00062',
+        adr: '0.00820',
+        slope: '-0.00004 (Flat)',
+        sweep: '⚠️ SWEEP REJECTION AT R3',
+        vsa: '⚪ NO DEMAND / NO SUPPLY BAR',
+        camarilla: 'S3: 1.26100 | Pivot: 1.26600 | R3: 1.27100',
+        expert1: 'Laporan manufaktur Inggris lesu, GBP tertekan sentimen risk-off global.',
+        expert2: 'Pola candlestick Doji beruntun di area supply harian, volatilitas tersumbat.',
+        expert3: 'Volume perdagangan tipis, tidak ada keterlibatan institusi besar.',
+        cro: 'VETO REJECTED! Konsolidasi pasar tinggi dengan indikasi pelemahan momentum. Standby untuk menjaga peluru modal.',
+        chartData: [1.26900, 1.26750, 1.26800, 1.26650, 1.26850, 1.26800, 1.26850]
+      }
+    };
+
+    function writeLog(message) {
+      const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
+      document.getElementById('log-display').innerText = `[${time}] ${message}`;
+    }
+
+    function renderChart(data, label, type) {
+      const ctx = document.getElementById('tradingChart').getContext('2d');
+      
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      const isWait = label === 'GBPUSD';
+      const borderColor = isWait ? '#9ca3af' : '#2db35f';
+      const bgColor = isWait ? 'rgba(156, 163, 175, 0.1)' : 'rgba(45, 179, 95, 0.1)';
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['M15-6', 'M15-5', 'M15-4', 'M15-3', 'M15-2', 'M15-1', 'Live Price'],
+          datasets: [{
+            label: label,
+            data: data,
+            borderColor: borderColor,
+            borderWidth: 2.5,
+            pointBackgroundColor: '#030712',
+            pointBorderColor: borderColor,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            backgroundColor: bgColor,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { color: '#111827' },
+              ticks: { color: '#9ca3af', font: { family: 'JetBrains Mono', size: 10 } }
+            },
+            y: {
+              grid: { color: '#111827' },
+              ticks: { color: '#9ca3af', font: { family: 'JetBrains Mono', size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    function selectAsset(pair, type) {
+      currentAsset = pair;
+      currentType = type;
+
+      // Update active asset button styles
+      document.querySelectorAll('.asset-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-950/40', 'border-brand-500/50', 'text-brand-300', 'font-bold');
+        btn.classList.add('bg-dark-800', 'border-dark-700/50', 'text-gray-300', 'font-semibold');
+      });
+      
+      const activeBtn = document.getElementById(`btn-${pair}`);
+      activeBtn.classList.remove('bg-dark-800', 'border-dark-700/50', 'text-gray-300', 'font-semibold');
+      activeBtn.classList.add('bg-brand-950/40', 'border-brand-500/50', 'text-brand-300', 'font-bold');
+
+      // Load static data
+      const param = assetParameters[pair];
+      
+      document.getElementById('chart-pair-label').innerText = `${pair} [${type}]`;
+      document.getElementById('signal-grade').innerText = param.grade;
+      document.getElementById('signal-decision').innerText = param.decision;
+      document.getElementById('signal-confidence').innerText = `Confidence Score: ${param.confidence}`;
+
+      // Set colors for WAIT decision
+      const isWait = pair === 'GBPUSD';
+      const decBadge = document.getElementById('signal-decision-badge');
+      const decText = document.getElementById('signal-decision');
+      if (isWait) {
+        decBadge.className = "inline-flex items-center gap-1.5 px-3 py-1 bg-red-950 border border-red-500/50 text-red-400 rounded-full text-xs font-bold mb-1";
+        decText.className = "text-3xl font-black tracking-tight text-red-400 mt-1";
+      } else {
+        decBadge.className = "inline-flex items-center gap-1.5 px-3 py-1 bg-brand-950 border border-brand-500/50 text-brand-400 rounded-full text-xs font-bold mb-1";
+        decText.className = "text-3xl font-black tracking-tight text-brand-400 mt-1";
+      }
+
+      // Format targets
+      const base = param.basePrice;
+      const precision = type === 'FOREX' ? 5 : 2;
+      
+      document.getElementById('entry-price').innerText = isWait ? '-' : base.toFixed(precision);
+      document.getElementById('sl-price').innerText = isWait ? '-' : (base + param.slOffset).toFixed(precision);
+      document.getElementById('tp1-price').innerText = isWait ? '-' : (base + param.tp1Offset).toFixed(precision);
+      document.getElementById('tp2-price').innerText = isWait ? '-' : (base + param.tp2Offset).toFixed(precision);
+      document.getElementById('tp3-price').innerText = isWait ? '-' : (base + param.tp3Offset).toFixed(precision);
+      document.getElementById('lot-ideal').innerText = param.lot;
+
+      // Volatility indices
+      document.getElementById('atr-value').innerText = param.atr;
+      document.getElementById('adr-value').innerText = param.adr;
+      document.getElementById('slope-value').innerText = param.slope;
+
+      // Status labels
+      document.getElementById('liquidity-sweep-status').innerText = param.sweep;
+      document.getElementById('vsa-status').innerText = param.vsa;
+      document.getElementById('camarilla-status').innerText = param.camarilla;
+
+      // Expert labels
+      document.getElementById('voter1-analysis').innerText = param.expert1;
+      document.getElementById('voter2-analysis').innerText = param.expert2;
+      document.getElementById('voter3-analysis').innerText = param.expert3;
+      document.getElementById('cro-analysis').innerText = param.cro;
+
+      // Adjust Experts actions badge colors
+      const v1Badge = document.getElementById('voter1-action');
+      const v2Badge = document.getElementById('voter2-action');
+      const v3Badge = document.getElementById('voter3-action');
+      const croBadge = document.getElementById('cro-action');
+
+      if (isWait) {
+        v1Badge.innerText = "WAIT (51%)";
+        v2Badge.innerText = "WAIT (50%)";
+        v3Badge.innerText = "WAIT (48%)";
+        croBadge.innerText = "VETO REJECTED";
+        croBadge.className = "bg-red-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full";
+      } else {
+        v1Badge.innerText = pair === 'BTCUSD' ? "BUY (95%)" : "BUY (92%)";
+        v2Badge.innerText = pair === 'BTCUSD' ? "BUY (91%)" : "BUY (85%)";
+        v3Badge.innerText = pair === 'BTCUSD' ? "BUY (90%)" : "BUY (80%)";
+        croBadge.innerText = "APPROVED";
+        croBadge.className = "bg-brand-500 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full";
+      }
+
+      renderChart(param.chartData, pair, type);
+      writeLog(`Successfully loaded ${pair} model configuration parameters.`);
+    }
+
+    function triggerRefresh() {
+      writeLog("Requesting Mixture of Experts parallel voting process...");
+      const btn = document.getElementById('refresh-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin"></i> CALCULATING BAYESIAN ODDS...`;
+      
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER MoE ANALYSIS`;
+        selectAsset(currentAsset, currentType);
+        writeLog(`Bayesian updates re-calculated successfully for ${currentAsset}. Win probability: ${currentAsset === 'BTCUSD' ? '95%' : currentAsset === 'XAUUSD' ? '88%' : currentAsset === 'EURUSD' ? '74%' : '51%'}.`);
+      }, 1500);
+    }
+
+    // Initial load
+    window.onload = function() {
+      selectAsset('XAUUSD', 'METAL');
+    };
+  </script>
+</body>
+</html>

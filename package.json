@@ -1,0 +1,10 @@
+{
+  "name": "hfmpro-mini-app",
+  "version": "1.0.0",
+  "description": "HFM Pro Signal Dashboard — Web & Telegram Mini App",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {}
+}
