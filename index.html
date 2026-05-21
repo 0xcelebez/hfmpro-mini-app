@@ -48,8 +48,8 @@
   </script>
   <style>
     body {
-      background-color: #f9fafb;
-      color: #111827;
+      background-color: #f8fafc;
+      color: #0f172a;
       -webkit-font-smoothing: antialiased;
     }
     /* Custom scrollbar */
@@ -58,26 +58,27 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #f3f4f6;
+      background: #f1f5f9;
     }
     ::-webkit-scrollbar-thumb {
-      background: #d1d5db;
-      border-radius: 3px;
+      background: #cbd5e1;
+      border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #9ca3af;
+      background: #94a3b8;
     }
     
     /* Premium glass effects */
     .premium-card {
       background-color: #ffffff;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.04);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02), 0 2px 8px -1px rgba(0, 0, 0, 0.01);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .premium-card:hover {
-      border-color: rgba(239, 68, 68, 0.2);
-      box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.04), 0 8px 16px -6px rgba(0, 0, 0, 0.03);
+      border-color: rgba(239, 68, 68, 0.15);
+      box-shadow: 0 12px 30px -4px rgba(239, 68, 68, 0.04), 0 4px 20px -2px rgba(0, 0, 0, 0.02);
+      transform: translateY(-1.5px);
     }
     .active-nav-btn {
       color: #ef4444 !important;
@@ -88,7 +89,7 @@
 <body class="font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
 
   <!-- TOP BRANDING NAVIGATION -->
-  <header class="border-b border-gray-200 bg-white px-3 py-2.5 sticky top-0 z-50 shadow-sm">
+  <header class="border-b border-slate-100 bg-white/85 backdrop-blur-md px-3 py-2.5 sticky top-0 z-50 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.015)]">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
       
       <!-- Row 1: Logo and Brand Name / User info -->
@@ -162,7 +163,7 @@
   </header>
 
   <!-- BOTTOM NAVIGATION BAR FOR MOBILE (fixed bottom) -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 flex justify-around py-2.5 px-4 shadow-lg md:hidden">
+  <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-50 flex justify-around py-2.5 px-4 shadow-[0_-5px_25px_rgba(0,0,0,0.025)] md:hidden">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px]">
       <i class="fa-solid fa-chart-line text-lg"></i>
       <span>Dashboard</span>
@@ -577,16 +578,32 @@
       </div>
 
       <!-- BIG REGISTRATION ACTION BUTTON -->
-      <div class="premium-card rounded-2xl p-4.5 text-center bg-gray-50 border border-gray-150 relative overflow-hidden">
-        <h4 class="text-sm font-black text-gray-900 uppercase tracking-wider">Optimalkan Profit Logika Kanda!</h4>
-        <p class="text-[11px] text-gray-500 mt-1 max-w-sm mx-auto leading-relaxed">Daftarkan akun live HFM di bawah kemitraan kami untuk mendapatkan proteksi akun VIP dan akses sinyal presisi MoE v4.0.</p>
-        
-        <div class="mt-3.5">
-          <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" target="_blank" class="inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-500 text-white font-black text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md shadow-brand-100 hover:shadow-lg active:scale-95">
-            <i class="fa-solid fa-rocket animate-bounce"></i> DAFTAR LIVE ACCOUNT
-          </a>
+      <div class="relative overflow-hidden rounded-3xl p-6 text-center bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-800 shadow-2xl shadow-black/40">
+        <!-- Floating ambient glowing light -->
+        <div class="absolute -right-12 -top-12 w-28 h-28 bg-brand-500/10 rounded-full blur-2xl"></div>
+        <div class="absolute -left-12 -bottom-12 w-28 h-28 bg-yellow-500/5 rounded-full blur-2xl"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-1.5">
+          <!-- Premium Gold Badge -->
+          <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20 text-[9px] font-black tracking-widest text-amber-500 uppercase">
+            👑 Exclusive VIP Access Gateway
+          </div>
+          <h4 class="text-sm md:text-base font-black tracking-wider mt-1 bg-gradient-to-r from-white via-gray-100 to-gray-400 bg-clip-text text-transparent uppercase">
+            ACCESS PRIVATE PROFIT GATEWAY
+          </h4>
+          <p class="text-[10.5px] text-gray-400 mt-1 max-w-md leading-relaxed">
+            Daftarkan akun live HFM Kanda di bawah rujukan resmi kami untuk membuka proteksi ekuitas VIP, rabat instan, serta akses eksklusif sinyal presisi MoE v4.0 secara gratis.
+          </p>
+          
+          <div class="mt-4">
+            <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-red-700 hover:from-brand-500 hover:to-red-600 text-white font-black text-xs py-3 px-6 rounded-xl transition-all shadow-lg shadow-brand-900/30 hover:shadow-brand-900/50 active:scale-95 border border-brand-500/30">
+              <i class="fa-solid fa-crown text-yellow-400 animate-pulse"></i> ACTIVATE PRO ACCOUNT NOW
+            </a>
+          </div>
+          <p class="text-[8px] text-gray-500 mt-2.5 font-mono tracking-wider uppercase">
+            Partner ID: 30524829 • HFM Official Institutional Partner
+          </p>
         </div>
-        <p class="text-[9px] text-gray-400 mt-2 font-mono">Partner ID: 30524829 • HFM Securities Partner</p>
       </div>
 
     </div>
