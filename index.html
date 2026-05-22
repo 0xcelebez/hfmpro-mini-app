@@ -97,17 +97,6 @@
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
             <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" />
-          </div>        <!-- Pair Selector -->
-        <div class="relative md:w-32">
-          <label for="pair-select" class="sr-only">Select Trading Pair</label>
-          <select id="pair-select" class="block w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <option value="XAUUSD">XAUUSD (Gold)</option>
-            <option value="BTCUSD">BTCUSD (Bitcoin)</option>
-            <option value="EURUSD">EURUSD (Euro)</option>
-            <option value="GBPUSD">GBPUSD (Pound)</option>
-          </select>
-        </div>
-
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
               𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-500">|</span> 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈
@@ -1437,28 +1426,6 @@
     }
   
 
-// Pair selector event listener
-document.addEventListener('DOMContentLoaded', function() {
-  const pairSelect = document.getElementById('pair-select');
-  if (pairSelect) {
-    // Set initial value based on currentAsset (if defined)
-    if (typeof currentAsset !== 'undefined' && currentAsset) {
-      pairSelect.value = currentAsset;
-    }
-    pairSelect.addEventListener('change', function(e) {
-      const newPair = e.target.value;
-      // Call selectAsset with currentType (if defined) or default to 'FOREX'
-      const type = typeof currentType !== 'undefined' ? currentType : 'FOREX';
-      selectAsset(newPair, type);
-    });
-  }
-});
-
-// Pair selector event listener
-document.addEventListener('DOMContentLoaded', function() {
-  const pairSelect = document.getElementById('pair-select');
-  if (pairSelect) {
-    // Set initial value based on currentAsset (if defined)
     if (typeof currentAsset !== 'undefined' && currentAsset) {
       pairSelect.value = currentAsset;
     }
