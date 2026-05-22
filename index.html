@@ -31,7 +31,7 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-                                          brand: {
+            brand: {
               50: '#eff6ff',
               100: '#dbeafe',
               200: '#bfdbfe',
@@ -56,6 +56,9 @@
       -webkit-font-smoothing: antialiased;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -135,13 +138,6 @@
     .safe-area-pb {
       padding-bottom: env(safe-area-inset-bottom, 20px);
     }
-    
-    /* Ensure body respects safe areas */
-    body {
-      padding-top: env(safe-area-inset-top, 0px);
-      padding-left: env(safe-area-inset-left, 0px);
-      padding-right: env(safe-area-inset-right, 0px);
-    }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
@@ -154,7 +150,7 @@
       <div class="w-full md:w-auto flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
-            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" />
+            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" /></div>
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
               𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-500">|</span> 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈
@@ -682,6 +678,11 @@
 
   <!-- CORE JAVASCRIPT: SIMULATOR ENGINE AND TELEGRAM INTEGRATION -->
   <script>
+    // ---- Global State Variables ----
+    let currentAsset = 'XAUUSD';
+    let currentType = 'METAL';
+    let currentTimeframe = '15'; // Default to 15m
+
     // Initialize Telegram Web App SDK
     let tgUser = null;
     try {
@@ -872,7 +873,7 @@
       }
 
       // Update mobile nav active state
-      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker', 'nav-mql5-tools'];
+      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker'];
       navIds.forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
@@ -893,7 +894,6 @@
     }
 
     // Timeframe selector logic
-    let currentTimeframe = '15'; // Default to 15m
     function changeTimeframe(tf) {
       currentTimeframe = tf;
       
@@ -1088,9 +1088,6 @@
           signalGlow.className = "absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300";
         }
       } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
         decBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-blue-100 text-brand-600 rounded-full text-[10px] font-bold mb-1 shadow-inner";
         decText.className = "text-2xl font-black tracking-tight text-brand-600 mt-1 filter drop-shadow-[0_2px_8px_rgba(239,68,68,0.15)]";
         gradeBadge.className = "bg-blue-50 border border-blue-100 text-brand-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner";
@@ -1207,10 +1204,11 @@
 
       // Calculate dynamic SL/TP offsets based on Camarilla structure & ATR volatility buffer
       if (param.decision.includes('BUY') || param.decision.includes('BREAKOUT')) {
-        // Stop Loss is placed under Camarilla S3 support with a 0.2 ATR buffer
-         const slPrice = s3 - (0.5 * atr);
+        // Stop Loss is placed under Camarilla S3 support with a 0.5 ATR buffer
+        const slPrice = s3 - (0.5 * atr);
+        const tp1Price = pivot;  // FIXED: Added missing tp1Price definition
         const tp2Price = r3;
-         const tp3Price = r3 + (2.0 * atr);
+        const tp3Price = r3 + (2.0 * atr);
 
         param.slOffset = slPrice - base;
         param.tp1Offset = tp1Price - base;
@@ -1232,24 +1230,18 @@
         }
         param.lot = `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
       } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-        // Stop Loss is placed above Camarilla R3 resistance with a 0.2 ATR buffer
-         const slPrice = r3 + (0.5 * atr);
-        const riskPoints = Math.abs(base - slPrice);
+        // Stop Loss is placed above Camarilla R3 resistance with a 0.5 ATR buffer
+        const slPrice = r3 + (0.5 * atr);
+        const riskPoints = Math.abs(base - slPrice);  // FIXED: Removed duplicate declaration below
         const tp1Price = base - riskPoints;
-        const riskPoints = Math.abs(base - slPrice);
-        const riskPoints = Math.abs(base - slPrice);
         const tp2Price = s3;
-         const tp3Price = s3 - (2.0 * atr);
+        const tp3Price = s3 - (2.0 * atr);
 
         param.slOffset = slPrice - base;
         param.tp1Offset = tp1Price - base;
         param.tp2Offset = tp2Price - base;
         param.tp3Offset = tp3Price - base;
 
-        const riskPoints = Math.abs(slPrice - base);
         let lotVal = 0.05;
         if (riskPoints > 0) {
           if (pair === 'XAUUSD') {
@@ -1357,7 +1349,7 @@
       const timeoutId = setTimeout(() => controller.abort(), 5000);
       
       try {
-        // 1. Fetch Gold (PAXG) and Bitcoin (BTC) from CoinGecko with Promise.race for parallel execution
+        // 1. Fetch Gold (PAXG) and Bitcoin (BTC) from CoinGecko in parallel
         const coinGeckoPromise = fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin&vs_currencies=usd', { 
           signal: controller.signal,
           headers: { 'Accept': 'application/json' }
@@ -1496,7 +1488,21 @@
       }
     }
 
-
+    // Handle Telegram Web App initialization for better mobile experience
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      tg.expand();
+      
+      // Set header color matching our theme
+      tg.setHeaderColor('#ffffff');
+      tg.setBackgroundColor('#f8fafc');
+      
+      // Enable haptic feedback for button clicks on mobile
+      if (tg.HapticFeedback) {
+        window.enableHapticFeedback = true;
+      }
+    }
 
     // Bulletproof direct invocation as soon as script compiles
     function initializeApp() {
@@ -1516,39 +1522,6 @@
     } else {
       initializeApp();
     }
-  
-    // Handle Telegram Web App initialization for better mobile experience
-    if (window.Telegram && window.Telegram.WebApp) {
-      const tg = window.Telegram.WebApp;
-      tg.ready();
-      tg.expand();
-      
-      // Set header color matching our theme
-      tg.setHeaderColor('#ffffff');
-      tg.setBackgroundColor('#f8fafc');
-      
-      // Enable haptic feedback for button clicks on mobile
-      if (tg.HapticFeedback) {
-        window.enableHapticFeedback = true;
-      }
-    }
-    
-    // Enhanced switchTab with haptic feedback
-    const originalSwitchTab = window.switchTab;
-    window.switchTab = function(tabId) {
-      if (window.enableHapticFeedback && window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
-      }
-      return originalSwitchTab(tabId);
-    };
-    
-    // Enhanced selectAsset with haptic feedback
-    const originalSelectAsset = window.selectAsset;
-    window.selectAsset = function(pair, type) {
-      if (window.enableHapticFeedback && window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
-        window.Telegram.WebApp.HapticFeedback.selectionChanged();
-      }
-      return originalSelectAsset(pair, type);
-    };
-  
-
+  </script>
+</body>
+</html>
