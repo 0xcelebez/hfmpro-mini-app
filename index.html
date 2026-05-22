@@ -535,7 +535,7 @@
         </div>
         <div class="text-center md:text-left">
           <h3 class="text-lg font-black text-gray-900">Broker Mitra Resmi 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Markets</h3>
-          <p class="text-xs text-gray-500 mt-1 max-w-xl">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 (HotForex) adalah broker global pemenang penghargaan yang teregulasi secara internasional. Menyediakan platform trading inovatif, instrumen derivatif bursa terlengkap, dan jaminan keamanan dana terpercaya.</p>
+          <p class="text-xs text-gray-500 mt-1 max-w-xl">JustMarkets: broker multi-aset terpercaya dengan eksekusi cepat, spread rendah, dan dukungan 24/7 untuk trading emas, crypto, forex, dan indeks.</p>
         </div>
       </div>
 
@@ -1148,10 +1148,10 @@
       // Calculate dynamic SL/TP offsets based on Camarilla structure & ATR volatility buffer
       if (param.decision.includes('BUY') || param.decision.includes('BREAKOUT')) {
         // Stop Loss is placed under Camarilla S3 support with a 0.2 ATR buffer
-        const slPrice = s3 - (0.2 * atr);
+         const slPrice = s3 - (0.5 * atr);
         const tp1Price = pivot;
         const tp2Price = r3;
-        const tp3Price = r3 + (1.2 * atr);
+         const tp3Price = r3 + (2.0 * atr);
 
         param.slOffset = slPrice - base;
         param.tp1Offset = tp1Price - base;
@@ -1174,10 +1174,10 @@
         param.lot = `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
       } else if (param.decision.includes('SELL')) {
         // Stop Loss is placed above Camarilla R3 resistance with a 0.2 ATR buffer
-        const slPrice = r3 + (0.2 * atr);
+         const slPrice = r3 + (0.5 * atr);
         const tp1Price = pivot;
         const tp2Price = s3;
-        const tp3Price = s3 - (1.2 * atr);
+         const tp3Price = s3 - (2.0 * atr);
 
         param.slOffset = slPrice - base;
         param.tp1Offset = tp1Price - base;
