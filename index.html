@@ -97,7 +97,17 @@
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
             <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" />
-          </div>
+          </div>        <!-- Pair Selector -->
+        <div class="relative md:w-32">
+          <label for="pair-select" class="sr-only">Select Trading Pair</label>
+          <select id="pair-select" class="block w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="XAUUSD">XAUUSD (Gold)</option>
+            <option value="BTCUSD">BTCUSD (Bitcoin)</option>
+            <option value="EURUSD">EURUSD (Euro)</option>
+            <option value="GBPUSD">GBPUSD (Pound)</option>
+          </select>
+        </div>
+
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
               𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-500">|</span> 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈
@@ -194,7 +204,7 @@
               <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
                 <i class="fa-solid fa-folder-tree text-brand-500"></i> Market Selection
               </h3>
-              <span class="text-[9px] bg-red-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
+              <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
             </div>
 
             <!-- Assets Matrix Grid -->
@@ -204,7 +214,7 @@
                   <span>XAU/USD</span>
                   <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-solid fa-coins text-red-400"></i>
+                <i class="fa-solid fa-coins text-blue-400"></i>
               </button>
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
                 <div class="flex flex-col items-start">
@@ -218,14 +228,14 @@
                   <span>BTC/USD</span>
                   <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-brands fa-bitcoin text-red-400"></i>
+                <i class="fa-brands fa-bitcoin text-blue-400"></i>
               </button>
               <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
                 <div class="flex flex-col items-start">
                   <span>GBP/USD</span>
                   <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-solid fa-sterling-sign text-red-400"></i>
+                <i class="fa-solid fa-sterling-sign text-blue-400"></i>
               </button>
             </div>
 
@@ -439,10 +449,10 @@
         <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬</div>
         <span class="bg-white/20 text-white border border-white/30 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">OFFICIAL BROKER PARTNER</span>
         <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Markets</h3>
-        <p class="text-xs md:text-sm text-red-100 mt-1 max-w-xl">Dapatkan Akun Premium Tanpa Swap, Eksekusi Tercepat, dan Spread Terendah di Indonesia. Nikmati deposit instan menggunakan Bank Lokal.</p>
+        <p class="text-xs md:text-sm text-blue-100 mt-1 max-w-xl">Dapatkan Akun Trading Profesional dengan Kondisi Terbaik: Tanpa Swap, Eksekusi Ultra Cepat, dan Spread Terkompetitif di Indonesia. Deposit Instan melalui Bank Lokal Terpercaya.</p>
         
         <div class="flex flex-wrap gap-2 mt-4.5">
-          <a href="https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-red-600 hover:bg-red-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
+          <a href="https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-blue-600 hover:bg-blue-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
             <i class="fa-solid fa-user-plus"></i> Daftar Akun Live 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬
           </a>
           <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
@@ -457,7 +467,7 @@
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
             <i class="fa-solid fa-globe text-brand-500"></i> Forex Market Overview
           </h3>
-          <span class="text-[9px] bg-red-50 text-brand-600 border border-brand-100 font-black px-2.5 py-0.5 rounded-full">REALTIME PIP VALUES</span>
+          <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2.5 py-0.5 rounded-full">REALTIME PIP VALUES</span>
         </div>
 
         <!-- Forex Ticker Directory -->
@@ -475,7 +485,7 @@
             <tbody class="divide-y divide-gray-100 font-mono text-gray-800">
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-red-500 font-black">XAUUSD</span> (Gold)
+                  <span class="text-blue-500 font-black">XAUUSD</span> (Gold)
                 </td>
                 <td class="p-3 font-bold text-gray-900">2334.50</td>
                 <td class="p-3 font-bold text-gray-900">2334.95</td>
@@ -484,7 +494,7 @@
               </tr>
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-red-500 font-black">EURUSD</span> (Euro)
+                  <span class="text-blue-500 font-black">EURUSD</span> (Euro)
                 </td>
                 <td class="p-3 font-bold text-gray-900">1.08540</td>
                 <td class="p-3 font-bold text-gray-900">1.08548</td>
@@ -493,7 +503,7 @@
               </tr>
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-red-500 font-black">GBPUSD</span> (Sterling)
+                  <span class="text-blue-500 font-black">GBPUSD</span> (Sterling)
                 </td>
                 <td class="p-3 font-bold text-gray-900">1.26850</td>
                 <td class="p-3 font-bold text-gray-900">1.26861</td>
@@ -502,16 +512,16 @@
               </tr>
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-red-500 font-black">USDJPY</span> (Yen)
+                  <span class="text-blue-500 font-black">USDJPY</span> (Yen)
                 </td>
                 <td class="p-3 font-bold text-gray-900">156.402</td>
                 <td class="p-3 font-bold text-gray-900">156.415</td>
-                <td class="p-3 text-red-600 font-bold">-0.32%</td>
-                <td class="p-3"><span class="bg-red-50 text-brand-600 border border-brand-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 BEARISH</span></td>
+                <td class="p-3 text-blue-600 font-bold">-0.32%</td>
+                <td class="p-3"><span class="bg-blue-50 text-brand-600 border border-brand-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 BEARISH</span></td>
               </tr>
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-red-500 font-black">AUDUSD</span> (Aussie)
+                  <span class="text-blue-500 font-black">AUDUSD</span> (Aussie)
                 </td>
                 <td class="p-3 font-bold text-gray-900">0.66820</td>
                 <td class="p-3 font-bold text-gray-900">0.66829</td>
@@ -545,7 +555,7 @@
         <!-- CARD 1 -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-sm font-bold shadow-inner">
               <i class="fa-solid fa-gift"></i>
             </div>
             <h4 class="text-sm font-bold text-gray-900">100% Credit Bonus</h4>
@@ -556,7 +566,7 @@
         <!-- CARD 2 -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-sm font-bold shadow-inner">
               <i class="fa-solid fa-moon"></i>
             </div>
             <h4 class="text-sm font-bold text-gray-900">No Swap Account</h4>
@@ -567,7 +577,7 @@
         <!-- CARD 3 -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-sm font-bold shadow-inner">
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-sm font-bold shadow-inner">
               <i class="fa-solid fa-bolt"></i>
             </div>
             <h4 class="text-sm font-bold text-gray-900">Eksekusi Super Cepat</h4>
@@ -614,7 +624,7 @@
   <footer class="max-w-7xl w-full mx-auto p-3 pt-0">
     <div class="premium-card rounded-2xl p-3 bg-gray-50 border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
       <div class="flex items-center gap-2 font-mono text-[10px] w-full sm:w-auto">
-        <span class="text-brand-500 font-extrabold uppercase bg-red-50 border border-red-100/50 px-2 py-0.5 rounded-md">System Log:</span>
+        <span class="text-brand-500 font-extrabold uppercase bg-blue-50 border border-blue-100/50 px-2 py-0.5 rounded-md">System Log:</span>
         <span id="log-display" class="text-gray-500 truncate">Loading Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Miniature Engine...</span>
       </div>
       <div class="text-[10px] text-gray-400 font-semibold tracking-wide w-full sm:w-auto text-right shrink-0">
@@ -711,17 +721,17 @@
 
       const modalHtml = `
         <div id="antiblock-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 transition-all duration-300 scale-95" style="z-index: 999999;">
-          <div class="bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-red-500/30 rounded-3xl p-6 max-w-sm w-full relative shadow-2xl shadow-red-950/20">
+          <div class="bg-gradient-to-b from-slate-900 via-slate-950 to-black border border-blue-500/30 rounded-3xl p-6 max-w-sm w-full relative shadow-2xl shadow-blue-950/20">
             
             <button onclick="closeAntiBlockModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-all text-sm w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10">
               <i class="fa-solid fa-xmark"></i>
             </button>
 
             <div class="flex flex-col items-center text-center gap-2">
-              <div class="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 text-lg animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+              <div class="w-12 h-12 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 text-lg animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                 <i class="fa-solid fa-earth-asia"></i>
               </div>
-              <h3 class="text-xs font-black tracking-widest text-red-500 uppercase mt-2">
+              <h3 class="text-xs font-black tracking-widest text-blue-500 uppercase mt-2">
                 ⚠️ KONEKSI TERBLOKIR (ISP)
               </h3>
               <p class="text-[10px] text-gray-400 max-w-xs leading-relaxed">
@@ -743,7 +753,7 @@
 
               <div class="bg-white/5 border border-white/5 rounded-xl p-3 hover:border-amber-500/20 transition-all">
                 <div class="flex items-center gap-1.5">
-                  <span class="text-[8px] font-black bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded uppercase">Metode 2</span>
+                  <span class="text-[8px] font-black bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded uppercase">Metode 2</span>
                   <h4 class="text-[9.5px] font-bold text-white uppercase">Cloudflare 1.1.1.1 WARP</h4>
                 </div>
                 <p class="text-[8.5px] text-gray-400 mt-1 leading-relaxed">
@@ -1031,9 +1041,12 @@
           signalGlow.className = "absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300";
         }
       } else if (param.decision.includes('SELL')) {
-        decBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 border border-red-100 text-brand-600 rounded-full text-[10px] font-bold mb-1 shadow-inner";
+      } else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
+        decBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-blue-100 text-brand-600 rounded-full text-[10px] font-bold mb-1 shadow-inner";
         decText.className = "text-2xl font-black tracking-tight text-brand-600 mt-1 filter drop-shadow-[0_2px_8px_rgba(239,68,68,0.15)]";
-        gradeBadge.className = "bg-red-50 border border-red-100 text-brand-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner";
+        gradeBadge.className = "bg-blue-50 border border-blue-100 text-brand-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner";
         if (signalGlow) {
           signalGlow.className = "absolute -right-16 -top-16 w-32 h-32 bg-brand-500/5 rounded-full blur-3xl transition-all duration-300";
         }
@@ -1089,7 +1102,7 @@
         if (text.includes("BUY") || text.includes("APPROVED")) {
           badge.className = "bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner";
         } else if (text.includes("SELL") || text.includes("REJECTED") || text.includes("VETO")) {
-          badge.className = "bg-red-50 border border-red-100 text-brand-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner";
+          badge.className = "bg-blue-50 border border-blue-100 text-brand-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner";
         } else {
           badge.className = "bg-gray-100 border border-gray-200 text-gray-500 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner";
         }
@@ -1149,7 +1162,6 @@
       if (param.decision.includes('BUY') || param.decision.includes('BREAKOUT')) {
         // Stop Loss is placed under Camarilla S3 support with a 0.2 ATR buffer
          const slPrice = s3 - (0.5 * atr);
-        const tp1Price = pivot;
         const tp2Price = r3;
          const tp3Price = r3 + (2.0 * atr);
 
@@ -1173,9 +1185,15 @@
         }
         param.lot = `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
       } else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
         // Stop Loss is placed above Camarilla R3 resistance with a 0.2 ATR buffer
          const slPrice = r3 + (0.5 * atr);
-        const tp1Price = pivot;
+        const riskPoints = Math.abs(base - slPrice);
+        const tp1Price = base - riskPoints;
+        const riskPoints = Math.abs(base - slPrice);
+        const riskPoints = Math.abs(base - slPrice);
         const tp2Price = s3;
          const tp3Price = s3 - (2.0 * atr);
 
@@ -1337,7 +1355,7 @@
       if (newPrice > oldPrice) {
         el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-emerald-300' : 'text-emerald-600'}`;
       } else if (newPrice < oldPrice) {
-        el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-red-300' : 'text-red-500'}`;
+        el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-blue-300' : 'text-blue-500'}`;
       } else {
         el.className = `price-val text-[10px] font-semibold transition-all ${isActive ? 'text-gray-300' : 'text-gray-500'}`;
       }
@@ -1417,6 +1435,40 @@
     } else {
       initializeApp();
     }
-  </script>
+  
+
+// Pair selector event listener
+document.addEventListener('DOMContentLoaded', function() {
+  const pairSelect = document.getElementById('pair-select');
+  if (pairSelect) {
+    // Set initial value based on currentAsset (if defined)
+    if (typeof currentAsset !== 'undefined' && currentAsset) {
+      pairSelect.value = currentAsset;
+    }
+    pairSelect.addEventListener('change', function(e) {
+      const newPair = e.target.value;
+      // Call selectAsset with currentType (if defined) or default to 'FOREX'
+      const type = typeof currentType !== 'undefined' ? currentType : 'FOREX';
+      selectAsset(newPair, type);
+    });
+  }
+});
+
+// Pair selector event listener
+document.addEventListener('DOMContentLoaded', function() {
+  const pairSelect = document.getElementById('pair-select');
+  if (pairSelect) {
+    // Set initial value based on currentAsset (if defined)
+    if (typeof currentAsset !== 'undefined' && currentAsset) {
+      pairSelect.value = currentAsset;
+    }
+    pairSelect.addEventListener('change', function(e) {
+      const newPair = e.target.value;
+      const type = typeof currentType !== 'undefined' ? currentType : 'FOREX';
+      selectAsset(newPair, type);
+    });
+  }
+});
+</script>
 </body>
 </html>
