@@ -140,7 +140,7 @@
             </h1>
             <p class="text-[10px] text-gray-500 flex items-center gap-1">
               <span class="inline-block w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-              Quant Signal Engine v4.0 • <span id="tg-username">Guest Mode</span>
+              Quant Signal Engine • <span id="tg-username">Guest Mode</span>
             </p>
           </div>
         </div>
@@ -215,7 +215,7 @@
               <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
             </div>
 
-            <!-- Diubah menjadi Grid Cols 2 untuk Mobile, Cols 3 untuk Desktop menyesuaikan 5 tombol -->
+            <!-- Grid Cols 2 untuk Mobile, Cols 3 untuk Desktop menyesuaikan 5 tombol -->
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3.5">
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
@@ -500,7 +500,6 @@
                 <td class="p-3 font-bold text-gray-900" id="table-price-GBPUSD">-</td>
                 <td class="p-3"><span id="table-trend-GBPUSD" class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
               </tr>
-              <!-- USD/JPY Ditambahkan Di sini -->
               <tr class="hover:bg-gray-50/50 transition-colors">
                 <td class="p-3 font-sans font-bold flex items-center gap-1.5">
                   <span class="text-blue-500 font-black">USDJPY</span> (Yen)
@@ -517,7 +516,7 @@
       <div class="premium-card rounded-2xl p-4 mt-1">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-newspaper text-blue-500"></i> High-Impact Economic Events
+            <i class="fa-solid fa-newspaper text-blue-500"></i> Global Economic Events
           </h3>
           <span class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 font-black px-2.5 py-0.5 rounded-full">FOREXFACTORY API</span>
         </div>
@@ -712,7 +711,6 @@
       } catch(e) {}
     }
 
-    // BASE Market Initialization. Trend bawaan diset ke 0 agar tidak terus-terusan mengunci di BUY
     const assetParameters = {
       XAUUSD: { basePrice: 2334.50, trendScore: 0, atr: '4.25', adr: '22.80' },
       EURUSD: { basePrice: 1.08540, trendScore: 0, atr: '0.00045', adr: '0.00680' },
@@ -742,7 +740,6 @@
       writeLog(`Activated Real-time Feed for ${pair}`);
     }
 
-    // MAIN SIGNAL & SMC LOGIC ALGORITHM
     function calculateDynamicSMC(pair) {
       const param = assetParameters[pair];
       if (!param) return;
@@ -750,12 +747,10 @@
       const base = param.basePrice;
       const adr = parseFloat(param.adr);
       let atr = parseFloat(param.atr);
-      // Penyesuaian digit decimal presisi untuk pair Yen
       const precision = (pair === 'EURUSD' || pair === 'GBPUSD') ? 5 : 2;
 
       param.entryPrice = base;
 
-      // Determine Action from Trend Score dinamik
       if (param.trendScore >= 1.5) {
         param.decision = '🎯 BUY NOW';
         param.grade = 'GRADE A';
@@ -767,7 +762,6 @@
         param.grade = 'GRADE C';
       }
 
-      // Dynamic Take Profit & Stop Loss
       if (param.decision.includes('BUY')) {
         const slPrice = base - (1.5 * atr);
         param.slOffset = slPrice - base;
@@ -797,7 +791,6 @@
         param.expert3 = `📉 Harga terjepit mendatar (flat). Direkomendasikan Standby menjaga ekuitas.`;
       }
 
-      // Calculate Lot Size dynamically based on $10k standard account (1% Risk)
       const riskPoints = Math.abs(param.slOffset);
       let lotVal = 0.05;
       if (riskPoints > 0) {
@@ -808,7 +801,6 @@
       }
       param.lot = param.decision.includes('WAIT') ? '0.00 Lot' : `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
 
-      // Camarilla Equation
       const pivot = base;
       const r3 = base + (adr * 0.25);
       const s3 = base - (adr * 0.25);
@@ -917,7 +909,6 @@
       document.getElementById('cro-analysis').innerText = param.decision.includes('WAIT') ? "VETO: Volatilitas tidak memenuhi kriteria minimal eksekusi aman. Signal ditangguhkan sementara." : "APPROVED: Risk-Reward ratio sangat ideal (>3R). Proteksi Stop Loss ketat di belakang batas likuiditas.";
     }
 
-    // REAL-TIME PRICE ENGINE LOGIC
     let lastFetchTime = 0;
     
     async function fetchRealtimePrices() {
@@ -956,12 +947,10 @@
 
       assetParameters[pair].basePrice = newPrice;
       
-      // Hitung ayunan skor secara dinamis/organik
       let ts = assetParameters[pair].trendScore || 0;
       if (newPrice > oldPrice) ts += (Math.random() * 1.5);
       else if (newPrice < oldPrice) ts -= (Math.random() * 1.5);
       
-      // Decay system: membawa skor kembali ke netral jika tidak ada lonjakan tajam
       ts *= 0.95;
       assetParameters[pair].trendScore = Math.max(-4, Math.min(4, ts));
 
@@ -974,7 +963,6 @@
         else el.className = `price-val text-[10px] font-bold transition-all ${isActive ? 'text-red-300' : 'text-red-600'}`;
       }
 
-      // Update Ticker Table Display
       const tablePrice = document.getElementById(`table-price-${pair}`);
       const tableTrend = document.getElementById(`table-trend-${pair}`);
       if (tablePrice && tableTrend) {
@@ -989,31 +977,49 @@
       }
     }
 
-    // NEWS API DILEWATI MELALUI PROXY CORS ALLORIGINS
+    // ==========================================
+    // SISTEM PENGAMBILAN BERITA (DIPERBARUI)
+    // ==========================================
     async function fetchNews() {
-      try {
-        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_thisweek.json');
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error("Fetch failed");
-        
-        const proxyData = await res.json();
-        let data;
+      // Kita menggunakan jalur Public API langsung dari server resmi ForexFactory 
+      // yang mendukung native Cross-Origin (CORS), jadi kita tidak perlu proxy bermasalah.
+      // Disediakan juga jalur fallback codetabs jika jaringan diblokir dari ISP/Browser tertentu.
+      const urls = [
+        'https://nfs.faireconomy.media/ff_calendar_thisweek.json',
+        'https://api.codetabs.com/v1/proxy?quest=https://nfs.faireconomy.media/ff_calendar_thisweek.json'
+      ];
+
+      let data = null;
+
+      for (let url of urls) {
         try {
-          data = JSON.parse(proxyData.contents);
-        } catch(e) {
-          throw new Error("Invalid Proxy Data");
+          const res = await fetch(url);
+          if (res.ok) {
+            data = await res.json();
+            break; // Jika sukses mendapatkan JSON, langsung keluar dari perulangan
+          }
+        } catch (e) {
+          console.warn("Fetch failed for " + url);
         }
-        
+      }
+
+      const container = document.getElementById('news-container');
+      if (!container) return;
+
+      if (!data) {
+        container.innerHTML = '<div class="text-center text-[11px] text-red-500 py-4 font-mono">Gagal memuat feed kalender ekonomi. Koneksi terganggu, coba refresh kembali.</div>';
+        return;
+      }
+      
+      try {
         const now = new Date();
+        // Mem-filter berita untuk yang akan datang saja dan bersifat High / Medium Impact
         const upcoming = data.filter(d => new Date(d.date) > now && (d.impact === 'High' || d.impact === 'Medium'))
                              .sort((a,b) => new Date(a.date) - new Date(b.date))
                              .slice(0, 5);
                              
-        const container = document.getElementById('news-container');
-        if (!container) return;
-        
         if (upcoming.length === 0) {
-          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Tidak ada rilis berita High-Impact terdekat minggu ini.</div>';
+          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Tidak ada rilis berita High/Medium Impact terdekat.</div>';
           return;
         }
         
@@ -1031,8 +1037,11 @@
               <div class="flex items-center gap-2.5">
                 <i class="fa-solid fa-bolt ${iconColor} text-lg"></i>
                 <div>
-                  <div class="text-[11px] font-bold text-gray-800 uppercase tracking-tight">${news.country} - ${news.title}</div>
-                  <div class="text-[9px] text-gray-500 font-mono mt-0.5">Frcst: <span class="font-bold">${news.forecast || '-'}</span> | Prev: ${news.previous || '-'}</div>
+                  <div class="text-[11px] font-bold text-gray-800 tracking-tight flex items-center gap-1.5">
+                    <span class="bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded text-[9px] shadow-sm">${news.country}</span> 
+                    ${news.title}
+                  </div>
+                  <div class="text-[9px] text-gray-500 font-mono mt-1">Frcst: <span class="font-bold">${news.forecast || '-'}</span> | Prev: ${news.previous || '-'}</div>
                 </div>
               </div>
               <div class="text-[9px] font-black ${bgBadge} border px-2 py-1.5 rounded-lg flex flex-col items-center min-w-[50px] shadow-sm">
@@ -1043,9 +1052,8 @@
           `;
         }).join('');
       } catch(e) {
-        console.warn("Failed to fetch news", e);
-        const container = document.getElementById('news-container');
-        if (container) container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita. Pastikan koneksi internet stabil.</div>';
+        console.warn("Failed to parse news", e);
+        container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memproses data kalender ekonomi.</div>';
       }
     }
 
@@ -1054,7 +1062,6 @@
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin"></i> CALCULATING BAYESIAN ODDS...`;
       
-      // Simulasi kalkulasi Sinyal agar berubah/acak secara organik antara -4 hingga 4
       const param = assetParameters[currentAsset];
       param.trendScore = (Math.random() * 8) - 4; 
       
