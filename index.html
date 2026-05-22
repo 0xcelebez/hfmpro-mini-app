@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffffff">
   <title>[ CUANOLOGY | 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 ] — Signal Intelligence Dashboard</title>
   
   <!-- CSS & JS Library Integration -->
@@ -51,6 +54,8 @@
       background-color: #f8fafc;
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     /* Custom scrollbar */
     ::-webkit-scrollbar {
@@ -84,6 +89,59 @@
       color: #ef4444 !important;
       font-weight: 800 !important;
     }
+    
+    /* Mobile touch optimizations */
+    button, .asset-btn, .tab-btn, .tf-btn, .nav-btn {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+    
+    /* Larger tap targets for mobile */
+    @media (max-width: 768px) {
+      button, .asset-btn, .tab-btn, .tf-btn {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      .asset-btn {
+        padding: 0.75rem 1rem;
+      }
+    }
+    
+    /* Active state feedback for touch */
+    .asset-btn:active, .tab-btn:active, .tf-btn:active, button:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+    
+    /* Smooth animations */
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+    
+    /* Prevent text selection on rapid taps */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* Safe area insets for modern iPhones with notch/home indicator */
+    .safe-area-pb {
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+    
+    /* Ensure body respects safe areas */
+    body {
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+    }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
@@ -116,9 +174,9 @@
 
       <!-- Desktop Tab Buttons inside header (hidden on mobile) -->
       <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
-        <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-all">Dashboard</button>
-        <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">Forex Market</button>
-        <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="btn-tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</button>
+        <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all active:scale-95 min-h-[44px]">Dashboard</button>
+        <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">Forex Market</button>
+        <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="btn-tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</button>
       </div>
 
       <!-- Row 2: Clock & Market Sessions (centered on mobile, right-aligned on desktop) -->
@@ -162,16 +220,16 @@
   </header>
 
   <!-- BOTTOM NAVIGATION BAR FOR MOBILE (fixed bottom) -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-50 flex justify-around py-2.5 px-4 shadow-[0_-5px_25px_rgba(0,0,0,0.025)] md:hidden">
-    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px]">
+  <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-50 flex justify-around py-3 px-2 shadow-[0_-5px_25px_rgba(0,0,0,0.025)] md:hidden safe-area-pb">
+    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform">
       <i class="fa-solid fa-chart-line text-lg"></i>
       <span>Dashboard</span>
     </button>
-    <button onclick="switchTab('forex-market')" id="nav-forex-market" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+    <button onclick="switchTab('forex-market')" id="nav-forex-market" class="nav-btn flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform">
       <i class="fa-solid fa-globe text-lg"></i>
       <span>Forex Market</span>
     </button>
-    <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+    <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="nav-btn flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform">
       <i class="fa-solid fa-award text-lg"></i>
       <span>𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</span>
     </button>
@@ -198,28 +256,28 @@
 
             <!-- Assets Matrix Grid -->
             <div class="grid grid-cols-2 gap-2 mb-3.5">
-              <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all">
+              <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>XAU/USD</span>
                   <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-all">Loading...</span>
                 </div>
                 <i class="fa-solid fa-coins text-blue-400"></i>
               </button>
-              <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+              <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>EUR/USD</span>
                   <span id="price-EURUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
                 <i class="fa-solid fa-euro-sign text-gray-400"></i>
               </button>
-              <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+              <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>BTC/USD</span>
                   <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
                 <i class="fa-brands fa-bitcoin text-blue-400"></i>
               </button>
-              <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100">
+              <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>GBP/USD</span>
                   <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
@@ -228,7 +286,7 @@
               </button>
             </div>
 
-            <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-brand-600 to-red-500 hover:from-brand-500 hover:to-red-400 text-white font-extrabold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-brand-100 transition-all active:scale-[0.98]">
+            <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-brand-600 to-red-500 hover:from-brand-500 hover:to-red-400 text-white font-extrabold text-xs py-4 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-brand-100 transition-all active:scale-[0.98] min-h-[52px]">
               <i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER MoE ANALYSIS
             </button>
           </div>
@@ -308,12 +366,12 @@
           <div class="flex items-center justify-between gap-1 mb-3 bg-gray-50 p-1 border border-gray-150 rounded-xl font-mono text-[10px]">
             <span class="text-[9px] text-gray-400 font-black uppercase pl-1.5">TIMEFRAME</span>
             <div class="flex items-center gap-1.5">
-              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">5m</button>
-              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold px-2 py-0.5 rounded-md transition-all shadow-sm">15m</button>
-              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">30m</button>
-              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">1H</button>
-              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">4H</button>
-              <button onclick="changeTimeframe('D')" id="tf-D" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-all">MTF</button>
+              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">5m</button>
+              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold px-3 py-1.5 rounded-md transition-all shadow-sm active:scale-95 min-h-[40px]">15m</button>
+              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">30m</button>
+              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">1H</button>
+              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">4H</button>
+              <button onclick="changeTimeframe('D')" id="tf-D" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">MTF</button>
             </div>
           </div>
 
@@ -1282,12 +1340,46 @@
       if (e3El) e3El.innerText = param.expert3;
     }
 
+    // Debounce helper for rapid clicks
+    let lastFetchTime = 0;
+    const FETCH_DEBOUNCE_MS = 8000; // Minimum 8 seconds between fetches
+    
     async function fetchRealtimePrices() {
-      // 1. Fetch Gold (PAXG) and Bitcoin (BTC) from CoinGecko
+      const now = Date.now();
+      if (now - lastFetchTime < FETCH_DEBOUNCE_MS) {
+        console.log("Fetch debounced - too soon");
+        return;
+      }
+      lastFetchTime = now;
+      
+      // Use AbortController for timeout handling
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
       try {
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin&vs_currencies=usd');
-        if (response.ok) {
-          const data = await response.json();
+        // 1. Fetch Gold (PAXG) and Bitcoin (BTC) from CoinGecko with Promise.race for parallel execution
+        const coinGeckoPromise = fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin&vs_currencies=usd', { 
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        // 2. Fetch EURUSD and GBPUSD from Open ER API in parallel
+        const openErPromise = fetch('https://open.er-api.com/v6/latest/USD', { 
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        // Execute both fetches in parallel using Promise.all
+        const [coinGeckoRes, openErRes] = await Promise.all([
+          coinGeckoPromise.catch(() => null),
+          openErPromise.catch(() => null)
+        ]);
+        
+        clearTimeout(timeoutId);
+        
+        // Process CoinGecko data
+        if (coinGeckoRes && coinGeckoRes.ok) {
+          const data = await coinGeckoRes.json();
           if (data['pax-gold'] && data['pax-gold'].usd) {
             const oldPrice = assetParameters.XAUUSD.basePrice;
             const newPrice = data['pax-gold'].usd;
@@ -1301,15 +1393,10 @@
             updatePriceUI('BTCUSD', newPrice, oldPrice);
           }
         }
-      } catch (e) {
-        console.warn("CoinGecko fetch failed:", e);
-      }
-
-      // 2. Fetch EURUSD and GBPUSD from Open ER API
-      try {
-        const response = await fetch('https://open.er-api.com/v6/latest/USD');
-        if (response.ok) {
-          const data = await response.json();
+        
+        // Process OpenER data
+        if (openErRes && openErRes.ok) {
+          const data = await openErRes.json();
           if (data.rates) {
             if (data.rates.EUR) {
               const oldPrice = assetParameters.EURUSD.basePrice;
@@ -1325,12 +1412,17 @@
             }
           }
         }
+        
+        // 3. Update active asset's dashboard prices
+        updateDashboardPrices();
       } catch (e) {
-        console.warn("OpenER fetch failed:", e);
+        clearTimeout(timeoutId);
+        if (e.name === 'AbortError') {
+          console.warn("Fetch timed out after 5s");
+        } else {
+          console.warn("Fetch failed:", e.message);
+        }
       }
-
-      // 3. Update active asset's dashboard prices
-      updateDashboardPrices();
     }
 
     function updatePriceUI(pair, newPrice, oldPrice) {
@@ -1412,9 +1504,9 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Start Realtime Price Engine
+      // Start Realtime Price Engine with optimized interval (15s to reduce API calls)
       fetchRealtimePrices();
-      setInterval(fetchRealtimePrices, 10000); // Poll every 10 seconds (highly optimized/rate-limit safe)
+      setInterval(fetchRealtimePrices, 15000); // Poll every 15 seconds (optimized for mobile data & rate limits)
       
       writeLog("Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Engine Initialized successfully.");
     }
@@ -1424,6 +1516,40 @@
     } else {
       initializeApp();
     }
+  
+    // Handle Telegram Web App initialization for better mobile experience
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      tg.expand();
+      
+      // Set header color matching our theme
+      tg.setHeaderColor('#ffffff');
+      tg.setBackgroundColor('#f8fafc');
+      
+      // Enable haptic feedback for button clicks on mobile
+      if (tg.HapticFeedback) {
+        window.enableHapticFeedback = true;
+      }
+    }
+    
+    // Enhanced switchTab with haptic feedback
+    const originalSwitchTab = window.switchTab;
+    window.switchTab = function(tabId) {
+      if (window.enableHapticFeedback && window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+      }
+      return originalSwitchTab(tabId);
+    };
+    
+    // Enhanced selectAsset with haptic feedback
+    const originalSelectAsset = window.selectAsset;
+    window.selectAsset = function(pair, type) {
+      if (window.enableHapticFeedback && window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.selectionChanged();
+      }
+      return originalSelectAsset(pair, type);
+    };
   
 
     if (typeof currentAsset !== 'undefined' && currentAsset) {
