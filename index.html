@@ -28,18 +28,18 @@
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            brand: {
+                                brand: {
               50: '#fff5f5',
-              100: '#ffe3e3',
-              200: '#ffc9c9',
-              300: '#ffa8a8',
-              400: '#ff8787',
-              500: '#ef4444',
-              600: '#dc2626',
-              700: '#b91c1c',
-              800: '#991b1b',
-              900: '#7f1d1d',
-              950: '#450a0a',
+              100: '#fff0f0',
+              200: '#ffe0e0',
+              300: '#ffc0c0',
+              400: '#ff9f9f',
+              500: '#cf2e2e',
+              600: '#a52424',
+              700: '#8b1a1a',
+              800: '#701515',
+              900: '#571010',
+              950: '#2f0808',
             }
           }
         }
@@ -119,7 +119,7 @@
       <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-all">Dashboard</button>
         <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">Forex Market</button>
-        <button onclick="switchTab('hfm-broker')" id="btn-tab-hfm-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">HFM Register</button>
+        <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="btn-tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-1.5 rounded-lg transition-all">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</button>
       </div>
 
       <!-- Row 2: Clock & Market Sessions (centered on mobile, right-aligned on desktop) -->
@@ -172,9 +172,9 @@
       <i class="fa-solid fa-globe text-lg"></i>
       <span>Forex Market</span>
     </button>
-    <button onclick="switchTab('hfm-broker')" id="nav-hfm-broker" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
+    <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px]">
       <i class="fa-solid fa-award text-lg"></i>
-      <span>HFM Register</span>
+      <span>𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</span>
     </button>
   </div>
 
@@ -433,19 +433,19 @@
     <!-- TAB 2: FOREX MARKET TRACKER & TICKER -->
     <div id="tab-forex-market" class="tab-content hidden flex flex-col gap-3.5">
       
-      <!-- HFM PREMIUM BROKER BANNER -->
+      <!-- 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 PREMIUM BROKER BANNER -->
       <div class="bg-gradient-to-br from-brand-600 via-red-500 to-black text-white rounded-2xl p-5 shadow-lg relative overflow-hidden">
         <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-        <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">HFM</div>
+        <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬</div>
         <span class="bg-white/20 text-white border border-white/30 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">OFFICIAL BROKER PARTNER</span>
-        <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama HFM Markets</h3>
+        <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Markets</h3>
         <p class="text-xs md:text-sm text-red-100 mt-1 max-w-xl">Dapatkan Akun Premium Tanpa Swap, Eksekusi Tercepat, dan Spread Terendah di Indonesia. Nikmati deposit instan menggunakan Bank Lokal.</p>
         
         <div class="flex flex-wrap gap-2 mt-4.5">
-          <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-red-600 hover:bg-red-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
-            <i class="fa-solid fa-user-plus"></i> Daftar Akun Live HFM
+          <a href="https://register.𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬trade-ind.com/sv/id/new-live-account/?refid=30524829" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-red-600 hover:bg-red-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
+            <i class="fa-solid fa-user-plus"></i> Daftar Akun Live 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬
           </a>
-          <button onclick="switchTab('hfm-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
+          <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
             <i class="fa-solid fa-circle-info"></i> Pelajari Benefit Broker
           </button>
         </div>
@@ -525,8 +525,8 @@
 
     </div>
 
-    <!-- TAB 3: HFM BROKER PREMIUM LANDING & BENEFITS -->
-    <div id="tab-hfm-broker" class="tab-content hidden flex flex-col gap-4">
+    <!-- TAB 3: 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 BROKER PREMIUM LANDING & BENEFITS -->
+    <div id="tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-content hidden flex flex-col gap-4">
       
       <!-- HERO PARTNER PROFILE -->
       <div class="premium-card rounded-2xl p-5 flex flex-col md:flex-row items-center gap-5">
@@ -534,8 +534,8 @@
           <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" />
         </div>
         <div class="text-center md:text-left">
-          <h3 class="text-lg font-black text-gray-900">Broker Mitra Resmi HFM Markets</h3>
-          <p class="text-xs text-gray-500 mt-1 max-w-xl">HFM (HotForex) adalah broker global pemenang penghargaan yang teregulasi secara internasional. Menyediakan platform trading inovatif, instrumen derivatif bursa terlengkap, dan jaminan keamanan dana terpercaya.</p>
+          <h3 class="text-lg font-black text-gray-900">Broker Mitra Resmi 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Markets</h3>
+          <p class="text-xs text-gray-500 mt-1 max-w-xl">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 (HotForex) adalah broker global pemenang penghargaan yang teregulasi secara internasional. Menyediakan platform trading inovatif, instrumen derivatif bursa terlengkap, dan jaminan keamanan dana terpercaya.</p>
         </div>
       </div>
 
@@ -550,7 +550,7 @@
             </div>
             <h4 class="text-sm font-bold text-gray-900">100% Credit Bonus</h4>
           </div>
-          <p class="text-xs text-gray-500 leading-normal">Gandakan modal dan margin perdagangan Anda secara langsung dengan Bonus Kredit 100% saat Anda melakukan pendanaan awal di HFM.</p>
+          <p class="text-xs text-gray-500 leading-normal">Gandakan modal dan margin perdagangan Anda secara langsung dengan Bonus Kredit 100% saat Anda melakukan pendanaan awal di 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬.</p>
         </div>
 
         <!-- CARD 2 -->
@@ -592,16 +592,16 @@
             ACCESS PRIVATE PROFIT GATEWAY
           </h4>
           <p class="text-[10.5px] text-gray-400 mt-1 max-w-md leading-relaxed">
-            Daftarkan akun live HFM Anda di bawah rujukan resmi kami untuk membuka proteksi ekuitas VIP, rabat instan, serta akses eksklusif sinyal presisi MoE v4.0 secara gratis.
+            Daftarkan akun live 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Anda di bawah rujukan resmi kami untuk membuka proteksi ekuitas VIP, rabat instan, serta akses eksklusif sinyal presisi MoE v4.0 secara gratis.
           </p>
           
           <div class="mt-4">
-            <a href="https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-red-700 hover:from-brand-500 hover:to-red-600 text-white font-black text-xs py-3 px-6 rounded-xl transition-all shadow-lg shadow-brand-900/30 hover:shadow-brand-900/50 active:scale-95 border border-brand-500/30">
+            <a href="https://register.𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬trade-ind.com/sv/id/new-live-account/?refid=30524829" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-red-700 hover:from-brand-500 hover:to-red-600 text-white font-black text-xs py-3 px-6 rounded-xl transition-all shadow-lg shadow-brand-900/30 hover:shadow-brand-900/50 active:scale-95 border border-brand-500/30">
               <i class="fa-solid fa-crown text-yellow-400 animate-pulse"></i> ACTIVATE PRO ACCOUNT NOW
             </a>
           </div>
           <p class="text-[8px] text-gray-500 mt-2.5 font-mono tracking-wider uppercase">
-            Partner ID: 30524829 • HFM Official Institutional Partner
+            Partner ID: 30524829 • 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Official Institutional Partner
           </p>
         </div>
       </div>
@@ -670,10 +670,10 @@
       }
     }
 
-    // Custom Smart Anti-Block HFM Registration Link Handler
+    // Custom Smart Anti-Block 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Registration Link Handler
     function handleRegisterClick(event) {
       event.preventDefault();
-      const url = "https://register.hfmtrade-ind.com/sv/id/new-live-account/?refid=30524829";
+      const url = "https://register.𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬trade-ind.com/sv/id/new-live-account/?refid=30524829";
       const btn = event.currentTarget;
       
       if (btn.classList.contains('loading-verification')) return;
@@ -686,7 +686,7 @@
       const timeoutId = setTimeout(() => controller.abort(), 1800);
       
       // Attempt connection to see if DNS resolves / not blocked
-      fetch('https://register.hfmtrade-ind.com/favicon.ico', { mode: 'no-cors', signal: controller.signal })
+      fetch('https://register.𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬trade-ind.com/favicon.ico', { mode: 'no-cors', signal: controller.signal })
         .then(() => {
           clearTimeout(timeoutId);
           btn.innerHTML = originalHtml;
@@ -725,7 +725,7 @@
                 ⚠️ KONEKSI TERBLOKIR (ISP)
               </h3>
               <p class="text-[10px] text-gray-400 max-w-xs leading-relaxed">
-                Situs resmi HFM terdeteksi diblokir oleh Internet Positif (ISP lokal Anda). Gunakan langkah mudah berikut untuk mengakses secara aman:
+                Situs resmi 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 terdeteksi diblokir oleh Internet Positif (ISP lokal Anda). Gunakan langkah mudah berikut untuk mengakses secara aman:
               </p>
             </div>
 
@@ -815,7 +815,7 @@
       }
 
       // Update mobile nav active state
-      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-hfm-broker', 'nav-mql5-tools'];
+      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker', 'nav-mql5-tools'];
       navIds.forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
