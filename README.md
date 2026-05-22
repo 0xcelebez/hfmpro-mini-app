@@ -14,12 +14,12 @@ Dashboard web interaktif dan **Telegram Mini App** premium yang dirancang untuk 
 
 Sangat mudah untuk menaruh dashboard ini di cloud secara gratis menggunakan Vercel:
 
-### Metode 1: Hubungkan ke GitHub (Sangat Direkomendasikan)
-1.  Repositori ini telah diunggah ke GitHub Anda: `https://github.com/celebex/hfmpro-mini-app`
+### Metode 1: Hubungkan ke GitHub (Sangat Direcomendasikan)
+1.  Repositori ini telah diunggah ke GitHub Anda: `https://github.com/celebex/forex-ai-mini-app`
 2.  Buka [Vercel Dashboard](https://vercel.com/dashboard) dan klik **Add New > Project**.
-3.  Impor repositori `celebex/hfmpro-mini-app`.
+3.  Impor repositori `celebex/forex-ai-mini-app`.
 4.  Pada bagian konfigurasi, biarkan semua pengaturan default (Vercel otomatis mendeteksi file statis) dan klik **Deploy**.
-5.  Setelah proses selesai, Anda akan mendapatkan URL publik gratis (misal: `https://hfmpro-mini-app.vercel.app`).
+5.  Setelah proses selesai, Anda akan mendapatkan URL publik gratis (misal: `https://forex-ai-mini-app.vercel.app`).
 
 ---
 
@@ -33,9 +33,9 @@ Untuk menjalankan dashboard ini langsung di dalam Telegram Anda sebagai Mini App
 4.  Masukkan judul aplikasi: `𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Signal Dashboard`
 5.  Masukkan deskripsi singkat aplikasi Anda.
 6.  Unggah gambar ikon (640x360 piksel) sesuai petunjuk @BotFather.
-7.  **Masukkan URL Vercel Anda** ketika ditanya URL aplikasi (misal: `https://hfmpro-mini-app.vercel.app`).
-8.  Pilih short name (nama singkat) untuk aplikasi Anda (misal: `hfmpro`).
-9.  Selesai! Anda akan mendapatkan tautan Mini App resmi (misal: `t.me/Aifrorex_bot/hfmpro` atau tombol menu interaktif di dalam bot Anda).
+7.  **Masukkan URL Vercel Anda** ketika ditanya URL aplikasi (misal: `https://forex-ai-mini-app.vercel.app`).
+8.  Pilih short name (nama singkat) untuk aplikasi Anda (misal: `forexai`).
+9.  Selesai! Anda akan mendapatkan tautan Mini App resmi (misal: `t.me/Aifrorex_bot/forexai` atau tombol menu interaktif di dalam bot Anda).
 
 ---
 
