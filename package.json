@@ -1,7 +1,7 @@
 {
-  "name": "hfmpro-mini-app",
+  "name": "forex-ai-mini-app",
   "version": "1.0.0",
-  "description": "HFM Pro Signal Dashboard — Web & Telegram Mini App",
+  "description": "𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Signal Dashboard — Web & Telegram Mini App",
   "main": "index.html",
   "scripts": {
     "start": "npx serve ."
