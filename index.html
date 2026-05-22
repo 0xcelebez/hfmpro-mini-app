@@ -215,7 +215,6 @@
               <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
             </div>
 
-            <!-- Grid Cols 2 untuk Mobile, Cols 3 untuk Desktop menyesuaikan 5 tombol -->
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3.5">
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
@@ -512,13 +511,13 @@
         </div>
       </div>
 
-      <!-- REVISED SECTION: YAHOO FINANCE MARKET NEWS WIDGET -->
+      <!-- REVISED SECTION: RSS TO JSON MARKET NEWS WIDGET -->
       <div class="premium-card rounded-2xl p-4 mt-1">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
             <i class="fa-solid fa-earth-americas text-blue-500"></i> Global Market News
           </h3>
-          <span class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 font-black px-2.5 py-0.5 rounded-full">YAHOO FINANCE</span>
+          <span class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">Investing.com</span>
         </div>
         <div id="news-container" class="space-y-2.5">
           <div class="flex flex-col items-center justify-center py-6 gap-2">
@@ -978,28 +977,31 @@
     }
 
     // ==========================================
-    // YAHOO FINANCE MARKET NEWS API (SANGAT STABIL & PUBLIK)
+    // SISTEM BERITA DENGAN RSS2JSON & FALLBACK CRYPTOCOMPARE
+    // MENDUKUNG 100% NATIVE BROWSER CORS
     // ==========================================
     async function fetchNews() {
       const container = document.getElementById('news-container');
+      
       try {
-        // Query publik dari Yahoo Finance untuk mengambil berita Pasar / Ekonomi
-        const url = 'https://query2.finance.yahoo.com/v1/finance/search?q=forex+economy+market&newsCount=5';
-        const res = await fetch(url);
+        // TIER 1: Mengambil berita Market dari Investing.com via rss2json API (Mendukung CORS penuh)
+        const rssUrl = encodeURIComponent('https://www.investing.com/rss/market_overview.rss');
+        const url = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
         
-        if (!res.ok) throw new Error("Yahoo API failed");
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("RSS2JSON API failed");
         
         const data = await res.json();
-        const newsItems = data.news || [];
         
-        if (newsItems.length === 0) {
-          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Belum ada rilis berita ekonomi terbaru.</div>';
-          return;
+        if (data.status !== 'ok' || !data.items || data.items.length === 0) {
+          throw new Error("No news items found from primary API");
         }
         
+        const newsItems = data.items.slice(0, 5);
+        
         container.innerHTML = newsItems.map(news => {
-          // Yahoo timestamp dalam satuan detik (seconds), konversi ke milliseconds
-          const dateObj = new Date(news.providerPublishTime * 1000);
+          // Konversi Tanggal dari format RSS
+          const dateObj = new Date(news.pubDate.replace(/-/g, '/')); 
           const time = dateObj.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
           const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' });
           
@@ -1012,7 +1014,7 @@
                     ${news.title}
                   </div>
                   <div class="text-[9px] text-gray-500 font-mono mt-1 flex items-center gap-1.5">
-                    <span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">${news.publisher}</span>
+                    <span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">Investing.com</span>
                   </div>
                 </div>
               </div>
@@ -1023,9 +1025,46 @@
             </a>
           `;
         }).join('');
+        
       } catch(e) {
-        console.warn("Failed to fetch news from Yahoo", e);
-        container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar. Coba periksa koneksi internet Anda.</div>';
+        console.warn("Primary news fetch failed, trying fallback...", e);
+        
+        // TIER 2 (FALLBACK): Mengambil berita market umum dari CryptoCompare News API (100% Free & CORS Friendly)
+        try {
+          const fbRes = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
+          const fbData = await fbRes.json();
+          const fbItems = fbData.Data.slice(0, 5);
+          
+          container.innerHTML = fbItems.map(news => {
+            // Konversi dari UNIX Timestamp
+            const dateObj = new Date(news.published_on * 1000);
+            const time = dateObj.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
+            const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' });
+            
+            return `
+              <a href="${news.url}" target="_blank" class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition-colors block">
+                <div class="flex items-center gap-2.5 pr-2">
+                  <i class="fa-solid fa-newspaper text-blue-500 text-lg shrink-0"></i>
+                  <div class="overflow-hidden">
+                    <div class="text-[11px] font-bold text-gray-800 tracking-tight leading-snug truncate whitespace-normal" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                      ${news.title}
+                    </div>
+                    <div class="text-[9px] text-gray-500 font-mono mt-1 flex items-center gap-1.5">
+                      <span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">${news.source_info.name}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-[9px] font-black bg-white text-gray-600 border border-gray-200 px-2 py-1.5 rounded-lg flex flex-col items-center min-w-[45px] shadow-sm shrink-0">
+                  <span class="uppercase">${day}</span>
+                  <span>${time}</span>
+                </div>
+              </a>
+            `;
+          }).join('');
+        } catch(fallbackErr) {
+           console.warn("Fallback failed", fallbackErr);
+           container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar. Silakan periksa koneksi internet Anda.</div>';
+        }
       }
     }
 
