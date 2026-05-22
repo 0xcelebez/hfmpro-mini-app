@@ -86,7 +86,7 @@
       transform: translateY(-1.5px);
     }
     .active-nav-btn {
-      color: #2563eb !important; /* JustMarkets Blue */
+      color: #2563eb !important; 
       font-weight: 800 !important;
     }
     button, .asset-btn, .tab-btn, .tf-btn, .nav-btn {
@@ -113,15 +113,6 @@
       transition-property: all;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 150ms;
-    }
-    .no-select {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    .safe-area-pb {
-      padding-bottom: env(safe-area-inset-bottom, 20px);
     }
     .flash-update {
       animation: flashBg 0.6s ease-out;
@@ -153,10 +144,6 @@
             </p>
           </div>
         </div>
-        
-        <div id="tg-user-avatar-mobile" class="md:hidden flex items-center gap-1.5">
-          <img id="user-photo-mobile" src="" alt="user" class="w-8 h-8 rounded-full border border-brand-500 hidden" />
-        </div>
       </div>
 
       <!-- Desktop Tab Buttons -->
@@ -187,11 +174,6 @@
               <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span><span class="text-gray-400 font-bold text-[9px]">NYC</span>
             </div>
           </div>
-        </div>
-
-        <div id="tg-user-avatar" class="hidden md:flex items-center gap-2 pl-3 border-l border-gray-200">
-          <img id="user-photo" src="" alt="user" class="w-8 h-8 rounded-full border border-brand-500 hidden" />
-          <span id="user-first-name" class="text-xs font-semibold text-gray-700"></span>
         </div>
       </div>
       
@@ -233,34 +215,37 @@
               <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 mb-3.5">
+            <!-- Diubah menjadi Grid Cols 2 untuk Mobile, Cols 3 untuk Desktop menyesuaikan 5 tombol -->
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3.5">
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>XAU/USD</span>
                   <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-solid fa-coins text-blue-400"></i>
               </button>
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>EUR/USD</span>
                   <span id="price-EURUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-solid fa-euro-sign text-gray-400"></i>
               </button>
               <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>BTC/USD</span>
                   <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-brands fa-bitcoin text-blue-400"></i>
               </button>
               <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span>GBP/USD</span>
                   <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
                 </div>
-                <i class="fa-solid fa-sterling-sign text-blue-400"></i>
+              </button>
+              <button onclick="selectAsset('USDJPY', 'FOREX')" id="btn-USDJPY" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-all hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span>USD/JPY</span>
+                  <span id="price-USDJPY" class="price-val text-[10px] text-gray-500 font-semibold transition-all">Loading...</span>
+                </div>
               </button>
             </div>
 
@@ -273,20 +258,20 @@
 
         <!-- CORE TRADING SIGNAL CARD -->
         <div class="premium-card rounded-2xl p-4 relative overflow-hidden flex-1 flex flex-col justify-between">
-          <div id="signal-glow" class="absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300"></div>
+          <div id="signal-glow" class="absolute -right-16 -top-16 w-32 h-32 bg-gray-500/5 rounded-full blur-3xl transition-all duration-300"></div>
 
           <div>
             <div class="flex items-center justify-between mb-3.5">
               <span class="text-[10px] font-extrabold text-gray-400 tracking-wider uppercase">Target Signal Output</span>
-              <span id="signal-grade" class="bg-emerald-50 border border-emerald-100 text-emerald-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner">GRADE A</span>
+              <span id="signal-grade" class="bg-gray-100 border border-gray-200 text-gray-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner">-</span>
             </div>
 
             <div class="mb-4 text-center py-4 bg-gray-50/70 border border-gray-150 rounded-xl">
-              <div id="signal-decision-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full text-[10px] font-bold mb-1 shadow-inner">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> ACTIVE SIGNAL
+              <div id="signal-decision-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 border border-gray-200 text-gray-600 rounded-full text-[10px] font-bold mb-1 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-gray-500 animate-ping"></span> CALCULATING
               </div>
-              <h2 id="signal-decision" class="text-2xl font-black tracking-tight text-emerald-600 mt-1">🎯 BUY NOW</h2>
-              <p id="signal-confidence" class="text-[11px] text-gray-500 mt-0.5 font-mono">Confidence Score: 88% | Risk: LOW</p>
+              <h2 id="signal-decision" class="text-2xl font-black tracking-tight text-gray-700 mt-1">⚪ WAIT / STANDBY</h2>
+              <p id="signal-confidence" class="text-[11px] text-gray-500 mt-0.5 font-mono">Confidence Score: - | Risk: -</p>
             </div>
 
             <div class="space-y-2.5 font-mono text-sm">
@@ -342,8 +327,6 @@
               <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold px-3 py-1.5 rounded-md transition-all shadow-sm active:scale-95 min-h-[40px]">15m</button>
               <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">30m</button>
               <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">1H</button>
-              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">4H</button>
-              <button onclick="changeTimeframe('D')" id="tf-D" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[40px]">MTF</button>
             </div>
           </div>
 
@@ -452,20 +435,20 @@
     <!-- TAB 2: FOREX MARKET TRACKER & TICKER -->
     <div id="tab-forex-market" class="tab-content hidden flex flex-col gap-3.5">
       
-      <!-- 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 PREMIUM BROKER BANNER (BLUE JUSTMARKETS COLOR) -->
+      <!-- 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 PREMIUM BROKER BANNER -->
       <div class="bg-gradient-to-br from-blue-900 via-blue-700 to-blue-950 text-white rounded-2xl p-5 shadow-lg relative overflow-hidden shadow-blue-900/30">
         <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
         <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬</div>
         <span class="bg-white/20 text-white border border-white/30 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">OFFICIAL BROKER PARTNER</span>
         <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama JustMarkets</h3>
-        <p class="text-xs md:text-sm text-blue-100 mt-1 max-w-xl">Dapatkan Akun Trading Profesional dengan Kondisi Terbaik: Tanpa Swap, Eksekusi Ultra Cepat, dan Spread Terkompetitif di Indonesia. Deposit Instan melalui Bank Lokal Terpercaya.</p>
+        <p class="text-xs md:text-sm text-blue-100 mt-1 max-w-xl">Dapatkan Akun Trading Profesional dengan Kondisi Terbaik: Tanpa Swap, Eksekusi Ultra Cepat, dan Spread Terkompetitif di Indonesia.</p>
         
         <div class="flex flex-wrap gap-2 mt-4.5">
           <a href="https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-blue-700 hover:bg-blue-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
             <i class="fa-solid fa-user-plus"></i> Daftar Akun Live JustMarkets
           </a>
           <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
-            <i class="fa-solid fa-circle-info"></i> Pelajari Benefit Broker
+            <i class="fa-solid fa-circle-info"></i> Pelajari Benefit
           </button>
         </div>
       </div>
@@ -516,6 +499,14 @@
                 </td>
                 <td class="p-3 font-bold text-gray-900" id="table-price-GBPUSD">-</td>
                 <td class="p-3"><span id="table-trend-GBPUSD" class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
+              </tr>
+              <!-- USD/JPY Ditambahkan Di sini -->
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+                  <span class="text-blue-500 font-black">USDJPY</span> (Yen)
+                </td>
+                <td class="p-3 font-bold text-gray-900" id="table-price-USDJPY">-</td>
+                <td class="p-3"><span id="table-trend-USDJPY" class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
               </tr>
             </tbody>
           </table>
@@ -579,7 +570,7 @@
             </div>
             <h4 class="text-sm font-bold text-gray-900">Eksekusi Super Cepat</h4>
           </div>
-          <p class="text-xs text-gray-500 leading-normal">Eksekusi order tanpa jeda (*no-lag execution*) langsung terhubung ke liquidity provider utama dengan spread terendah mulai dari 0.0 Pips.</p>
+          <p class="text-xs text-gray-500 leading-normal">Eksekusi order tanpa jeda langsung terhubung ke liquidity provider utama dengan spread terendah mulai dari 0.0 Pips.</p>
         </div>
       </div>
 
@@ -641,23 +632,6 @@
         if (tgUser) {
           const usernameStr = '@' + (tgUser.username || tgUser.first_name);
           document.getElementById('tg-username').innerText = usernameStr;
-          
-          document.getElementById('tg-user-avatar').classList.remove('hidden');
-          document.getElementById('user-first-name').innerText = tgUser.first_name;
-          if (tgUser.photo_url) {
-            const photoEl = document.getElementById('user-photo');
-            photoEl.src = tgUser.photo_url;
-            photoEl.classList.remove('hidden');
-          }
-          
-          const mobileAvatar = document.getElementById('tg-user-avatar-mobile');
-          const mobilePhoto = document.getElementById('user-photo-mobile');
-          if (mobileAvatar && mobilePhoto && tgUser.photo_url) {
-            mobileAvatar.classList.remove('hidden');
-            mobilePhoto.src = tgUser.photo_url;
-            mobilePhoto.classList.remove('hidden');
-          }
-          writeLog("Telegram App active: " + tgUser.first_name);
         }
       }
     } catch (e) { }
@@ -711,6 +685,7 @@
       if (pair === 'EURUSD') tvSymbol = "FX:EURUSD";
       if (pair === 'BTCUSD') tvSymbol = "BINANCE:BTCUSDT";
       if (pair === 'GBPUSD') tvSymbol = "FX:GBPUSD";
+      if (pair === 'USDJPY') tvSymbol = "FX:USDJPY";
 
       const container = document.getElementById('tradingview-container');
       if (!container) return;
@@ -737,12 +712,13 @@
       } catch(e) {}
     }
 
-    // BASE Market Initialization
+    // BASE Market Initialization. Trend bawaan diset ke 0 agar tidak terus-terusan mengunci di BUY
     const assetParameters = {
-      XAUUSD: { basePrice: 2334.50, trendScore: 3, atr: '4.25', adr: '22.80' },
-      EURUSD: { basePrice: 1.08540, trendScore: 2, atr: '0.00045', adr: '0.00680' },
-      BTCUSD: { basePrice: 66840.00, trendScore: 4, atr: '850.00', adr: '3400.00' },
-      GBPUSD: { basePrice: 1.26850, trendScore: 0, atr: '0.00062', adr: '0.00820' }
+      XAUUSD: { basePrice: 2334.50, trendScore: 0, atr: '4.25', adr: '22.80' },
+      EURUSD: { basePrice: 1.08540, trendScore: 0, atr: '0.00045', adr: '0.00680' },
+      BTCUSD: { basePrice: 66840.00, trendScore: 0, atr: '850.00', adr: '3400.00' },
+      GBPUSD: { basePrice: 1.26850, trendScore: 0, atr: '0.00062', adr: '0.00820' },
+      USDJPY: { basePrice: 156.50, trendScore: 0, atr: '0.85', adr: '1.20' }
     };
 
     function selectAsset(pair, type) {
@@ -774,16 +750,16 @@
       const base = param.basePrice;
       const adr = parseFloat(param.adr);
       let atr = parseFloat(param.atr);
+      // Penyesuaian digit decimal presisi untuk pair Yen
       const precision = (pair === 'EURUSD' || pair === 'GBPUSD') ? 5 : 2;
 
-      // Ensure proper real-time entry
       param.entryPrice = base;
 
-      // Determine Action from Trend Score
-      if (param.trendScore >= 2) {
+      // Determine Action from Trend Score dinamik
+      if (param.trendScore >= 1.5) {
         param.decision = '🎯 BUY NOW';
         param.grade = 'GRADE A';
-      } else if (param.trendScore <= -2) {
+      } else if (param.trendScore <= -1.5) {
         param.decision = '🔴 SELL NOW';
         param.grade = 'GRADE A';
       } else {
@@ -791,7 +767,7 @@
         param.grade = 'GRADE C';
       }
 
-      // Dynamic Take Profit & Stop Loss using exact real-time Entry + Multiplied ATR
+      // Dynamic Take Profit & Stop Loss
       if (param.decision.includes('BUY')) {
         const slPrice = base - (1.5 * atr);
         param.slOffset = slPrice - base;
@@ -799,7 +775,7 @@
         param.tp2Offset = (2.5 * atr);
         param.tp3Offset = (4.0 * atr);
         
-        param.expert1 = `🟢 BULLISH OB terdeteksi. Konfirmasi rotasi likuiditas institusional pada level intraday memicu algoritma buy.`;
+        param.expert1 = `🟢 BULLISH OB terdeteksi. Konfirmasi rotasi likuiditas institusional pada level intraday.`;
         param.expert2 = `📊 Volume profile menunjukkan dominasi akumulasi di dekat harga Entry live saat ini.`;
         param.expert3 = `📈 Base VWAP ditarik ke atas menekan Short Seller untuk Liquidate. Target Deviasi positif.`;
       } 
@@ -810,9 +786,9 @@
         param.tp2Offset = -(2.5 * atr);
         param.tp3Offset = -(4.0 * atr);
         
-        param.expert1 = `🔴 BEARISH OB terdeteksi. Harga gagal mempertahankan supply zone memicu aksi ambil untung (sell-off).`;
+        param.expert1 = `🔴 BEARISH OB terdeteksi. Harga gagal mempertahankan supply zone memicu aksi ambil untung.`;
         param.expert2 = `📊 Distribusi volume massif terjadi. Institusi mulai mengosongkan inventaris pada harga saat ini.`;
-        param.expert3 = `📉 Harga break dibawah base VWAP secara agresif menandakan momentum Bearish memegang kendali penuh.`;
+        param.expert3 = `📉 Harga break dibawah base VWAP secara agresif menandakan momentum Bearish memegang kendali.`;
       } 
       else {
         param.slOffset = 0; param.tp1Offset = 0; param.tp2Offset = 0; param.tp3Offset = 0;
@@ -827,6 +803,7 @@
       if (riskPoints > 0) {
         if (pair === 'XAUUSD') lotVal = 100 / (riskPoints * 100);
         else if (pair === 'BTCUSD') lotVal = 100 / riskPoints;
+        else if (pair === 'USDJPY') lotVal = 100 / (riskPoints * 1000);
         else { const pips = riskPoints / 0.0001; lotVal = 100 / (pips * 10); }
       }
       param.lot = param.decision.includes('WAIT') ? '0.00 Lot' : `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
@@ -849,7 +826,7 @@
       document.getElementById('signal-decision').innerText = param.decision;
       
       let conf = 70 + Math.abs(param.trendScore || 0) * 5 + Math.floor(Math.random() * 5);
-      document.getElementById('signal-confidence').innerText = `Confidence Score: ${conf}% | Risk: LOW`;
+      document.getElementById('signal-confidence').innerText = param.decision.includes('WAIT') ? 'Confidence Score: - | Risk: -' : `Confidence Score: ${Math.min(99, conf)}% | Risk: LOW`;
 
       const decBadge = document.getElementById('signal-decision-badge');
       const decText = document.getElementById('signal-decision');
@@ -908,7 +885,7 @@
 
       const isWait = param.decision.includes('WAIT');
       const base = param.entryPrice;
-      const precision = currentType === 'FOREX' ? 5 : 2;
+      const precision = (pair === 'EURUSD' || pair === 'GBPUSD') ? 5 : 2;
       
       const elIds = ['entry-price', 'sl-price', 'tp1-price', 'tp2-price', 'tp3-price'];
       const offsets = [0, param.slOffset, param.tp1Offset, param.tp2Offset, param.tp3Offset];
@@ -917,10 +894,9 @@
         const el = document.getElementById(id);
         if (el) {
           el.innerText = isWait ? '-' : (base + offsets[index]).toFixed(precision);
-          // Apply Flash Effect to Entry on Realtime Update
           if (id === 'entry-price') {
              el.classList.remove('flash-update');
-             void el.offsetWidth; // trigger reflow
+             void el.offsetWidth;
              el.classList.add('flash-update');
           }
         }
@@ -938,7 +914,7 @@
       document.getElementById('voter1-analysis').innerText = param.expert1;
       document.getElementById('voter2-analysis').innerText = param.expert2;
       document.getElementById('voter3-analysis').innerText = param.expert3;
-      document.getElementById('cro-analysis').innerText = param.decision.includes('WAIT') ? "VETO: Volatilitas tidak memenuhi kriteria minimal eksekusi aman. Signal ditangguhkan." : "APPROVED: Risk-Reward ratio sangat ideal (>3R). Proteksi Stop Loss ketat di belakang batas likuiditas.";
+      document.getElementById('cro-analysis').innerText = param.decision.includes('WAIT') ? "VETO: Volatilitas tidak memenuhi kriteria minimal eksekusi aman. Signal ditangguhkan sementara." : "APPROVED: Risk-Reward ratio sangat ideal (>3R). Proteksi Stop Loss ketat di belakang batas likuiditas.";
     }
 
     // REAL-TIME PRICE ENGINE LOGIC
@@ -946,7 +922,7 @@
     
     async function fetchRealtimePrices() {
       const now = Date.now();
-      if (now - lastFetchTime < 5000) return; // Debounce
+      if (now - lastFetchTime < 5000) return; 
       lastFetchTime = now;
       
       try {
@@ -965,6 +941,7 @@
           const data = await openErRes.json();
           if (data.rates?.EUR) updatePriceState('EURUSD', 1 / data.rates.EUR);
           if (data.rates?.GBP) updatePriceState('GBPUSD', 1 / data.rates.GBP);
+          if (data.rates?.JPY) updatePriceState('USDJPY', data.rates.JPY);
         }
         
         updateDashboardPrices();
@@ -975,17 +952,19 @@
 
     function updatePriceState(pair, newPrice) {
       const oldPrice = assetParameters[pair].basePrice;
-      if (newPrice === oldPrice) return; // Ignore if no move
+      if (newPrice === oldPrice) return; 
 
       assetParameters[pair].basePrice = newPrice;
       
-      // Compute Trend Score
+      // Hitung ayunan skor secara dinamis/organik
       let ts = assetParameters[pair].trendScore || 0;
-      if (newPrice > oldPrice) ts += 1;
-      else if (newPrice < oldPrice) ts -= 1;
-      assetParameters[pair].trendScore = Math.max(-5, Math.min(5, ts));
+      if (newPrice > oldPrice) ts += (Math.random() * 1.5);
+      else if (newPrice < oldPrice) ts -= (Math.random() * 1.5);
+      
+      // Decay system: membawa skor kembali ke netral jika tidak ada lonjakan tajam
+      ts *= 0.95;
+      assetParameters[pair].trendScore = Math.max(-4, Math.min(4, ts));
 
-      // Update Top Nav Asset Price Display
       const el = document.getElementById(`price-${pair}`);
       const precision = (pair === 'EURUSD' || pair === 'GBPUSD') ? 5 : 2;
       if (el) {
@@ -1000,9 +979,9 @@
       const tableTrend = document.getElementById(`table-trend-${pair}`);
       if (tablePrice && tableTrend) {
          tablePrice.innerText = newPrice.toFixed(precision);
-         if (ts >= 2) {
+         if (ts >= 1.5) {
             tableTrend.innerHTML = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🟢 BUY</span>';
-         } else if (ts <= -2) {
+         } else if (ts <= -1.5) {
             tableTrend.innerHTML = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 SELL</span>';
          } else {
             tableTrend.innerHTML = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">⚪ WAIT</span>';
@@ -1010,12 +989,20 @@
       }
     }
 
-    // NEWS & EVENTS WIDGET LOGIC
+    // NEWS API DILEWATI MELALUI PROXY CORS ALLORIGINS
     async function fetchNews() {
       try {
-        const res = await fetch('https://nfs.faireconomy.media/ff_calendar_thisweek.json');
+        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_thisweek.json');
+        const res = await fetch(proxyUrl);
         if (!res.ok) throw new Error("Fetch failed");
-        const data = await res.json();
+        
+        const proxyData = await res.json();
+        let data;
+        try {
+          data = JSON.parse(proxyData.contents);
+        } catch(e) {
+          throw new Error("Invalid Proxy Data");
+        }
         
         const now = new Date();
         const upcoming = data.filter(d => new Date(d.date) > now && (d.impact === 'High' || d.impact === 'Medium'))
@@ -1026,7 +1013,7 @@
         if (!container) return;
         
         if (upcoming.length === 0) {
-          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Tidak ada rilis berita High-Impact terdekat.</div>';
+          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Tidak ada rilis berita High-Impact terdekat minggu ini.</div>';
           return;
         }
         
@@ -1058,7 +1045,7 @@
       } catch(e) {
         console.warn("Failed to fetch news", e);
         const container = document.getElementById('news-container');
-        if (container) container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita. Mencoba kembali...</div>';
+        if (container) container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita. Pastikan koneksi internet stabil.</div>';
       }
     }
 
@@ -1066,6 +1053,10 @@
       const btn = document.getElementById('refresh-btn');
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin"></i> CALCULATING BAYESIAN ODDS...`;
+      
+      // Simulasi kalkulasi Sinyal agar berubah/acak secara organik antara -4 hingga 4
+      const param = assetParameters[currentAsset];
+      param.trendScore = (Math.random() * 8) - 4; 
       
       setTimeout(() => {
         btn.disabled = false;
@@ -1107,13 +1098,11 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Initial live fetch
       fetchRealtimePrices();
       fetchNews();
 
-      // Setup Polling
-      setInterval(fetchRealtimePrices, 15000); // Live price polling every 15s
-      setInterval(fetchNews, 300000); // News fetching every 5 minutes
+      setInterval(fetchRealtimePrices, 15000); 
+      setInterval(fetchNews, 300000); 
       
       writeLog("Cuandology Live Signaling Engine V4.0 Online.");
     }
