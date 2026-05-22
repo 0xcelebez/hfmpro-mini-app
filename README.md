@@ -1,6 +1,6 @@
-# HFM Pro Signal Intelligence — Web & Telegram Mini App 🛰️⚡
+# 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Signal Intelligence — Web & Telegram Mini App 🛰️⚡
 
-Dashboard web interaktif dan **Telegram Mini App** premium yang dirancang untuk memantau sinyal trading, indikator geometri pasar, dan proses kognisi MoE (Mixture of Experts) dari **HFM Pro Engine**.
+Dashboard web interaktif dan **Telegram Mini App** premium yang dirancang untuk memantau sinyal trading, indikator geometri pasar, dan proses kognisi MoE (Mixture of Experts) dari **𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Engine**.
 
 ## 🚀 Fitur Utama
 *   **[ Live MoE Cognition Panel ]**: Memvisualisasikan hasil voting dari berbagai Expert AI (Fundamental, Technical, Sentiment) beserta keputusan veto dari **CRO Validator (Nemotron-3 Super)**.
@@ -29,8 +29,8 @@ Untuk menjalankan dashboard ini langsung di dalam Telegram Anda sebagai Mini App
 
 1.  Buka Telegram dan cari bot resmi **@BotFather**.
 2.  Kirim perintah `/newapp` untuk membuat Mini App baru.
-3.  Pilih bot yang ingin dihubungkan (misal bot HFM Pro Anda, `@Aifrorex_bot`).
-4.  Masukkan judul aplikasi: `HFM Pro Signal Dashboard`
+3.  Pilih bot yang ingin dihubungkan (misal bot 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Anda, `@Aifrorex_bot`).
+4.  Masukkan judul aplikasi: `𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Signal Dashboard`
 5.  Masukkan deskripsi singkat aplikasi Anda.
 6.  Unggah gambar ikon (640x360 piksel) sesuai petunjuk @BotFather.
 7.  **Masukkan URL Vercel Anda** ketika ditanya URL aplikasi (misal: `https://hfmpro-mini-app.vercel.app`).
