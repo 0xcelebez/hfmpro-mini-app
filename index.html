@@ -1426,16 +1426,3 @@
     }
   
 
-    if (typeof currentAsset !== 'undefined' && currentAsset) {
-      pairSelect.value = currentAsset;
-    }
-    pairSelect.addEventListener('change', function(e) {
-      const newPair = e.target.value;
-      const type = typeof currentType !== 'undefined' ? currentType : 'FOREX';
-      selectAsset(newPair, type);
-    });
-  }
-});
-</script>
-</body>
-</html>
