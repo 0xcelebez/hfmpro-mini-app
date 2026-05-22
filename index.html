@@ -140,7 +140,7 @@
             </h1>
             <p class="text-[10px] text-gray-500 flex items-center gap-1">
               <span class="inline-block w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-              Quant Signal Engine • <span id="tg-username">Guest Mode</span>
+              Quant Signal Engine v4.0 • <span id="tg-username">Guest Mode</span>
             </p>
           </div>
         </div>
@@ -512,18 +512,18 @@
         </div>
       </div>
 
-      <!-- NEW SECTION: REALTIME ECONOMIC CALENDAR WIDGET -->
+      <!-- REVISED SECTION: YAHOO FINANCE MARKET NEWS WIDGET -->
       <div class="premium-card rounded-2xl p-4 mt-1">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-newspaper text-blue-500"></i> Global Economic Events
+            <i class="fa-solid fa-earth-americas text-blue-500"></i> Global Market News
           </h3>
-          <span class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 font-black px-2.5 py-0.5 rounded-full">FOREXFACTORY API</span>
+          <span class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 font-black px-2.5 py-0.5 rounded-full">YAHOO FINANCE</span>
         </div>
         <div id="news-container" class="space-y-2.5">
           <div class="flex flex-col items-center justify-center py-6 gap-2">
             <i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-2xl"></i>
-            <span class="text-xs text-gray-400 font-mono">Syncing global events...</span>
+            <span class="text-xs text-gray-400 font-mono">Syncing market news...</span>
           </div>
         </div>
       </div>
@@ -978,82 +978,54 @@
     }
 
     // ==========================================
-    // SISTEM PENGAMBILAN BERITA (DIPERBARUI)
+    // YAHOO FINANCE MARKET NEWS API (SANGAT STABIL & PUBLIK)
     // ==========================================
     async function fetchNews() {
-      // Kita menggunakan jalur Public API langsung dari server resmi ForexFactory 
-      // yang mendukung native Cross-Origin (CORS), jadi kita tidak perlu proxy bermasalah.
-      // Disediakan juga jalur fallback codetabs jika jaringan diblokir dari ISP/Browser tertentu.
-      const urls = [
-        'https://nfs.faireconomy.media/ff_calendar_thisweek.json',
-        'https://api.codetabs.com/v1/proxy?quest=https://nfs.faireconomy.media/ff_calendar_thisweek.json'
-      ];
-
-      let data = null;
-
-      for (let url of urls) {
-        try {
-          const res = await fetch(url);
-          if (res.ok) {
-            data = await res.json();
-            break; // Jika sukses mendapatkan JSON, langsung keluar dari perulangan
-          }
-        } catch (e) {
-          console.warn("Fetch failed for " + url);
-        }
-      }
-
       const container = document.getElementById('news-container');
-      if (!container) return;
-
-      if (!data) {
-        container.innerHTML = '<div class="text-center text-[11px] text-red-500 py-4 font-mono">Gagal memuat feed kalender ekonomi. Koneksi terganggu, coba refresh kembali.</div>';
-        return;
-      }
-      
       try {
-        const now = new Date();
-        // Mem-filter berita untuk yang akan datang saja dan bersifat High / Medium Impact
-        const upcoming = data.filter(d => new Date(d.date) > now && (d.impact === 'High' || d.impact === 'Medium'))
-                             .sort((a,b) => new Date(a.date) - new Date(b.date))
-                             .slice(0, 5);
-                             
-        if (upcoming.length === 0) {
-          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Tidak ada rilis berita High/Medium Impact terdekat.</div>';
+        // Query publik dari Yahoo Finance untuk mengambil berita Pasar / Ekonomi
+        const url = 'https://query2.finance.yahoo.com/v1/finance/search?q=forex+economy+market&newsCount=5';
+        const res = await fetch(url);
+        
+        if (!res.ok) throw new Error("Yahoo API failed");
+        
+        const data = await res.json();
+        const newsItems = data.news || [];
+        
+        if (newsItems.length === 0) {
+          container.innerHTML = '<div class="text-center text-[11px] text-gray-500 py-4 font-mono">Belum ada rilis berita ekonomi terbaru.</div>';
           return;
         }
         
-        container.innerHTML = upcoming.map(news => {
-          const dateObj = new Date(news.date);
+        container.innerHTML = newsItems.map(news => {
+          // Yahoo timestamp dalam satuan detik (seconds), konversi ke milliseconds
+          const dateObj = new Date(news.providerPublishTime * 1000);
           const time = dateObj.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
-          const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'short' });
-          
-          const isHigh = news.impact === 'High';
-          const iconColor = isHigh ? 'text-red-500' : 'text-orange-400';
-          const bgBadge = isHigh ? 'bg-red-50 text-red-600 border-red-100' : 'bg-orange-50 text-orange-600 border-orange-100';
+          const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' });
           
           return `
-            <div class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition-colors">
-              <div class="flex items-center gap-2.5">
-                <i class="fa-solid fa-bolt ${iconColor} text-lg"></i>
-                <div>
-                  <div class="text-[11px] font-bold text-gray-800 tracking-tight flex items-center gap-1.5">
-                    <span class="bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded text-[9px] shadow-sm">${news.country}</span> 
+            <a href="${news.link}" target="_blank" class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition-colors block">
+              <div class="flex items-center gap-2.5 pr-2">
+                <i class="fa-solid fa-newspaper text-blue-500 text-lg shrink-0"></i>
+                <div class="overflow-hidden">
+                  <div class="text-[11px] font-bold text-gray-800 tracking-tight leading-snug truncate whitespace-normal" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                     ${news.title}
                   </div>
-                  <div class="text-[9px] text-gray-500 font-mono mt-1">Frcst: <span class="font-bold">${news.forecast || '-'}</span> | Prev: ${news.previous || '-'}</div>
+                  <div class="text-[9px] text-gray-500 font-mono mt-1 flex items-center gap-1.5">
+                    <span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-bold">${news.publisher}</span>
+                  </div>
                 </div>
               </div>
-              <div class="text-[9px] font-black ${bgBadge} border px-2 py-1.5 rounded-lg flex flex-col items-center min-w-[50px] shadow-sm">
+              <div class="text-[9px] font-black bg-white text-gray-600 border border-gray-200 px-2 py-1.5 rounded-lg flex flex-col items-center min-w-[45px] shadow-sm shrink-0">
                 <span class="uppercase">${day}</span>
                 <span>${time}</span>
               </div>
-            </div>
+            </a>
           `;
         }).join('');
       } catch(e) {
-        console.warn("Failed to parse news", e);
-        container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memproses data kalender ekonomi.</div>';
+        console.warn("Failed to fetch news from Yahoo", e);
+        container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar. Coba periksa koneksi internet Anda.</div>';
       }
     }
 
