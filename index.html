@@ -154,7 +154,7 @@
       <div class="w-full md:w-auto flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
-            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" />
+            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" /></div>
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
               𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-500">|</span> 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈
@@ -1088,9 +1088,6 @@
           signalGlow.className = "absolute -right-16 -top-16 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl transition-all duration-300";
         }
       } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
         decBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-blue-100 text-brand-600 rounded-full text-[10px] font-bold mb-1 shadow-inner";
         decText.className = "text-2xl font-black tracking-tight text-brand-600 mt-1 filter drop-shadow-[0_2px_8px_rgba(239,68,68,0.15)]";
         gradeBadge.className = "bg-blue-50 border border-blue-100 text-brand-600 font-black text-xs px-2.5 py-0.5 rounded-full shadow-inner";
@@ -1232,15 +1229,10 @@
         }
         param.lot = `${Math.max(0.01, Math.min(5.0, lotVal)).toFixed(2)} Lot`;
       } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
-      } else if (param.decision.includes('SELL')) {
         // Stop Loss is placed above Camarilla R3 resistance with a 0.2 ATR buffer
          const slPrice = r3 + (0.5 * atr);
         const riskPoints = Math.abs(base - slPrice);
         const tp1Price = base - riskPoints;
-        const riskPoints = Math.abs(base - slPrice);
-        const riskPoints = Math.abs(base - slPrice);
         const tp2Price = s3;
          const tp3Price = s3 - (2.0 * atr);
 
@@ -1550,16 +1542,6 @@
       }
       return originalSelectAsset(pair, type);
     };
-  
-
-    if (typeof currentAsset !== 'undefined' && currentAsset) {
-      pairSelect.value = currentAsset;
-    }
-    pairSelect.addEventListener('change', function(e) {
-      const newPair = e.target.value;
-      const type = typeof currentType !== 'undefined' ? currentType : 'FOREX';
-      selectAsset(newPair, type);
-    });
   }
 });
 </script>
