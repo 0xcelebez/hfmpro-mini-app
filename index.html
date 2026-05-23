@@ -776,11 +776,11 @@
 
       param.entryPrice = base;
 
-      // Threshold adjusted for more responsive signals
-            if (param.trendScore >= 0.3) {
+      // Threshold lebih sensitif agar status lebih dominan SELL / BUY merespons pergerakan detik
+      if (param.trendScore >= 0.8) {
         param.decision = '🎯 BUY NOW';
         param.grade = 'GRADE A';
-      }             else if (param.trendScore <= -0.3) {
+      } else if (param.trendScore <= -0.8) {
         param.decision = '🔴 SELL NOW';
         param.grade = 'GRADE A';
       } else {
@@ -989,53 +989,19 @@
     // ==========================================
     // REAL-TIME PRICE ENGINE (TIDAK ADA LAGI TULISAN "WAIT" ABADI)
     // ==========================================
-        async function fetchRealtimePrices() {
-        try {
-            // Fetch prices from reliable APIs
-            const promises = [];
-            
-            // XAUUSD (PAXG from CoinGecko)
-            promises.push(fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data['pax-gold']?.usd ? {pair: 'XAUUSD', price: data['pax-gold'].usd} : null));
-            
-            // EURUSD (franker API - more reliable than open.er-api)
-            promises.push(fetch('https://api.frankfurter.dev/latest?from=EUR&to=USD')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data.rates?.USD ? {pair: 'EURUSD', price: 1 / data.rates.USD} : null));
-            
-            // GBPUSD
-            promises.push(fetch('https://api.frankfurter.dev/latest?from=GBP&to=USD')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data.rates?.USD ? {pair: 'GBPUSD', price: 1 / data.rates.USD} : null));
-            
-            // USDJPY
-            promises.push(fetch('https://api.frankfurter.dev/latest?from=USD&to=JPY')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data.rates?.JPY ? {pair: 'USDJPY', price: data.rates.JPY} : null));
-            
-            // BTCUSD (Binance)
-            promises.push(fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data.price ? {pair: 'BTCUSD', price: parseFloat(data.price)} : null));
-            
-            // ETHUSD (Binance)
-            promises.push(fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT')
-                .then(r => r.ok ? r.json() : null)
-                .then(data => data && data.price ? {pair: 'ETHUSD', price: parseFloat(data.price)} : null));
-            
-            const results = await Promise.all(promises);
-            
-            for (const result of results) {
-                if (result && result.pair) {
-                    assetParameters[result.pair].anchorPrice = result.price;
-                    assetParameters[result.pair].basePrice = result.price; // also update base price immediately
-                }
-            }
-        } catch (e) {
-            console.warn('Pricing Fetch Error:', e.message);
+    async function fetchRealtimePrices() {
+      try {
+        const [coinGeckoRes, openErRes] = await Promise.all([
+          fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin,ethereum&vs_currencies=usd').catch(()=>null),
+          fetch('https://open.er-api.com/v6/latest/USD').catch(()=>null)
+        ]);
+        
+        if (coinGeckoRes && coinGeckoRes.ok) {
+          const data = await coinGeckoRes.json();
+          if (data['pax-gold']?.usd) assetParameters.XAUUSD.anchorPrice = data['pax-gold'].usd;
+          if (data.bitcoin?.usd) assetParameters.BTCUSD.anchorPrice = data.bitcoin.usd;
+          if (data.ethereum?.usd) assetParameters.ETHUSD.anchorPrice = data.ethereum.usd;
         }
-    }
         
         if (openErRes && openErRes.ok) {
           const data = await openErRes.json();
@@ -1049,12 +1015,20 @@
     }
 
     // SIMULATOR MARKET TICKS - Ini yang membuat harga bergerak tiap 2.5 detik meskipun API nge-cache
-        // SIMULATOR MARKET TICKS - now just fetches real prices every 2 seconds
     function simulateMarketTicks() {
-        fetchRealtimePrices();
-        // Update dashboard if needed
-        updateDashboardPrices();
-    }
+        let shouldUpdateDashboard = false;
+        
+        for (let pair in assetParameters) {
+            const param = assetParameters[pair];
+            if (!param.anchorPrice) continue;
+            
+            // Tambahkan noise random kecil (+/- 0.02% variance) ke Anchor API agar terlihat hidup (MT4 feel)
+            const noise = param.anchorPrice * (Math.random() * 0.0004 - 0.0002);
+            const simulatedPrice = param.anchorPrice + noise;
+            
+            if (updatePriceState(pair, simulatedPrice) && currentAsset === pair) {
+                shouldUpdateDashboard = true;
+            }
         }
         
         if (shouldUpdateDashboard) updateDashboardPrices();
@@ -1071,7 +1045,7 @@
       if (newPrice > oldPrice) ts += (Math.random() * 1.5) + 0.5;
       else if (newPrice < oldPrice) ts -= (Math.random() * 1.5) + 0.5;
       
-      ts *= 0.85; // Faster decay to neutral
+      ts *= 0.90; // Decay (penyusutan netralisasi)
       assetParameters[pair].trendScore = Math.max(-4, Math.min(4, ts));
 
       const precision = assetParameters[pair].precision;
