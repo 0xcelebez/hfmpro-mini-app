@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#ffffff">
-  <title>[ CUANOLOGY | 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 ] — Signal Intelligence Dashboard</title>
+  <title>[ CUANOLOGY | 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 ] — Signal Intelligence Dashboard</title>
   
   <!-- CSS & JS Library Integration -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -32,17 +32,9 @@
           },
           colors: {
             brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              200: '#bfdbfe',
-              300: '#93c5fd',
-              400: '#60a5fa',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
-              950: '#172554',
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a', 950: '#172554',
             }
           }
         }
@@ -60,20 +52,10 @@
       padding-left: env(safe-area-inset-left, 0px);
       padding-right: env(safe-area-inset-right, 0px);
     }
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     .premium-card {
       background-color: #ffffff;
       border: 1px solid #e2e8f0;
@@ -85,10 +67,7 @@
       box-shadow: 0 12px 30px -4px rgba(37, 99, 235, 0.06), 0 4px 20px -2px rgba(0, 0, 0, 0.02);
       transform: translateY(-1.5px);
     }
-    .active-nav-btn {
-      color: #2563eb !important; 
-      font-weight: 800 !important;
-    }
+    .active-nav-btn { color: #2563eb !important; font-weight: 800 !important; }
     button, .asset-btn, .tab-btn, .tf-btn, .nav-btn {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
@@ -97,29 +76,114 @@
       cursor: pointer;
     }
     @media (max-width: 768px) {
-      button, .asset-btn, .tab-btn, .tf-btn {
-        min-height: 44px;
-        min-width: 44px;
-      }
-      .asset-btn {
-        padding: 0.75rem 1rem;
-      }
+      button, .asset-btn, .tab-btn, .tf-btn { min-height: 44px; min-width: 44px; }
+      .asset-btn { padding: 0.75rem 1rem; }
     }
     .asset-btn:active, .tab-btn:active, .tf-btn:active, button:active {
-      transform: scale(0.97);
-      opacity: 0.9;
+      transform: scale(0.97); opacity: 0.9;
     }
     .transition-colors {
       transition-property: background-color, border-color, color, fill, stroke;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 200ms;
     }
-    .flash-update {
-      animation: flashBg 0.6s ease-out;
-    }
+    .flash-update { animation: flashBg 0.6s ease-out; }
     @keyframes flashBg {
       0% { background-color: #dbeafe; color: #1d4ed8; }
       100% { background-color: transparent; }
+    }
+
+    /* ========================================= */
+    /* RUNNING TEXT (TICKER) — RINGAN & SMOOTH   */
+    /* ========================================= */
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 6px 0;
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+    }
+    .ticker-wrap::before,
+    .ticker-wrap::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 40px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .ticker-wrap::before {
+      left: 0;
+      background: linear-gradient(90deg, #0f172a 0%, transparent 100%);
+    }
+    .ticker-wrap::after {
+      right: 0;
+      background: linear-gradient(270deg, #0f172a 0%, transparent 100%);
+    }
+    .ticker {
+      display: inline-flex;
+      white-space: nowrap;
+      will-change: transform;
+      animation: tickerScroll 60s linear infinite;
+    }
+    .ticker:hover { animation-play-state: paused; }
+    @keyframes tickerScroll {
+      0%   { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 18px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .ticker-symbol {
+      color: #cbd5e1;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .ticker-price {
+      color: #f8fafc;
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .ticker-change {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .ticker-change.up { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .ticker-change.down { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+    .ticker-change.flat { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+    .ticker-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    /* Grid adjustment for 9 assets */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .asset-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .asset-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -128,32 +192,29 @@
   <!-- TOP BRANDING NAVIGATION -->
   <header class="border-b border-slate-100 bg-white/85 backdrop-blur-md px-3 py-2.5 sticky top-0 z-50 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.015)]">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-      
-      <!-- Row 1: Logo and Brand Name / User info -->
       <div class="w-full md:w-auto flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
-            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://ui-avatars.com/api/?name=FX&background=0D8ABC&color=fff'" /></div>
+            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://ui-avatars.com/api/?name=FX&background=0D8ABC&color=fff'" />
+          </div>
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
               𝐂𝐔𝐀𝐍𝐎𝐋𝐎𝐆𝐘 <span class="text-brand-500">|</span> 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈
             </h1>
             <p class="text-[10px] text-gray-500 flex items-center gap-1">
               <span class="inline-block w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-              Quant Signal Engine  • <span id="tg-username">Guest Mode</span>
+              Quant Signal Engine • <span id="tg-username">Guest Mode</span>
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Desktop Tab Buttons -->
       <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all active:scale-95 min-h-[44px]">Dashboard</button>
         <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">Forex Market</button>
         <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="btn-tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</button>
       </div>
 
-      <!-- Row 2: Clock & Market Sessions -->
       <div class="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 flex-wrap">
         <div class="w-full md:w-auto flex items-center justify-between gap-3 bg-gray-50 border border-gray-150 rounded-xl px-3 py-1.5 text-[11px] font-mono shadow-inner">
           <div class="flex items-center gap-1.5 text-gray-700 border-r border-gray-200 pr-3">
@@ -176,9 +237,17 @@
           </div>
         </div>
       </div>
-      
     </div>
   </header>
+
+  <!-- ========================================== -->
+  <!-- RUNNING TEXT (TICKER) LIVE PRICE           -->
+  <!-- ========================================== -->
+  <div class="ticker-wrap" aria-label="Live Market Ticker">
+    <div class="ticker" id="ticker-track">
+      <!-- Diisi via JS — duplikasi untuk seamless loop -->
+    </div>
+  </div>
 
   <!-- BOTTOM NAVIGATION BAR FOR MOBILE -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-50 flex justify-around py-3 px-2 shadow-[0_-5px_25px_rgba(0,0,0,0.025)] md:hidden safe-area-pb">
@@ -205,51 +274,69 @@
       <!-- LEFT SIDEBAR -->
       <section class="lg:col-span-4 flex flex-col gap-3.5">
 
-        <!-- ASSET SELECTOR -->
+        <!-- ASSET SELECTOR (UPDATED: 9 Assets) -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3.5">
               <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
                 <i class="fa-solid fa-folder-tree text-brand-500"></i> Market Selection
               </h3>
-              <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">REALTIME FEED</span>
+              <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">LIVE SYNC</span>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3.5">
+            <div class="asset-grid mb-3.5">
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
-                  <span>XAU/USD</span>
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">AU</span> XAU/USD</span>
                   <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
-                  <span>EUR/USD</span>
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#2563eb;">€</span> EUR/USD</span>
                   <span id="price-EURUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span>BTC/USD</span>
-                  <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <button onclick="selectAsset('ETHUSD', 'CRYPTO')" id="btn-ETHUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span>ETH/USD</span>
-                  <span id="price-ETHUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
               <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
-                  <span>GBP/USD</span>
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#7c3aed;">£</span> GBP/USD</span>
                   <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
               <button onclick="selectAsset('USDJPY', 'FOREX')" id="btn-USDJPY" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
-                  <span>USD/JPY</span>
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#dc2626;">¥</span> USD/JPY</span>
                   <span id="price-USDJPY" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
+                </div>
+              </button>
+              <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">₿</span> BTC/USD</span>
+                  <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
+                </div>
+              </button>
+              <button onclick="selectAsset('ETHUSD', 'CRYPTO')" id="btn-ETHUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#6366f1;">Ξ</span> ETH/USD</span>
+                  <span id="price-ETHUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
+                </div>
+              </button>
+              <button onclick="selectAsset('SOLUSD', 'CRYPTO')" id="btn-SOLUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#14f195;color:#000;">◎</span> SOL/USD</span>
+                  <span id="price-SOLUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
+                </div>
+              </button>
+              <button onclick="selectAsset('HYPEUSD', 'CRYPTO')" id="btn-HYPEUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#06b6d4;">H</span> HYPE/USD</span>
+                  <span id="price-HYPEUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
+                </div>
+              </button>
+              <button onclick="selectAsset('TONUSD', 'CRYPTO')" id="btn-TONUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
+                <div class="flex flex-col items-start">
+                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#0098ea;">◆</span> TON/USD</span>
+                  <span id="price-TONUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
             </div>
@@ -462,7 +549,7 @@
       <div class="premium-card rounded-2xl p-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-globe text-brand-500"></i> Forex Market Overview
+            <i class="fa-solid fa-globe text-brand-500"></i> Market Overview
           </h3>
           <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2.5 py-0.5 rounded-full">LIVE TICKER</span>
         </div>
@@ -473,58 +560,18 @@
               <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 font-extrabold">
                 <th class="p-3">ASSET</th>
                 <th class="p-3">PRICE (LIVE)</th>
+                <th class="p-3">24H %</th>
                 <th class="p-3">TREND STATUS</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100 font-mono text-gray-800">
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">XAUUSD</span> (Gold)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-XAUUSD">-</td>
-                <td class="p-3" id="table-trend-XAUUSD"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">EURUSD</span> (Euro)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-EURUSD">-</td>
-                <td class="p-3" id="table-trend-EURUSD"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">BTCUSD</span> (Bitcoin)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-BTCUSD">-</td>
-                <td class="p-3" id="table-trend-BTCUSD"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">ETHUSD</span> (Ethereum)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-ETHUSD">-</td>
-                <td class="p-3" id="table-trend-ETHUSD"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">GBPUSD</span> (Sterling)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-GBPUSD">-</td>
-                <td class="p-3" id="table-trend-GBPUSD"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
-              <tr class="hover:bg-gray-50/50 transition-colors">
-                <td class="p-3 font-sans font-bold flex items-center gap-1.5">
-                  <span class="text-blue-500 font-black">USDJPY</span> (Yen)
-                </td>
-                <td class="p-3 font-bold text-gray-900" id="table-price-USDJPY">-</td>
-                <td class="p-3" id="table-trend-USDJPY"><span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">CALCULATING</span></td>
-              </tr>
+            <tbody id="market-table-body" class="divide-y divide-gray-100 font-mono text-gray-800">
+              <!-- Filled dynamically -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- REVISED SECTION: RSS TO JSON MARKET NEWS WIDGET -->
+      <!-- NEWS WIDGET -->
       <div class="premium-card rounded-2xl p-4 mt-1">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
@@ -585,7 +632,6 @@
         </div>
       </div>
 
-      <!-- BIG REGISTRATION ACTION BUTTON -->
       <div class="relative overflow-hidden rounded-3xl p-6 text-center bg-gradient-to-br from-slate-900 via-slate-950 to-black border border-slate-800 shadow-2xl shadow-black/40">
         <div class="absolute -right-12 -top-12 w-28 h-28 bg-blue-500/10 rounded-full blur-2xl"></div>
         <div class="absolute -left-12 -bottom-12 w-28 h-28 bg-yellow-500/5 rounded-full blur-2xl"></div>
@@ -620,7 +666,7 @@
     <div class="premium-card rounded-2xl p-3 bg-gray-50 border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
       <div class="flex items-center gap-2 font-mono text-[10px] w-full sm:w-auto">
         <span class="text-brand-500 font-extrabold uppercase bg-blue-50 border border-blue-100/50 px-2 py-0.5 rounded-md">System Log:</span>
-        <span id="log-display" class="text-gray-500 truncate">Loading Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Miniature Engine...</span>
+        <span id="log-display" class="text-gray-500 truncate">Loading Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Miniature Engine...</span>
       </div>
       <div class="text-[10px] text-gray-400 font-semibold tracking-wide w-full sm:w-auto text-right shrink-0">
         &copy; 2026 CUANOLOGY AI • Strategic Wealth Logic
@@ -647,12 +693,9 @@
       }
     } catch (e) { }
 
-    // Utilitas Update Teks DOM Aman (Anti-Kedip/Flicker Fix)
     function safeUpdateText(elementId, newText) {
       const el = document.getElementById(elementId);
-      if (el && el.innerText !== newText) {
-        el.innerText = newText;
-      }
+      if (el && el.innerText !== newText) el.innerText = newText;
     }
 
     function writeLog(message) {
@@ -699,12 +742,9 @@
     }
 
     function loadTradingViewChart(pair, timeframe) {
-      let tvSymbol = "OANDA:XAUUSD";
-      if (pair === 'EURUSD') tvSymbol = "FX:EURUSD";
-      if (pair === 'BTCUSD') tvSymbol = "BINANCE:BTCUSDT";
-      if (pair === 'ETHUSD') tvSymbol = "BINANCE:ETHUSDT";
-      if (pair === 'GBPUSD') tvSymbol = "FX:GBPUSD";
-      if (pair === 'USDJPY') tvSymbol = "FX:USDJPY";
+      const param = assetParameters[pair];
+      if (!param) return;
+      const tvSymbol = param.tvSymbol;
 
       const container = document.getElementById('tradingview-container');
       if (!container) return;
@@ -731,15 +771,19 @@
       } catch(e) {}
     }
 
-    // BASE Market Initialization dengan Anchor Price
-    // Menambahkan inisialisasi trendScore random agar tabel Forex tidak terlihat "WAIT" secara bersamaan di awal
+    // ==========================================
+    // ASSET PARAMETERS (9 PAIR: Forex + XAU + 5 Crypto)
+    // ==========================================
     const assetParameters = {
-      XAUUSD: { type: 'METAL', anchorPrice: 2334.50, basePrice: 2334.50, trendScore: (Math.random()*4)-2, atr: 4.25, adr: 22.80, precision: 2 },
-      EURUSD: { type: 'FOREX', anchorPrice: 1.08540, basePrice: 1.08540, trendScore: (Math.random()*4)-2, atr: 0.00045, adr: 0.00680, precision: 5 },
-      BTCUSD: { type: 'CRYPTO', anchorPrice: 66840.00, basePrice: 66840.00, trendScore: (Math.random()*4)-2, atr: 850.00, adr: 3400.00, precision: 2 },
-      ETHUSD: { type: 'CRYPTO', anchorPrice: 3500.00, basePrice: 3500.00, trendScore: (Math.random()*4)-2, atr: 45.00, adr: 150.00, precision: 2 },
-      GBPUSD: { type: 'FOREX', anchorPrice: 1.26850, basePrice: 1.26850, trendScore: (Math.random()*4)-2, atr: 0.00062, adr: 0.00820, precision: 5 },
-      USDJPY: { type: 'FOREX', anchorPrice: 156.50, basePrice: 156.50, trendScore: (Math.random()*4)-2, atr: 0.85, adr: 1.20, precision: 3 }
+      XAUUSD:  { type: 'METAL',  cgId: 'pax-gold',         tvSymbol: 'OANDA:XAUUSD',        binanceSymbol: null,         anchorPrice: 2334.50, basePrice: 2334.50, trendScore: 0, atr: 4.25,    adr: 22.80,   precision: 2, icon: 'AU', color: '#f59e0b', change24h: 0 },
+      EURUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:EURUSD',           binanceSymbol: 'EURUSDT',    anchorPrice: 1.08540, basePrice: 1.08540, trendScore: 0, atr: 0.00045, adr: 0.00680, precision: 5, icon: '€',  color: '#2563eb', change24h: 0 },
+      GBPUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:GBPUSD',           binanceSymbol: 'GBPUSDT',    anchorPrice: 1.26850, basePrice: 1.26850, trendScore: 0, atr: 0.00062, adr: 0.00820, precision: 5, icon: '£',  color: '#7c3aed', change24h: 0 },
+      USDJPY:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:USDJPY',           binanceSymbol: null,         anchorPrice: 156.50,  basePrice: 156.50,  trendScore: 0, atr: 0.85,    adr: 1.20,    precision: 3, icon: '¥',  color: '#dc2626', change24h: 0 },
+      BTCUSD:  { type: 'CRYPTO', cgId: 'bitcoin',           tvSymbol: 'BINANCE:BTCUSDT',     binanceSymbol: 'BTCUSDT',    anchorPrice: 66840.00, basePrice: 66840.00, trendScore: 0, atr: 850.00, adr: 3400.00, precision: 2, icon: '₿',  color: '#f59e0b', change24h: 0 },
+      ETHUSD:  { type: 'CRYPTO', cgId: 'ethereum',          tvSymbol: 'BINANCE:ETHUSDT',     binanceSymbol: 'ETHUSDT',    anchorPrice: 3500.00, basePrice: 3500.00, trendScore: 0, atr: 45.00,  adr: 150.00,  precision: 2, icon: 'Ξ',  color: '#6366f1', change24h: 0 },
+      SOLUSD:  { type: 'CRYPTO', cgId: 'solana',            tvSymbol: 'BINANCE:SOLUSDT',     binanceSymbol: 'SOLUSDT',    anchorPrice: 175.50,  basePrice: 175.50,  trendScore: 0, atr: 4.50,   adr: 15.00,   precision: 2, icon: '◎',  color: '#14f195', change24h: 0 },
+      HYPEUSD: { type: 'CRYPTO', cgId: 'hyperliquid',       tvSymbol: 'MEXC:HYPEUSDT',       binanceSymbol: 'HYPEUSDT',   anchorPrice: 28.40,   basePrice: 28.40,   trendScore: 0, atr: 1.20,   adr: 4.50,    precision: 3, icon: 'H',  color: '#06b6d4', change24h: 0 },
+      TONUSD:  { type: 'CRYPTO', cgId: 'the-open-network',  tvSymbol: 'BINANCE:TONUSDT',     binanceSymbol: 'TONUSDT',    anchorPrice: 5.85,    basePrice: 5.85,    trendScore: 0, atr: 0.15,   adr: 0.55,    precision: 3, icon: '◆',  color: '#0098ea', change24h: 0 }
     };
 
     function selectAsset(pair, type) {
@@ -764,7 +808,6 @@
       writeLog(`Activated Real-time Feed for ${pair}`);
     }
 
-    // LOGIKA TRADING TERPISAH (FOREX / GOLD / CRYPTO)
     function calculateDynamicSMC(pair) {
       const param = assetParameters[pair];
       if (!param) return;
@@ -776,28 +819,18 @@
 
       param.entryPrice = base;
 
-      // Threshold lebih sensitif agar status lebih dominan SELL / BUY merespons pergerakan detik
       if (param.trendScore >= 0.8) {
-        param.decision = '🎯 BUY NOW';
-        param.grade = 'GRADE A';
+        param.decision = '🎯 BUY NOW'; param.grade = 'GRADE A';
       } else if (param.trendScore <= -0.8) {
-        param.decision = '🔴 SELL NOW';
-        param.grade = 'GRADE A';
+        param.decision = '🔴 SELL NOW'; param.grade = 'GRADE A';
       } else {
-        param.decision = '⚪ WAIT / STANDBY';
-        param.grade = 'GRADE C';
+        param.decision = '⚪ WAIT / STANDBY'; param.grade = 'GRADE C';
       }
 
-      // Ratio khusus untuk masing-masing instrumen (SL & TP Multipilier dari ATR)
       let slMultiplier = 1.5, tp1Mult = 1.0, tp2Mult = 2.0, tp3Mult = 3.5;
-      
-      if (param.type === 'FOREX') {
-        slMultiplier = 1.5; tp1Mult = 1.0; tp2Mult = 2.5; tp3Mult = 4.0;
-      } else if (param.type === 'METAL') {
-        slMultiplier = 2.0; tp1Mult = 1.5; tp2Mult = 3.0; tp3Mult = 5.0; // Emas butuh toleransi lebih besar
-      } else if (param.type === 'CRYPTO') {
-        slMultiplier = 2.5; tp1Mult = 2.0; tp2Mult = 4.0; tp3Mult = 8.0; // Kripto sangat volatile
-      }
+      if (param.type === 'FOREX') { slMultiplier = 1.5; tp1Mult = 1.0; tp2Mult = 2.5; tp3Mult = 4.0; }
+      else if (param.type === 'METAL') { slMultiplier = 2.0; tp1Mult = 1.5; tp2Mult = 3.0; tp3Mult = 5.0; }
+      else if (param.type === 'CRYPTO') { slMultiplier = 2.5; tp1Mult = 2.0; tp2Mult = 4.0; tp3Mult = 8.0; }
 
       if (param.decision.includes('BUY')) {
         const slPrice = base - (slMultiplier * atr);
@@ -806,7 +839,6 @@
         param.tp2Offset = (tp2Mult * atr);
         param.tp3Offset = (tp3Mult * atr);
         
-        // Narasi Analis berbeda setiap Market
         if (param.type === 'CRYPTO') {
             param.expert1 = `🟢 ACCUMULATION BLOCK. Whale tier memborong likuiditas pada batas support historis.`;
             param.expert2 = `📊 Volume On-Chain menunjukkan inflow besar. Minim resiko short term.`;
@@ -820,8 +852,7 @@
             param.expert2 = `📊 Volume profile menunjukkan dominasi akumulasi di area Entry live saat ini.`;
             param.expert3 = `📈 Indikator momentum memberikan konfirmasi pergerakan pro-trend mata uang.`;
         }
-      } 
-      else if (param.decision.includes('SELL')) {
+      } else if (param.decision.includes('SELL')) {
         const slPrice = base + (slMultiplier * atr);
         param.slOffset = slPrice - base;
         param.tp1Offset = -(tp1Mult * atr);
@@ -841,21 +872,19 @@
             param.expert2 = `📊 Distribusi massif. Market maker mulai mengosongkan inventaris pada level ini.`;
             param.expert3 = `📉 Harga break dibawah VWAP memicu trigger order algo-trading bearish.`;
         }
-      } 
-      else {
+      } else {
         param.slOffset = 0; param.tp1Offset = 0; param.tp2Offset = 0; param.tp3Offset = 0;
         param.expert1 = `⚪ REJECTION OB. Konsolidasi harga mengindikasikan pasar sedang mencari keseimbangan.`;
         param.expert2 = `📊 Volume transaksi di bawah rata-rata. Tidak ada dominasi arah market.`;
         param.expert3 = `📉 Harga terjepit mendatar (flat). Standby menjaga ekuitas.`;
       }
 
-      // Rekomendasi Lot Sizing berdasarkan standard per instrumen ($10,000 acc)
       const riskPoints = Math.abs(param.slOffset);
       let lotVal = 0.05;
       if (riskPoints > 0) {
         if (param.type === 'METAL') lotVal = 100 / (riskPoints * 100);
         else if (param.type === 'CRYPTO') lotVal = 100 / riskPoints;
-        else { // FOREX
+        else {
           if (pair.includes('JPY')) lotVal = 100 / (riskPoints * 1000); 
           else { const pips = riskPoints / 0.0001; lotVal = 100 / (pips * 10); }
         }
@@ -866,12 +895,10 @@
       const r3 = base + (adr * 0.25);
       const s3 = base - (adr * 0.25);
       param.camarilla = `S3: ${s3.toFixed(precision)} | Pivot: ${pivot.toFixed(precision)} | R3: ${r3.toFixed(precision)}`;
-
       param.slope = param.decision.includes('BUY') ? `+${(adr*0.02).toFixed(precision)} (Bullish)` : 
                     param.decision.includes('SELL') ? `-${(adr*0.02).toFixed(precision)} (Bearish)` : `0.00 (Flat)`;
     }
 
-    // UPDATE UI SIGNAL DENGAN LOGIKA ANTI-KEDIP (Flicker Fix)
     function updateSignalUI(pair) {
       const param = assetParameters[pair];
       if (!param) return;
@@ -887,10 +914,8 @@
       const signalGlow = document.getElementById('signal-glow');
       const gradeBadge = document.getElementById('signal-grade');
 
-      // Hindari update innerHTML jika status belum berganti (Anti Kedip)
       if (decBadge.dataset.status !== param.decision) {
           decBadge.dataset.status = param.decision;
-
           if (param.decision.includes('BUY')) {
             decBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> ACTIVE SIGNAL';
             decBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-full text-[10px] font-bold mb-1 shadow-inner transition-colors";
@@ -918,7 +943,7 @@
       const cro = document.getElementById('cro-action');
 
       function styleBadge(badge, text) {
-        if (!badge || badge.innerText === text) return; // Anti kedip
+        if (!badge || badge.innerText === text) return;
         badge.innerText = text;
         if (text.includes("BUY") || text.includes("APP")) badge.className = "bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner transition-colors";
         else if (text.includes("SELL") || text.includes("REJ")) badge.className = "bg-red-50 border border-red-100 text-red-600 font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-inner transition-colors";
@@ -955,7 +980,6 @@
           const newText = isWait ? '-' : (base + offsets[index]).toFixed(precision);
           if (el.innerText !== newText) {
              el.innerText = newText;
-             // Trigger flash hijau HANYA saat angka berganti (Anti Kedip Berlebihan)
              if (id === 'entry-price') {
                  el.classList.remove('flash-update');
                  void el.offsetWidth;
@@ -987,65 +1011,112 @@
     }
 
     // ==========================================
-    // REAL-TIME PRICE ENGINE (TIDAK ADA LAGI TULISAN "WAIT" ABADI)
+    // REAL-TIME PRICE ENGINE (Binance + CoinGecko + OpenER)
+    // Mengambil harga langsung dari exchange yang sama dengan chart TradingView
     // ==========================================
     async function fetchRealtimePrices() {
       try {
-        const [coinGeckoRes, openErRes] = await Promise.all([
-          fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold,bitcoin,ethereum&vs_currencies=usd').catch(()=>null),
-          fetch('https://open.er-api.com/v6/latest/USD').catch(()=>null)
-        ]);
+        // 1. Binance API — untuk crypto (akurat, sinkron dengan chart BINANCE:*)
+        const binanceSymbols = Object.entries(assetParameters)
+          .filter(([_, p]) => p.binanceSymbol)
+          .map(([_, p]) => `"${p.binanceSymbol}"`)
+          .join(',');
         
-        if (coinGeckoRes && coinGeckoRes.ok) {
-          const data = await coinGeckoRes.json();
-          if (data['pax-gold']?.usd) assetParameters.XAUUSD.anchorPrice = data['pax-gold'].usd;
-          if (data.bitcoin?.usd) assetParameters.BTCUSD.anchorPrice = data.bitcoin.usd;
-          if (data.ethereum?.usd) assetParameters.ETHUSD.anchorPrice = data.ethereum.usd;
+        if (binanceSymbols) {
+          try {
+            const bRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=[${binanceSymbols}]`);
+            if (bRes.ok) {
+              const bData = await bRes.json();
+              bData.forEach(ticker => {
+                const entry = Object.entries(assetParameters).find(([_, p]) => p.binanceSymbol === ticker.symbol);
+                if (entry) {
+                  const [pairKey, param] = entry;
+                  const newPrice = parseFloat(ticker.lastPrice);
+                  const change = parseFloat(ticker.priceChangePercent);
+                  if (!isNaN(newPrice)) {
+                    param.anchorPrice = newPrice;
+                    param.change24h = change;
+                  }
+                }
+              });
+              writeLog("Binance feed synced — crypto prices chart-aligned.");
+            }
+          } catch (e) {
+            console.warn("Binance fetch failed, using CoinGecko fallback");
+          }
         }
-        
-        if (openErRes && openErRes.ok) {
-          const data = await openErRes.json();
-          if (data.rates?.EUR) assetParameters.EURUSD.anchorPrice = 1 / data.rates.EUR;
-          if (data.rates?.GBP) assetParameters.GBPUSD.anchorPrice = 1 / data.rates.GBP;
-          if (data.rates?.JPY) assetParameters.USDJPY.anchorPrice = data.rates.JPY;
+
+        // 2. CoinGecko — untuk XAU, HYPE, TON (jika tidak ada di Binance)
+        try {
+          const cgIds = Object.values(assetParameters)
+            .filter(p => p.cgId && !p.binanceSymbol)
+            .map(p => p.cgId)
+            .join(',');
+          
+          if (cgIds) {
+            const cgRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cgIds}&vs_currencies=usd&include_24hr_change=true`);
+            if (cgRes.ok) {
+              const cgData = await cgRes.json();
+              Object.entries(assetParameters).forEach(([pairKey, param]) => {
+                if (param.cgId && !param.binanceSymbol && cgData[param.cgId]) {
+                  param.anchorPrice = cgData[param.cgId].usd;
+                  param.change24h = cgData[param.cgId].usd_24h_change || 0;
+                }
+              });
+            }
+          }
+        } catch (e) {
+          console.warn("CoinGecko fetch failed");
         }
+
+        // 3. OpenER — untuk Forex (EURUSD, GBPUSD, USDJPY)
+        try {
+          const fxRes = await fetch('https://open.er-api.com/v6/latest/USD');
+          if (fxRes.ok) {
+            const fxData = await fxRes.json();
+            if (fxData.rates?.EUR) assetParameters.EURUSD.anchorPrice = 1 / fxData.rates.EUR;
+            if (fxData.rates?.GBP) assetParameters.GBPUSD.anchorPrice = 1 / fxData.rates.GBP;
+            if (fxData.rates?.JPY) assetParameters.USDJPY.anchorPrice = fxData.rates.JPY;
+          }
+        } catch (e) {}
+
+        // Update UI ticker dan tabel
+        Object.keys(assetParameters).forEach(pair => {
+          updatePriceState(pair, assetParameters[pair].anchorPrice);
+        });
+        renderTicker();
+        renderMarketTable();
       } catch (e) {
         console.warn("Pricing Fetch Drop:", e.message);
       }
     }
 
-    // SIMULATOR MARKET TICKS - Ini yang membuat harga bergerak tiap 2.5 detik meskipun API nge-cache
+    // Micro-tick simulation untuk feel MT4 (antara fetch API)
     function simulateMarketTicks() {
-        let shouldUpdateDashboard = false;
-        
-        for (let pair in assetParameters) {
-            const param = assetParameters[pair];
-            if (!param.anchorPrice) continue;
-            
-            // Tambahkan noise random kecil (+/- 0.02% variance) ke Anchor API agar terlihat hidup (MT4 feel)
-            const noise = param.anchorPrice * (Math.random() * 0.0004 - 0.0002);
-            const simulatedPrice = param.anchorPrice + noise;
-            
-            if (updatePriceState(pair, simulatedPrice) && currentAsset === pair) {
-                shouldUpdateDashboard = true;
-            }
+      let shouldUpdateDashboard = false;
+      for (let pair in assetParameters) {
+        const param = assetParameters[pair];
+        if (!param.anchorPrice) continue;
+        const noise = param.anchorPrice * (Math.random() * 0.0003 - 0.00015);
+        const simulatedPrice = param.anchorPrice + noise;
+        if (updatePriceState(pair, simulatedPrice) && currentAsset === pair) {
+          shouldUpdateDashboard = true;
         }
-        
-        if (shouldUpdateDashboard) updateDashboardPrices();
+      }
+      if (shouldUpdateDashboard) updateDashboardPrices();
+      renderTicker();
     }
 
     function updatePriceState(pair, newPrice) {
       const oldPrice = assetParameters[pair].basePrice;
-      if (newPrice === oldPrice) return false; // Abaikan jika tidak bergerak (Anti-Kedip)
+      if (newPrice === oldPrice) return false;
 
       assetParameters[pair].basePrice = newPrice;
       
       let ts = assetParameters[pair].trendScore || 0;
-      // Perkuat bias agar jarang terjadi status "WAIT" (lebih sering Buy / Sell)
       if (newPrice > oldPrice) ts += (Math.random() * 1.5) + 0.5;
       else if (newPrice < oldPrice) ts -= (Math.random() * 1.5) + 0.5;
-      
-      ts *= 0.90; // Decay (penyusutan netralisasi)
+      ts *= 0.90;
       assetParameters[pair].trendScore = Math.max(-4, Math.min(4, ts));
 
       const precision = assetParameters[pair].precision;
@@ -1056,50 +1127,105 @@
         if (newPrice > oldPrice) el.className = `price-val text-[10px] font-bold transition-colors ${isActive ? 'text-emerald-300' : 'text-emerald-600'}`;
         else el.className = `price-val text-[10px] font-bold transition-colors ${isActive ? 'text-red-300' : 'text-red-600'}`;
       }
+      return true;
+    }
 
-      // Update Ticker Global (Bagian Tabel Forex Market)
-      const tablePrice = document.getElementById(`table-price-${pair}`);
-      const tableTrend = document.getElementById(`table-trend-${pair}`);
-      if (tablePrice && tablePrice.innerText !== newPrice.toFixed(precision)) {
-         tablePrice.innerText = newPrice.toFixed(precision);
-         
-         let trendHtml = '';
-         if (ts >= 0.8) {
-            trendHtml = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🟢 BUY</span>';
-         } else if (ts <= -0.8) {
-            trendHtml = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🔴 SELL</span>';
-         } else {
-            trendHtml = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">⚪ WAIT</span>';
-         }
+    // ==========================================
+    // RUNNING TEXT (TICKER) RENDERER
+    // ==========================================
+    function renderTicker() {
+      const track = document.getElementById('ticker-track');
+      if (!track) return;
+      
+      let html = '';
+      Object.entries(assetParameters).forEach(([pair, param]) => {
+        const price = param.basePrice ? param.basePrice.toFixed(param.precision) : '--';
+        const change = param.change24h || 0;
+        const changeClass = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+        const changeSign = change > 0 ? '+' : '';
+        const changeIcon = change > 0 ? '▲' : change < 0 ? '▼' : '—';
+        const iconColor = param.color;
+        const iconText = param.icon;
+        
+        html += `
+          <div class="ticker-item" data-pair="${pair}">
+            <span class="ticker-icon" style="background:${iconColor};">${iconText}</span>
+            <span class="ticker-symbol">${pair.replace('USD','/USD')}</span>
+            <span class="ticker-price" id="tk-price-${pair}">${price}</span>
+            <span class="ticker-change ${changeClass}">${changeIcon} ${changeSign}${change.toFixed(2)}%</span>
+          </div>
+        `;
+      });
+      
+      // Duplikasi untuk seamless infinite loop
+      track.innerHTML = html + html;
+    }
 
-         if (tableTrend && tableTrend.innerHTML !== trendHtml) {
-             tableTrend.innerHTML = trendHtml;
-         }
-      }
-
-      return true; // Menandakan ada render
+    // ==========================================
+    // MARKET TABLE RENDERER
+    // ==========================================
+    function renderMarketTable() {
+      const tbody = document.getElementById('market-table-body');
+      if (!tbody) return;
+      
+      const assetLabels = {
+        XAUUSD: { name: 'Gold', color: '#f59e0b', icon: 'AU' },
+        EURUSD: { name: 'Euro', color: '#2563eb', icon: '€' },
+        GBPUSD: { name: 'Sterling', color: '#7c3aed', icon: '£' },
+        USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' },
+        BTCUSD: { name: 'Bitcoin', color: '#f59e0b', icon: '₿' },
+        ETHUSD: { name: 'Ethereum', color: '#6366f1', icon: 'Ξ' },
+        SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
+        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' },
+        TONUSDT: { name: 'Toncoin', color: '#0098ea', icon: '◆' }
+      };
+      
+      tbody.innerHTML = Object.entries(assetParameters).map(([pair, param]) => {
+        const label = assetLabels[pair] || { name: pair, color: '#64748b', icon: '?' };
+        const price = param.basePrice ? param.basePrice.toFixed(param.precision) : '--';
+        const change = param.change24h || 0;
+        const changeClass = change > 0 ? 'text-emerald-600' : change < 0 ? 'text-red-600' : 'text-gray-500';
+        const changeSign = change > 0 ? '+' : '';
+        const ts = param.trendScore || 0;
+        
+        let trendHtml;
+        if (ts >= 0.8) {
+          trendHtml = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🟢 BUY</span>';
+        } else if (ts <= -0.8) {
+          trendHtml = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🔴 SELL</span>';
+        } else {
+          trendHtml = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">⚪ WAIT</span>';
+        }
+        
+        return `
+          <tr class="hover:bg-gray-50/50 transition-colors cursor-pointer" onclick="selectAsset('${pair}','${param.type}');switchTab('dashboard');">
+            <td class="p-3 font-sans font-bold flex items-center gap-1.5">
+              <span class="ticker-icon" style="background:${label.color};">${label.icon}</span>
+              <span class="text-blue-500 font-black">${pair.replace('USD','')}</span>
+              <span class="text-gray-400 text-[10px] font-normal">(${label.name})</span>
+            </td>
+            <td class="p-3 font-bold text-gray-900">${price}</td>
+            <td class="p-3 font-bold ${changeClass}">${changeSign}${change.toFixed(2)}%</td>
+            <td class="p-3">${trendHtml}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     async function fetchNews() {
       const container = document.getElementById('news-container');
-      
       try {
         const rssUrl = encodeURIComponent('https://www.investing.com/rss/market_overview.rss');
         const url = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
-        
         const res = await fetch(url);
         if (!res.ok) throw new Error("RSS2JSON API failed");
-        
         const data = await res.json();
         if (data.status !== 'ok' || !data.items || data.items.length === 0) throw new Error("No news items");
-        
         const newsItems = data.items.slice(0, 5);
-        
         container.innerHTML = newsItems.map(news => {
           const dateObj = new Date(news.pubDate.replace(/-/g, '/')); 
           const time = dateObj.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
           const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' });
-          
           return `
             <a href="${news.link}" target="_blank" class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition-colors block">
               <div class="flex items-center gap-2.5 pr-2">
@@ -1117,22 +1243,17 @@
                 <span class="uppercase">${day}</span>
                 <span>${time}</span>
               </div>
-            </a>
-          `;
+            </a>`;
         }).join('');
-        
       } catch(e) {
-        console.warn("Primary news fetch failed, trying fallback...", e);
         try {
           const fbRes = await fetch('https://min-api.cryptocompare.com/data/v2/news/?lang=EN');
           const fbData = await fbRes.json();
           const fbItems = fbData.Data.slice(0, 5);
-          
           container.innerHTML = fbItems.map(news => {
             const dateObj = new Date(news.published_on * 1000);
             const time = dateObj.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit' });
             const day = dateObj.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', day: '2-digit', month: 'short' });
-            
             return `
               <a href="${news.url}" target="_blank" class="flex items-center justify-between p-2.5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-gray-100 transition-colors block">
                 <div class="flex items-center gap-2.5 pr-2">
@@ -1150,11 +1271,9 @@
                   <span class="uppercase">${day}</span>
                   <span>${time}</span>
                 </div>
-              </a>
-            `;
+              </a>`;
           }).join('');
         } catch(fallbackErr) {
-           console.warn("Fallback failed", fallbackErr);
            container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar. Silakan periksa koneksi internet Anda.</div>';
         }
       }
@@ -1164,10 +1283,8 @@
       const btn = document.getElementById('refresh-btn');
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin"></i> CALCULATING BAYESIAN ODDS...`;
-      
       const param = assetParameters[currentAsset];
       param.trendScore = (Math.random() * 8) - 4; 
-      
       setTimeout(() => {
         btn.disabled = false;
         btn.innerHTML = `<i class="fa-solid fa-arrows-rotate animate-spin-slow"></i> TRIGGER Quant ANALYSIS`;
@@ -1180,7 +1297,6 @@
       const now = new Date();
       const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) + ' WIB';
       safeUpdateText('live-clock', timeStr);
-      
       const utcHour = now.getUTCHours();
       updateSessionStatus('sess-sydney', (utcHour >= 22 || utcHour < 7));
       updateSessionStatus('sess-tokyo', (utcHour >= 0 && utcHour < 9));
@@ -1191,39 +1307,33 @@
     function updateSessionStatus(id, isActive) {
       const el = document.getElementById(id);
       if (!el) return;
-      
       const dot = el.children[0];
       const label = el.children[1];
-      
       const activeDotClass = "w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.7)] transition-colors";
       const activeLabelClass = "text-blue-600 font-extrabold transition-colors";
       const inactiveDotClass = "w-1.5 h-1.5 rounded-full bg-gray-300 transition-colors";
       const inactiveLabelClass = "text-gray-400 font-semibold transition-colors";
-
       if (isActive && dot.className !== activeDotClass) {
-        dot.className = activeDotClass;
-        label.className = activeLabelClass;
+        dot.className = activeDotClass; label.className = activeLabelClass;
       } else if (!isActive && dot.className !== inactiveDotClass) {
-        dot.className = inactiveDotClass;
-        label.className = inactiveLabelClass;
+        dot.className = inactiveDotClass; label.className = inactiveLabelClass;
       }
     }
 
     function initializeApp() {
+      renderTicker();
+      renderMarketTable();
       selectAsset('XAUUSD', 'METAL');
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Ambil Base Data API tiap 15 detik
       fetchRealtimePrices();
       fetchNews();
       setInterval(fetchRealtimePrices, 15000); 
       setInterval(fetchNews, 300000); 
-
-      // Suntik Micro-Tick Volatilitas ke UI (Seolah Harga Asli MT4 Tiap 2.5 Detik)
       setInterval(simulateMarketTicks, 2500);
       
-      writeLog("Cuandology Live Signaling Engine V4.0 Online.");
+      writeLog("Cuandology Live Signaling Engine V5.0 — Ticker & Chart-Aligned Pricing Online.");
     }
 
     if (document.readyState === 'loading') {
