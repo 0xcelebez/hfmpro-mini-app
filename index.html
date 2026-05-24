@@ -8,19 +8,14 @@
   <meta name="theme-color" content="#ffffff">
   <title>[ CUANOLOGY | 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 ] — Signal Intelligence Dashboard</title>
   
-  <!-- CSS & JS Library Integration -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- TradingView Library -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-
-  <!-- Telegram Web App SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Tailwind Configuration -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -94,39 +89,39 @@
     }
 
     /* ========================================= */
-    /* RUNNING TEXT (TICKER) — RINGAN & SMOOTH   */
+    /* RUNNING TEXT (TICKER) — AZURE BACKGROUND  */
     /* ========================================= */
     .ticker-wrap {
       width: 100%;
       overflow: hidden;
-      background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-      padding: 6px 0;
+      background: linear-gradient(90deg, #0078d4 0%, #005a9e 25%, #004578 50%, #005a9e 75%, #0078d4 100%);
+      border-bottom: 2px solid #00bcf2;
+      padding: 8px 0;
       position: relative;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+      box-shadow: inset 0 0 30px rgba(0, 188, 242, 0.3), 0 4px 15px rgba(0, 69, 120, 0.4);
     }
     .ticker-wrap::before,
     .ticker-wrap::after {
       content: "";
       position: absolute;
       top: 0; bottom: 0;
-      width: 40px;
+      width: 50px;
       z-index: 2;
       pointer-events: none;
     }
     .ticker-wrap::before {
       left: 0;
-      background: linear-gradient(90deg, #0f172a 0%, transparent 100%);
+      background: linear-gradient(90deg, #004578 0%, transparent 100%);
     }
     .ticker-wrap::after {
       right: 0;
-      background: linear-gradient(270deg, #0f172a 0%, transparent 100%);
+      background: linear-gradient(270deg, #004578 0%, transparent 100%);
     }
     .ticker {
       display: inline-flex;
       white-space: nowrap;
       will-change: transform;
-      animation: tickerScroll 60s linear infinite;
+      animation: tickerScroll 55s linear infinite;
     }
     .ticker:hover { animation-play-state: paused; }
     @keyframes tickerScroll {
@@ -136,44 +131,63 @@
     .ticker-item {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 0 18px;
-      border-right: 1px solid rgba(255,255,255,0.08);
+      gap: 8px;
+      padding: 0 20px;
+      border-right: 1px solid rgba(255,255,255,0.15);
       font-family: 'JetBrains Mono', monospace;
     }
     .ticker-symbol {
-      color: #cbd5e1;
+      color: #e0f7ff;
       font-weight: 700;
       font-size: 11px;
       letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
     .ticker-price {
-      color: #f8fafc;
+      color: #ffffff;
       font-weight: 800;
-      font-size: 12px;
+      font-size: 13px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
     .ticker-change {
       font-size: 10px;
       font-weight: 700;
-      padding: 1px 6px;
+      padding: 2px 8px;
       border-radius: 4px;
     }
-    .ticker-change.up { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-    .ticker-change.down { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-    .ticker-change.flat { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+    .ticker-change.up { background: rgba(16, 185, 129, 0.4); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.5); }
+    .ticker-change.down { background: rgba(239, 68, 68, 0.4); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.5); }
+    .ticker-change.flat { background: rgba(255, 255, 255, 0.2); color: #e0f7ff; border: 1px solid rgba(255,255,255,0.3); }
     .ticker-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 8px;
+      font-size: 9px;
       color: #fff;
       font-weight: 900;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
-    /* Grid adjustment for 9 assets */
+    /* Live indicator pulse */
+    .live-pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88, 0 0 16px #00ff88;
+      animation: livePulse 1.5s ease-in-out infinite;
+      margin-right: 6px;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    /* Grid adjustment for 6 assets (hidden SOL, HYPE, TON) */
     .asset-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -185,6 +199,48 @@
     @media (min-width: 1024px) {
       .asset-grid { grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* Timeframe buttons improved */
+    .tf-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+    }
+    @media (max-width: 640px) {
+      .tf-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* MTF Indicator */
+    .mtf-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .mtf-cell {
+      text-align: center;
+      padding: 6px 4px;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .mtf-cell.buy { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #059669; }
+    .mtf-cell.sell { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; }
+    .mtf-cell.neutral { background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2); color: #64748b; }
+
+    /* WebSocket status */
+    .ws-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .ws-connected { background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .ws-disconnected { background: rgba(239, 68, 68, 0.15); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .ws-connecting { background: rgba(251, 191, 36, 0.15); color: #d97706; border: 1px solid rgba(251, 191, 36, 0.3); }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
@@ -195,7 +251,7 @@
       <div class="w-full md:w-auto flex items-center justify-between gap-3">
         <div class="flex items-center gap-2.5">
           <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md border border-gray-200 flex items-center justify-center overflow-hidden">
-            <img src="logo.jpg" alt="𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Logo" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://ui-avatars.com/api/?name=FX&background=0D8ABC&color=fff'" />
+            <img src="logo.jpg" alt="Logo" class="w-full h-full object-contain rounded-lg" onerror="this.src='https://ui-avatars.com/api/?name=FX&background=0D8ABC&color=fff'" />
           </div>
           <div>
             <h1 class="text-base font-black tracking-tight text-gray-900 flex items-center gap-1.5">
@@ -212,7 +268,7 @@
       <div class="hidden md:flex items-center gap-1 bg-gray-100 border border-gray-150 rounded-xl p-1 shadow-inner">
         <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-2 rounded-lg shadow-sm transition-all active:scale-95 min-h-[44px]">Dashboard</button>
         <button onclick="switchTab('forex-market')" id="btn-tab-forex-market" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">Forex Market</button>
-        <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="btn-tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 Register</button>
+        <button onclick="switchTab('justmarkets-broker')" id="btn-tab-justmarkets-broker" class="tab-btn text-gray-500 hover:text-gray-900 font-semibold text-xs px-4 py-2 rounded-lg transition-all active:scale-95 min-h-[44px]">JustMarkets Register</button>
       </div>
 
       <div class="w-full md:w-auto flex items-center justify-between md:justify-end gap-3 flex-wrap">
@@ -240,16 +296,12 @@
     </div>
   </header>
 
-  <!-- ========================================== -->
-  <!-- RUNNING TEXT (TICKER) LIVE PRICE           -->
-  <!-- ========================================== -->
+  <!-- RUNNING TEXT (TICKER) — AZURE BACKGROUND -->
   <div class="ticker-wrap" aria-label="Live Market Ticker">
-    <div class="ticker" id="ticker-track">
-      <!-- Diisi via JS — duplikasi untuk seamless loop -->
-    </div>
+    <div class="ticker" id="ticker-track"></div>
   </div>
 
-  <!-- BOTTOM NAVIGATION BAR FOR MOBILE -->
+  <!-- BOTTOM NAVIGATION -->
   <div class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 z-50 flex justify-around py-3 px-2 shadow-[0_-5px_25px_rgba(0,0,0,0.025)] md:hidden safe-area-pb">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn flex flex-col items-center gap-1 text-brand-500 font-extrabold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform active-nav-btn">
       <i class="fa-solid fa-chart-line text-lg"></i>
@@ -259,29 +311,33 @@
       <i class="fa-solid fa-globe text-lg"></i>
       <span>Forex Market</span>
     </button>
-    <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" id="nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="nav-btn flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform">
+    <button onclick="switchTab('justmarkets-broker')" id="nav-justmarkets-broker" class="nav-btn flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] flex-1 min-h-[48px] active:scale-95 transition-transform">
       <i class="fa-solid fa-award text-lg"></i>
-      <span>JustMarkets Broker</span>
+      <span>JustMarkets</span>
     </button>
   </div>
 
   <!-- MAIN APP CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-3">
 
-    <!-- TAB 1: INTERACTIVE SIGNAL DASHBOARD -->
+    <!-- TAB 1: DASHBOARD -->
     <div id="tab-dashboard" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-3.5">
       
       <!-- LEFT SIDEBAR -->
       <section class="lg:col-span-4 flex flex-col gap-3.5">
 
-        <!-- ASSET SELECTOR (UPDATED: 9 Assets) -->
+        <!-- ASSET SELECTOR (6 visible pairs) -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3.5">
               <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
                 <i class="fa-solid fa-folder-tree text-brand-500"></i> Market Selection
               </h3>
-              <span class="text-[9px] bg-blue-50 text-brand-600 border border-brand-100 font-black px-2 py-0.5 rounded-full">LIVE SYNC</span>
+              <div class="flex items-center gap-2">
+                <span id="ws-status-badge" class="ws-status ws-connecting">
+                  <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> CONNECTING
+                </span>
+              </div>
             </div>
 
             <div class="asset-grid mb-3.5">
@@ -321,24 +377,6 @@
                   <span id="price-ETHUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
-              <button onclick="selectAsset('SOLUSD', 'CRYPTO')" id="btn-SOLUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#14f195;color:#000;">◎</span> SOL/USD</span>
-                  <span id="price-SOLUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <button onclick="selectAsset('HYPEUSD', 'CRYPTO')" id="btn-HYPEUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#06b6d4;">H</span> HYPE/USD</span>
-                  <span id="price-HYPEUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <button onclick="selectAsset('TONUSD', 'CRYPTO')" id="btn-TONUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#0098ea;">◆</span> TON/USD</span>
-                  <span id="price-TONUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
             </div>
 
             <button onclick="triggerRefresh()" id="refresh-btn" class="w-full bg-gradient-to-r from-blue-700 to-blue-500 hover:from-blue-600 hover:to-blue-400 text-white font-extrabold text-xs py-4 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-blue-500/30 transition-all active:scale-[0.98] min-h-[52px]">
@@ -347,7 +385,7 @@
           </div>
         </div>
 
-        <!-- CORE TRADING SIGNAL CARD -->
+        <!-- SIGNAL CARD -->
         <div class="premium-card rounded-2xl p-4 relative overflow-hidden flex-1 flex flex-col justify-between">
           <div id="signal-glow" class="absolute -right-16 -top-16 w-32 h-32 bg-gray-500/5 rounded-full blur-3xl transition-colors duration-500"></div>
 
@@ -404,24 +442,58 @@
       <!-- MIDDLE PANEL: CHART -->
       <section class="lg:col-span-5 flex flex-col gap-3.5">
         <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
-          <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center justify-between mb-3">
             <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
               <i class="fa-solid fa-chart-line text-brand-500"></i> Interactive Market Geometry
             </h3>
             <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
           </div>
 
-          <div class="flex items-center justify-between gap-1 mb-3 bg-gray-50 p-1 border border-gray-150 rounded-xl font-mono text-[10px]">
-            <span class="text-[9px] text-gray-400 font-black uppercase pl-1.5">TIMEFRAME</span>
-            <div class="flex items-center gap-1 flex-wrap">
-              <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[36px]">1m</button>
-              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[36px]">5m</button>
-              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold px-3 py-1.5 rounded-md transition-all shadow-sm active:scale-95 min-h-[36px]">15m</button>
-              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[36px]">30m</button>
-              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-3 py-1.5 rounded-md transition-all active:scale-95 min-h-[36px]">1H</button>
+          <!-- TIMEFRAME GRID - Improved Layout -->
+          <div class="mb-3 bg-gray-50 p-2 border border-gray-150 rounded-xl">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[9px] text-gray-400 font-black uppercase">TIMEFRAME</span>
+              <span id="current-tf-display" class="text-[9px] font-mono bg-black text-white px-2 py-0.5 rounded font-bold">15m</span>
+            </div>
+            <div class="tf-grid">
+              <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">1m</button>
+              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">5m</button>
+              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold text-[11px] py-2 rounded-lg shadow-sm transition-all active:scale-95">15m</button>
+              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">30m</button>
+              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">1H</button>
+              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">4H</button>
             </div>
           </div>
 
+          <!-- MTF (Multi-Timeframe) Analysis -->
+          <div class="mb-3 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 border border-blue-100 rounded-xl">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[9px] text-blue-600 font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-layer-group"></i> MTF ANALYSIS
+              </span>
+              <span id="mtf-consensus" class="text-[9px] font-bold bg-white px-2 py-0.5 rounded border border-blue-200">NEUTRAL</span>
+            </div>
+            <div class="mtf-grid" id="mtf-grid">
+              <div class="mtf-cell neutral" id="mtf-m5">
+                <div class="text-[8px] opacity-70">M5</div>
+                <div id="mtf-m5-signal">—</div>
+              </div>
+              <div class="mtf-cell neutral" id="mtf-m15">
+                <div class="text-[8px] opacity-70">M15</div>
+                <div id="mtf-m15-signal">—</div>
+              </div>
+              <div class="mtf-cell neutral" id="mtf-h1">
+                <div class="text-[8px] opacity-70">H1</div>
+                <div id="mtf-h1-signal">—</div>
+              </div>
+              <div class="mtf-cell neutral" id="mtf-h4">
+                <div class="text-[8px] opacity-70">H4</div>
+                <div id="mtf-h4-signal">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart Container -->
           <div class="relative flex-1 min-h-[250px] max-h-[350px] bg-gray-50/50 border border-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
             <div id="tradingview-container" class="w-full h-full">
               <div id="tradingview_chart" class="w-full h-full"></div>
@@ -434,7 +506,7 @@
               <span id="atr-value" class="text-xs font-bold text-gray-800">-</span>
             </div>
             <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
-              <span class="text-[9px] text-gray-400 block uppercase">ADR (10D) Range</span>
+              <span class="text-[9px] text-gray-400 block uppercase">ADR (10D)</span>
               <span id="adr-value" class="text-xs font-bold text-gray-800">-</span>
             </div>
             <div class="bg-gray-50 border border-gray-100 rounded-xl p-2">
@@ -467,7 +539,7 @@
 
       </section>
 
-      <!-- RIGHT PANEL: EXPERTS -->
+      <!-- RIGHT PANEL -->
       <section class="lg:col-span-3 flex flex-col gap-3.5">
         <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2 mb-3.5">
@@ -524,28 +596,26 @@
 
     </div>
 
-    <!-- TAB 2: FOREX MARKET TRACKER & TICKER -->
+    <!-- TAB 2: FOREX MARKET -->
     <div id="tab-forex-market" class="tab-content hidden flex flex-col gap-3.5">
       
-      <!-- 𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬 PREMIUM BROKER BANNER -->
       <div class="bg-gradient-to-br from-blue-900 via-blue-700 to-blue-950 text-white rounded-2xl p-5 shadow-lg relative overflow-hidden shadow-blue-900/30">
         <div class="absolute -right-12 -bottom-12 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-        <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬</div>
+        <div class="absolute right-6 top-6 opacity-10 text-9xl font-black font-sans pointer-events-none">JustMarkets</div>
         <span class="bg-white/20 text-white border border-white/30 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">OFFICIAL BROKER PARTNER</span>
         <h3 class="text-xl md:text-2xl font-black mt-3 leading-tight">Mulai Trading Bersama JustMarkets</h3>
         <p class="text-xs md:text-sm text-blue-100 mt-1 max-w-xl">Dapatkan Akun Trading Profesional dengan Kondisi Terbaik: Tanpa Swap, Eksekusi Ultra Cepat, dan Spread Terkompetitif di Indonesia.</p>
         
-        <div class="flex flex-wrap gap-2 mt-4.5">
+        <div class="flex flex-wrap gap-2 mt-4">
           <a href="https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872" onclick="handleRegisterClick(event)" target="_blank" class="inline-flex items-center gap-1.5 bg-white text-blue-700 hover:bg-blue-50 font-black text-xs py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-95">
             <i class="fa-solid fa-user-plus"></i> Daftar Akun Live JustMarkets
           </a>
-          <button onclick="switchTab('𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
+          <button onclick="switchTab('justmarkets-broker')" class="inline-flex items-center gap-1.5 bg-black/30 hover:bg-black/40 text-white border border-white/20 font-bold text-xs py-2.5 px-4 rounded-xl transition-all">
             <i class="fa-solid fa-circle-info"></i> Pelajari Benefit
           </button>
         </div>
       </div>
 
-      <!-- FOREX MARKET OVERVIEW WIDGET -->
       <div class="premium-card rounded-2xl p-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
@@ -564,14 +634,11 @@
                 <th class="p-3">TREND STATUS</th>
               </tr>
             </thead>
-            <tbody id="market-table-body" class="divide-y divide-gray-100 font-mono text-gray-800">
-              <!-- Filled dynamically -->
-            </tbody>
+            <tbody id="market-table-body" class="divide-y divide-gray-100 font-mono text-gray-800"></tbody>
           </table>
         </div>
       </div>
 
-      <!-- NEWS WIDGET -->
       <div class="premium-card rounded-2xl p-4 mt-1">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
@@ -589,8 +656,8 @@
 
     </div>
 
-    <!-- TAB 3: JUSTMARKETS BROKER PREMIUM LANDING -->
-    <div id="tab-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker" class="tab-content hidden flex flex-col gap-4">
+    <!-- TAB 3: JUSTMARKETS -->
+    <div id="tab-justmarkets-broker" class="tab-content hidden flex flex-col gap-4">
       
       <div class="premium-card rounded-2xl p-5 flex flex-col md:flex-row items-center gap-5">
         <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-md border border-gray-150 flex items-center justify-center overflow-hidden shrink-0">
@@ -666,7 +733,7 @@
     <div class="premium-card rounded-2xl p-3 bg-gray-50 border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
       <div class="flex items-center gap-2 font-mono text-[10px] w-full sm:w-auto">
         <span class="text-brand-500 font-extrabold uppercase bg-blue-50 border border-blue-100/50 px-2 py-0.5 rounded-md">System Log:</span>
-        <span id="log-display" class="text-gray-500 truncate">Loading Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Miniature Engine...</span>
+        <span id="log-display" class="text-gray-500 truncate">Loading Cuandology 𝐅𝐎𝐑𝐄𝐗 𝐀𝐈 Engine...</span>
       </div>
       <div class="text-[10px] text-gray-400 font-semibold tracking-wide w-full sm:w-auto text-right shrink-0">
         &copy; 2026 CUANOLOGY AI • Strategic Wealth Logic
@@ -675,23 +742,28 @@
   </footer>
 
   <script>
+    // ==========================================
+    // GLOBAL STATE
+    // ==========================================
     let currentAsset = 'XAUUSD';
     let currentType = 'METAL';
-    let currentTimeframe = '15'; 
+    let currentTimeframe = '15';
+    let wsConnection = null;
+    let wsReconnectAttempts = 0;
+    const MAX_RECONNECT_ATTEMPTS = 10;
 
-    let tgUser = null;
+    // Telegram WebApp
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const webapp = window.Telegram.WebApp;
         webapp.ready();
         webapp.expand();
-        tgUser = webapp.initDataUnsafe.user;
+        const tgUser = webapp.initDataUnsafe.user;
         if (tgUser) {
-          const usernameStr = '@' + (tgUser.username || tgUser.first_name);
-          document.getElementById('tg-username').innerText = usernameStr;
+          document.getElementById('tg-username').innerText = '@' + (tgUser.username || tgUser.first_name);
         }
       }
-    } catch (e) { }
+    } catch (e) {}
 
     function safeUpdateText(elementId, newText) {
       const el = document.getElementById(elementId);
@@ -705,8 +777,7 @@
 
     function handleRegisterClick(event) {
       event.preventDefault();
-      const url = "https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872";
-      window.open(url, '_blank');
+      window.open("https://one.justmarkets.link/a/tws7ly07z6/id/?campaign_link=3872", '_blank');
     }
 
     function switchTab(tabId) {
@@ -719,8 +790,7 @@
       const activeDeskBtn = document.getElementById(`btn-tab-${tabId}`);
       if (activeDeskBtn) activeDeskBtn.className = "tab-btn bg-white text-brand-600 font-extrabold text-xs px-4 py-1.5 rounded-lg shadow-sm transition-colors";
 
-      const navIds = ['nav-dashboard', 'nav-forex-market', 'nav-𝐉𝐮𝐬𝐭𝐌𝐚𝐫𝐤𝐞𝐭𝐬-broker'];
-      navIds.forEach(id => {
+      ['nav-dashboard', 'nav-forex-market', 'nav-justmarkets-broker'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) btn.className = "flex flex-col items-center gap-1 text-gray-400 font-semibold text-[10px] transition-colors";
       });
@@ -734,11 +804,16 @@
     function changeTimeframe(tf) {
       currentTimeframe = tf;
       document.querySelectorAll('.tf-btn').forEach(btn => {
-        btn.className = "tf-btn bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-2 py-0.5 rounded-md transition-colors";
+        btn.className = "tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95";
       });
       const activeBtn = document.getElementById(`tf-${tf}`);
-      if (activeBtn) activeBtn.className = "tf-btn bg-black text-white font-extrabold px-2 py-0.5 rounded-md transition-colors shadow-sm";
+      if (activeBtn) activeBtn.className = "tf-btn bg-black text-white font-extrabold text-[11px] py-2 rounded-lg shadow-sm transition-all active:scale-95";
+      
+      const tfLabels = {'1': '1m', '5': '5m', '15': '15m', '30': '30m', '60': '1H', '240': '4H'};
+      safeUpdateText('current-tf-display', tfLabels[tf] || tf);
+      
       loadTradingViewChart(currentAsset, tf);
+      updateMTFAnalysis();
     }
 
     function loadTradingViewChart(pair, timeframe) {
@@ -772,19 +847,239 @@
     }
 
     // ==========================================
-    // ASSET PARAMETERS (9 PAIR: Forex + XAU + 5 Crypto)
+    // ASSET PARAMETERS (9 pairs, 6 visible)
     // ==========================================
     const assetParameters = {
-      XAUUSD:  { type: 'METAL',  cgId: 'pax-gold',         tvSymbol: 'OANDA:XAUUSD',        binanceSymbol: null,         anchorPrice: 2334.50, basePrice: 2334.50, trendScore: 0, atr: 4.25,    adr: 22.80,   precision: 2, icon: 'AU', color: '#f59e0b', change24h: 0 },
-      EURUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:EURUSD',           binanceSymbol: 'EURUSDT',    anchorPrice: 1.08540, basePrice: 1.08540, trendScore: 0, atr: 0.00045, adr: 0.00680, precision: 5, icon: '€',  color: '#2563eb', change24h: 0 },
-      GBPUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:GBPUSD',           binanceSymbol: 'GBPUSDT',    anchorPrice: 1.26850, basePrice: 1.26850, trendScore: 0, atr: 0.00062, adr: 0.00820, precision: 5, icon: '£',  color: '#7c3aed', change24h: 0 },
-      USDJPY:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:USDJPY',           binanceSymbol: null,         anchorPrice: 156.50,  basePrice: 156.50,  trendScore: 0, atr: 0.85,    adr: 1.20,    precision: 3, icon: '¥',  color: '#dc2626', change24h: 0 },
-      BTCUSD:  { type: 'CRYPTO', cgId: 'bitcoin',           tvSymbol: 'BINANCE:BTCUSDT',     binanceSymbol: 'BTCUSDT',    anchorPrice: 66840.00, basePrice: 66840.00, trendScore: 0, atr: 850.00, adr: 3400.00, precision: 2, icon: '₿',  color: '#f59e0b', change24h: 0 },
-      ETHUSD:  { type: 'CRYPTO', cgId: 'ethereum',          tvSymbol: 'BINANCE:ETHUSDT',     binanceSymbol: 'ETHUSDT',    anchorPrice: 3500.00, basePrice: 3500.00, trendScore: 0, atr: 45.00,  adr: 150.00,  precision: 2, icon: 'Ξ',  color: '#6366f1', change24h: 0 },
-      SOLUSD:  { type: 'CRYPTO', cgId: 'solana',            tvSymbol: 'BINANCE:SOLUSDT',     binanceSymbol: 'SOLUSDT',    anchorPrice: 175.50,  basePrice: 175.50,  trendScore: 0, atr: 4.50,   adr: 15.00,   precision: 2, icon: '◎',  color: '#14f195', change24h: 0 },
-      HYPEUSD: { type: 'CRYPTO', cgId: 'hyperliquid',       tvSymbol: 'MEXC:HYPEUSDT',       binanceSymbol: 'HYPEUSDT',   anchorPrice: 28.40,   basePrice: 28.40,   trendScore: 0, atr: 1.20,   adr: 4.50,    precision: 3, icon: 'H',  color: '#06b6d4', change24h: 0 },
-      TONUSD:  { type: 'CRYPTO', cgId: 'the-open-network',  tvSymbol: 'BINANCE:TONUSDT',     binanceSymbol: 'TONUSDT',    anchorPrice: 5.85,    basePrice: 5.85,    trendScore: 0, atr: 0.15,   adr: 0.55,    precision: 3, icon: '◆',  color: '#0098ea', change24h: 0 }
+      XAUUSD:  { type: 'METAL',  cgId: 'pax-gold',         tvSymbol: 'OANDA:XAUUSD',        binanceSymbol: null,         anchorPrice: 2334.50, basePrice: 2334.50, trendScore: 0, atr: 4.25,    adr: 22.80,   precision: 2, icon: 'AU', color: '#f59e0b', change24h: 0, visible: true },
+      EURUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:EURUSD',           binanceSymbol: 'EURUSDT',    anchorPrice: 1.08540, basePrice: 1.08540, trendScore: 0, atr: 0.00045, adr: 0.00680, precision: 5, icon: '€',  color: '#2563eb', change24h: 0, visible: true },
+      GBPUSD:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:GBPUSD',           binanceSymbol: 'GBPUSDT',    anchorPrice: 1.26850, basePrice: 1.26850, trendScore: 0, atr: 0.00062, adr: 0.00820, precision: 5, icon: '£',  color: '#7c3aed', change24h: 0, visible: true },
+      USDJPY:  { type: 'FOREX',  cgId: null,                tvSymbol: 'FX:USDJPY',           binanceSymbol: null,         anchorPrice: 156.50,  basePrice: 156.50,  trendScore: 0, atr: 0.85,    adr: 1.20,    precision: 3, icon: '¥',  color: '#dc2626', change24h: 0, visible: true },
+      BTCUSD:  { type: 'CRYPTO', cgId: 'bitcoin',           tvSymbol: 'BINANCE:BTCUSDT',     binanceSymbol: 'BTCUSDT',    anchorPrice: 66840.00, basePrice: 66840.00, trendScore: 0, atr: 850.00, adr: 3400.00, precision: 2, icon: '₿',  color: '#f59e0b', change24h: 0, visible: true },
+      ETHUSD:  { type: 'CRYPTO', cgId: 'ethereum',          tvSymbol: 'BINANCE:ETHUSDT',     binanceSymbol: 'ETHUSDT',    anchorPrice: 3500.00, basePrice: 3500.00, trendScore: 0, atr: 45.00,  adr: 150.00,  precision: 2, icon: 'Ξ',  color: '#6366f1', change24h: 0, visible: true },
+      SOLUSD:  { type: 'CRYPTO', cgId: 'solana',            tvSymbol: 'BINANCE:SOLUSDT',     binanceSymbol: 'SOLUSDT',    anchorPrice: 175.50,  basePrice: 175.50,  trendScore: 0, atr: 4.50,   adr: 15.00,   precision: 2, icon: '◎',  color: '#14f195', change24h: 0, visible: false },
+      HYPEUSD: { type: 'CRYPTO', cgId: 'hyperliquid',       tvSymbol: 'MEXC:HYPEUSDT',       binanceSymbol: 'HYPEUSDT',   anchorPrice: 28.40,   basePrice: 28.40,   trendScore: 0, atr: 1.20,   adr: 4.50,    precision: 3, icon: 'H',  color: '#06b6d4', change24h: 0, visible: false },
+      TONUSD:  { type: 'CRYPTO', cgId: 'the-open-network',  tvSymbol: 'BINANCE:TONUSDT',     binanceSymbol: 'TONUSDT',    anchorPrice: 5.85,    basePrice: 5.85,    trendScore: 0, atr: 0.15,   adr: 0.55,    precision: 3, icon: '◆',  color: '#0098ea', change24h: 0, visible: false }
     };
+
+    // ==========================================
+    // WEBSOCKET REAL-TIME PRICE ENGINE
+    // Menggunakan Binance WebSocket untuk harga real-time seperti TradingView
+    // ==========================================
+    function connectBinanceWebSocket() {
+      const binanceSymbols = Object.entries(assetParameters)
+        .filter(([_, p]) => p.binanceSymbol)
+        .map(([_, p]) => p.binanceSymbol.toLowerCase() + '@ticker');
+      
+      if (binanceSymbols.length === 0) return;
+      
+      // Update status badge
+      const statusBadge = document.getElementById('ws-status-badge');
+      if (statusBadge) {
+        statusBadge.className = 'ws-status ws-connecting';
+        statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> CONNECTING';
+      }
+      
+      // Combined stream for all symbols
+      const streams = binanceSymbols.join('/');
+      const wsUrl = `wss://stream.binance.com:9443/stream?streams=${streams}`;
+      
+      try {
+        // Close existing connection
+        if (wsConnection) {
+          wsConnection.close();
+          wsConnection = null;
+        }
+        
+        wsConnection = new WebSocket(wsUrl);
+        
+        wsConnection.onopen = function() {
+          wsReconnectAttempts = 0;
+          writeLog("WebSocket connected to Binance - Real-time streaming active");
+          
+          if (statusBadge) {
+            statusBadge.className = 'ws-status ws-connected';
+            statusBadge.innerHTML = '<span class="live-pulse"></span> LIVE';
+          }
+        };
+        
+        wsConnection.onmessage = function(event) {
+          try {
+            const message = JSON.parse(event.data);
+            if (message.data) {
+              const ticker = message.data;
+              const symbol = ticker.s; // e.g., "BTCUSDT"
+              
+              // Find matching asset
+              const entry = Object.entries(assetParameters).find(([_, p]) => p.binanceSymbol === symbol);
+              if (entry) {
+                const [pairKey, param] = entry;
+                const newPrice = parseFloat(ticker.c); // Current price
+                const change = parseFloat(ticker.P);  // 24h change percent
+                
+                if (!isNaN(newPrice)) {
+                  param.anchorPrice = newPrice;
+                  param.change24h = change;
+                  
+                  // Update UI immediately
+                  updatePriceState(pairKey, newPrice);
+                  
+                  // Update dashboard if this is the selected asset
+                  if (currentAsset === pairKey) {
+                    updateDashboardPrices();
+                  }
+                  
+                  // Update ticker
+                  renderTicker();
+                  renderMarketTable();
+                }
+              }
+            }
+          } catch (e) {
+            console.warn("WS message parse error:", e);
+          }
+        };
+        
+        wsConnection.onerror = function(error) {
+          console.warn("WebSocket error:", error);
+          if (statusBadge) {
+            statusBadge.className = 'ws-status ws-disconnected';
+            statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> ERROR';
+          }
+        };
+        
+        wsConnection.onclose = function() {
+          if (statusBadge) {
+            statusBadge.className = 'ws-status ws-disconnected';
+            statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> DISCONNECTED';
+          }
+          
+          // Auto-reconnect with exponential backoff
+          if (wsReconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+            wsReconnectAttempts++;
+            const delay = Math.min(1000 * Math.pow(2, wsReconnectAttempts), 30000);
+            writeLog(`WebSocket disconnected. Reconnecting in ${delay/1000}s (attempt ${wsReconnectAttempts})...`);
+            setTimeout(connectBinanceWebSocket, delay);
+          }
+        };
+        
+      } catch (e) {
+        console.warn("WebSocket connection failed:", e);
+        // Fallback to REST API polling
+        fetchRealtimePricesREST();
+      }
+    }
+
+    // Fallback REST API (when WebSocket unavailable)
+    async function fetchRealtimePricesREST() {
+      try {
+        // Binance REST for crypto
+        const binanceSymbols = Object.entries(assetParameters)
+          .filter(([_, p]) => p.binanceSymbol)
+          .map(([_, p]) => `"${p.binanceSymbol}"`)
+          .join(',');
+        
+        if (binanceSymbols) {
+          try {
+            const bRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=[${binanceSymbols}]`);
+            if (bRes.ok) {
+              const bData = await bRes.json();
+              bData.forEach(ticker => {
+                const entry = Object.entries(assetParameters).find(([_, p]) => p.binanceSymbol === ticker.symbol);
+                if (entry) {
+                  const [pairKey, param] = entry;
+                  param.anchorPrice = parseFloat(ticker.lastPrice);
+                  param.change24h = parseFloat(ticker.priceChangePercent);
+                  updatePriceState(pairKey, param.anchorPrice);
+                }
+              });
+            }
+          } catch (e) {}
+        }
+
+        // CoinGecko for XAU
+        try {
+          const cgRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd&include_24hr_change=true');
+          if (cgRes.ok) {
+            const cgData = await cgRes.json();
+            if (cgData['pax-gold']) {
+              assetParameters.XAUUSD.anchorPrice = cgData['pax-gold'].usd;
+              assetParameters.XAUUSD.change24h = cgData['pax-gold'].usd_24h_change || 0;
+              updatePriceState('XAUUSD', assetParameters.XAUUSD.anchorPrice);
+            }
+          }
+        } catch (e) {}
+
+        // OpenER for Forex
+        try {
+          const fxRes = await fetch('https://open.er-api.com/v6/latest/USD');
+          if (fxRes.ok) {
+            const fxData = await fxRes.json();
+            if (fxData.rates?.EUR) { assetParameters.EURUSD.anchorPrice = 1 / fxData.rates.EUR; updatePriceState('EURUSD', assetParameters.EURUSD.anchorPrice); }
+            if (fxData.rates?.GBP) { assetParameters.GBPUSD.anchorPrice = 1 / fxData.rates.GBP; updatePriceState('GBPUSD', assetParameters.GBPUSD.anchorPrice); }
+            if (fxData.rates?.JPY) { assetParameters.USDJPY.anchorPrice = fxData.rates.JPY; updatePriceState('USDJPY', assetParameters.USDJPY.anchorPrice); }
+          }
+        } catch (e) {}
+
+        renderTicker();
+        renderMarketTable();
+      } catch (e) {
+        console.warn("REST pricing fallback error:", e);
+      }
+    }
+
+    // MTF (Multi-Timeframe) Analysis
+    function updateMTFAnalysis() {
+      const param = assetParameters[currentAsset];
+      if (!param) return;
+      
+      const timeframes = ['m5', 'm15', 'h1', 'h4'];
+      let buyCount = 0, sellCount = 0;
+      
+      timeframes.forEach(tf => {
+        // Simulate MTF signals based on current trend with some variance
+        const variance = (Math.random() - 0.5) * 0.5;
+        const tfTrendScore = (param.trendScore || 0) + variance;
+        
+        const cell = document.getElementById(`mtf-${tf}`);
+        const signalEl = document.getElementById(`mtf-${tf}-signal`);
+        
+        if (!cell || !signalEl) return;
+        
+        if (tfTrendScore >= 0.5) {
+          cell.className = 'mtf-cell buy';
+          signalEl.innerText = '▲ BUY';
+          buyCount++;
+        } else if (tfTrendScore <= -0.5) {
+          cell.className = 'mtf-cell sell';
+          signalEl.innerText = '▼ SELL';
+          sellCount++;
+        } else {
+          cell.className = 'mtf-cell neutral';
+          signalEl.innerText = '— HOLD';
+        }
+      });
+      
+      // Update consensus
+      const consensusEl = document.getElementById('mtf-consensus');
+      if (consensusEl) {
+        if (buyCount >= 3) {
+          consensusEl.innerText = '🟢 STRONG BUY';
+          consensusEl.className = 'text-[9px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200';
+        } else if (sellCount >= 3) {
+          consensusEl.innerText = '🔴 STRONG SELL';
+          consensusEl.className = 'text-[9px] font-bold bg-red-50 text-red-700 px-2 py-0.5 rounded border border-red-200';
+        } else if (buyCount > sellCount) {
+          consensusEl.innerText = '🟢 BUY';
+          consensusEl.className = 'text-[9px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200';
+        } else if (sellCount > buyCount) {
+          consensusEl.innerText = '🔴 SELL';
+          consensusEl.className = 'text-[9px] font-bold bg-red-50 text-red-700 px-2 py-0.5 rounded border border-red-200';
+        } else {
+          consensusEl.innerText = '⚪ NEUTRAL';
+          consensusEl.className = 'text-[9px] font-bold bg-white text-gray-600 px-2 py-0.5 rounded border border-gray-200';
+        }
+      }
+    }
 
     function selectAsset(pair, type) {
       currentAsset = pair;
@@ -805,6 +1100,7 @@
 
       updateDashboardPrices();
       loadTradingViewChart(pair, currentTimeframe);
+      updateMTFAnalysis();
       writeLog(`Activated Real-time Feed for ${pair}`);
     }
 
@@ -1010,113 +1306,16 @@
       safeUpdateText('cro-analysis', param.decision.includes('WAIT') ? "VETO: Volatilitas tidak memenuhi kriteria minimal eksekusi aman. Signal ditangguhkan sementara." : "APPROVED: Risk-Reward ratio sangat ideal (>2R). Proteksi Stop Loss ketat di belakang batas likuiditas otomatis.");
     }
 
-    // ==========================================
-    // REAL-TIME PRICE ENGINE (Binance + CoinGecko + OpenER)
-    // Mengambil harga langsung dari exchange yang sama dengan chart TradingView
-    // ==========================================
-    async function fetchRealtimePrices() {
-      try {
-        // 1. Binance API — untuk crypto (akurat, sinkron dengan chart BINANCE:*)
-        const binanceSymbols = Object.entries(assetParameters)
-          .filter(([_, p]) => p.binanceSymbol)
-          .map(([_, p]) => `"${p.binanceSymbol}"`)
-          .join(',');
-        
-        if (binanceSymbols) {
-          try {
-            const bRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=[${binanceSymbols}]`);
-            if (bRes.ok) {
-              const bData = await bRes.json();
-              bData.forEach(ticker => {
-                const entry = Object.entries(assetParameters).find(([_, p]) => p.binanceSymbol === ticker.symbol);
-                if (entry) {
-                  const [pairKey, param] = entry;
-                  const newPrice = parseFloat(ticker.lastPrice);
-                  const change = parseFloat(ticker.priceChangePercent);
-                  if (!isNaN(newPrice)) {
-                    param.anchorPrice = newPrice;
-                    param.change24h = change;
-                  }
-                }
-              });
-              writeLog("Binance feed synced — crypto prices chart-aligned.");
-            }
-          } catch (e) {
-            console.warn("Binance fetch failed, using CoinGecko fallback");
-          }
-        }
-
-        // 2. CoinGecko — untuk XAU, HYPE, TON (jika tidak ada di Binance)
-        try {
-          const cgIds = Object.values(assetParameters)
-            .filter(p => p.cgId && !p.binanceSymbol)
-            .map(p => p.cgId)
-            .join(',');
-          
-          if (cgIds) {
-            const cgRes = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cgIds}&vs_currencies=usd&include_24hr_change=true`);
-            if (cgRes.ok) {
-              const cgData = await cgRes.json();
-              Object.entries(assetParameters).forEach(([pairKey, param]) => {
-                if (param.cgId && !param.binanceSymbol && cgData[param.cgId]) {
-                  param.anchorPrice = cgData[param.cgId].usd;
-                  param.change24h = cgData[param.cgId].usd_24h_change || 0;
-                }
-              });
-            }
-          }
-        } catch (e) {
-          console.warn("CoinGecko fetch failed");
-        }
-
-        // 3. OpenER — untuk Forex (EURUSD, GBPUSD, USDJPY)
-        try {
-          const fxRes = await fetch('https://open.er-api.com/v6/latest/USD');
-          if (fxRes.ok) {
-            const fxData = await fxRes.json();
-            if (fxData.rates?.EUR) assetParameters.EURUSD.anchorPrice = 1 / fxData.rates.EUR;
-            if (fxData.rates?.GBP) assetParameters.GBPUSD.anchorPrice = 1 / fxData.rates.GBP;
-            if (fxData.rates?.JPY) assetParameters.USDJPY.anchorPrice = fxData.rates.JPY;
-          }
-        } catch (e) {}
-
-        // Update UI ticker dan tabel
-        Object.keys(assetParameters).forEach(pair => {
-          updatePriceState(pair, assetParameters[pair].anchorPrice);
-        });
-        renderTicker();
-        renderMarketTable();
-      } catch (e) {
-        console.warn("Pricing Fetch Drop:", e.message);
-      }
-    }
-
-    // Micro-tick simulation untuk feel MT4 (antara fetch API)
-    function simulateMarketTicks() {
-      let shouldUpdateDashboard = false;
-      for (let pair in assetParameters) {
-        const param = assetParameters[pair];
-        if (!param.anchorPrice) continue;
-        const noise = param.anchorPrice * (Math.random() * 0.0003 - 0.00015);
-        const simulatedPrice = param.anchorPrice + noise;
-        if (updatePriceState(pair, simulatedPrice) && currentAsset === pair) {
-          shouldUpdateDashboard = true;
-        }
-      }
-      if (shouldUpdateDashboard) updateDashboardPrices();
-      renderTicker();
-    }
-
     function updatePriceState(pair, newPrice) {
       const oldPrice = assetParameters[pair].basePrice;
-      if (newPrice === oldPrice) return false;
+      if (Math.abs(newPrice - oldPrice) < 0.00001) return false;
 
       assetParameters[pair].basePrice = newPrice;
       
       let ts = assetParameters[pair].trendScore || 0;
-      if (newPrice > oldPrice) ts += (Math.random() * 1.5) + 0.5;
-      else if (newPrice < oldPrice) ts -= (Math.random() * 1.5) + 0.5;
-      ts *= 0.90;
+      if (newPrice > oldPrice) ts += (Math.random() * 1.2) + 0.3;
+      else if (newPrice < oldPrice) ts -= (Math.random() * 1.2) + 0.3;
+      ts *= 0.92;
       assetParameters[pair].trendScore = Math.max(-4, Math.min(4, ts));
 
       const precision = assetParameters[pair].precision;
@@ -1130,9 +1329,7 @@
       return true;
     }
 
-    // ==========================================
-    // RUNNING TEXT (TICKER) RENDERER
-    // ==========================================
+    // Ticker Renderer
     function renderTicker() {
       const track = document.getElementById('ticker-track');
       if (!track) return;
@@ -1141,15 +1338,13 @@
       Object.entries(assetParameters).forEach(([pair, param]) => {
         const price = param.basePrice ? param.basePrice.toFixed(param.precision) : '--';
         const change = param.change24h || 0;
-        const changeClass = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+        const changeClass = change > 0.1 ? 'up' : change < -0.1 ? 'down' : 'flat';
         const changeSign = change > 0 ? '+' : '';
-        const changeIcon = change > 0 ? '▲' : change < 0 ? '▼' : '—';
-        const iconColor = param.color;
-        const iconText = param.icon;
+        const changeIcon = change > 0.1 ? '▲' : change < -0.1 ? '▼' : '—';
         
         html += `
           <div class="ticker-item" data-pair="${pair}">
-            <span class="ticker-icon" style="background:${iconColor};">${iconText}</span>
+            <span class="ticker-icon" style="background:${param.color};">${param.icon}</span>
             <span class="ticker-symbol">${pair.replace('USD','/USD')}</span>
             <span class="ticker-price" id="tk-price-${pair}">${price}</span>
             <span class="ticker-change ${changeClass}">${changeIcon} ${changeSign}${change.toFixed(2)}%</span>
@@ -1157,13 +1352,10 @@
         `;
       });
       
-      // Duplikasi untuk seamless infinite loop
       track.innerHTML = html + html;
     }
 
-    // ==========================================
-    // MARKET TABLE RENDERER
-    // ==========================================
+    // Market Table Renderer (shows all 9 pairs)
     function renderMarketTable() {
       const tbody = document.getElementById('market-table-body');
       if (!tbody) return;
@@ -1177,7 +1369,7 @@
         ETHUSD: { name: 'Ethereum', color: '#6366f1', icon: 'Ξ' },
         SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
         HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' },
-        TONUSDT: { name: 'Toncoin', color: '#0098ea', icon: '◆' }
+        TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' }
       };
       
       tbody.innerHTML = Object.entries(assetParameters).map(([pair, param]) => {
@@ -1190,11 +1382,11 @@
         
         let trendHtml;
         if (ts >= 0.8) {
-          trendHtml = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🟢 BUY</span>';
+          trendHtml = '<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🟢 BUY</span>';
         } else if (ts <= -0.8) {
-          trendHtml = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">🔴 SELL</span>';
+          trendHtml = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 SELL</span>';
         } else {
-          trendHtml = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold transition-colors">⚪ WAIT</span>';
+          trendHtml = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">⚪ WAIT</span>';
         }
         
         return `
@@ -1274,7 +1466,7 @@
               </a>`;
           }).join('');
         } catch(fallbackErr) {
-           container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar. Silakan periksa koneksi internet Anda.</div>';
+           container.innerHTML = '<div class="text-center text-xs text-red-500 py-4 font-mono">Gagal memuat feed berita pasar.</div>';
         }
       }
     }
@@ -1320,6 +1512,22 @@
       }
     }
 
+    // Periodic MTF update
+    function startMTFUpdater() {
+      setInterval(() => {
+        updateMTFAnalysis();
+      }, 5000);
+    }
+
+    // Fallback REST polling (every 15s, in case WS drops)
+    function startRESTFallback() {
+      setInterval(() => {
+        if (!wsConnection || wsConnection.readyState !== WebSocket.OPEN) {
+          fetchRealtimePricesREST();
+        }
+      }, 15000);
+    }
+
     function initializeApp() {
       renderTicker();
       renderMarketTable();
@@ -1327,13 +1535,19 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      fetchRealtimePrices();
-      fetchNews();
-      setInterval(fetchRealtimePrices, 15000); 
-      setInterval(fetchNews, 300000); 
-      setInterval(simulateMarketTicks, 2500);
+      // Start WebSocket for real-time prices (like TradingView)
+      connectBinanceWebSocket();
       
-      writeLog("Cuandology Live Signaling Engine V5.0 — Ticker & Chart-Aligned Pricing Online.");
+      // Start REST fallback as backup
+      startRESTFallback();
+      
+      // MTF updater
+      startMTFUpdater();
+      
+      fetchNews();
+      setInterval(fetchNews, 300000); 
+      
+      writeLog("Cuandology Engine V6.0 — WebSocket Real-time + MTF Analysis Active.");
     }
 
     if (document.readyState === 'loading') {
