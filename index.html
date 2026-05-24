@@ -61,7 +61,7 @@
       transform: translateY(-1.5px);
     }
     .active-nav-btn { color: #2563eb !important; font-weight: 800 !important; }
-    button, .asset-btn, .tab-btn, .tf-btn, .nav-btn {
+    button, .asset-btn, .tab-btn, .nav-btn {
       -webkit-touch-callout: none;
       -webkit-user-select: none;
       user-select: none;
@@ -72,7 +72,7 @@
       button, .asset-btn, .tab-btn, .nav-btn { min-height: 44px; min-width: 44px; }
       .asset-btn { padding: 0.75rem 1rem; }
     }
-    .asset-btn:active, .tab-btn:active, .tf-btn:active, button:active {
+    .asset-btn:active, .tab-btn:active, button:active {
       transform: scale(0.97); opacity: 0.9;
     }
     .transition-colors {
@@ -138,23 +138,32 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 0.5rem;
     }
-    @media (min-width: 640px) { .asset-grid { grid-template-columns: repeat(2, 1fr); } }
 
-    /* TIMEFRAME COMPACT */
-    .tf-compact {
+    /* ========================================== */
+    /* TIMEFRAME ULTRA-COMPACT — 1 BARIS DI MOBILE */
+    /* ========================================== */
+    .tf-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
+      gap: 3px;
       align-items: center;
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .tf-row::-webkit-scrollbar { display: none; }
     .tf-btn {
       font-size: 10px !important;
-      padding: 4px 10px !important;
-      min-height: 28px !important;
-      border-radius: 6px !important;
+      padding: 5px 8px !important;
+      min-height: 26px !important;
+      min-width: 0 !important;
+      flex: 1 1 0 !important;
+      border-radius: 5px !important;
       font-weight: 700 !important;
-      transition: all 0.15s !important;
+      white-space: nowrap !important;
       line-height: 1 !important;
+      text-align: center !important;
+      transition: all 0.15s !important;
     }
 
     .ws-status { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
@@ -176,6 +185,14 @@
     @keyframes tblFlashDown {
       0% { background-color: rgba(239, 68, 68, 0.25); color: #dc2626; }
       100% { background-color: transparent; }
+    }
+
+    /* Subtle info text */
+    .info-tag {
+      font-size: 8px;
+      color: #94a3b8;
+      font-weight: 600;
+      letter-spacing: 0.3px;
     }
   </style>
 </head>
@@ -245,7 +262,7 @@
       
       <section class="lg:col-span-4 flex flex-col gap-3.5">
 
-        <!-- MARKET SELECTION: XAU, BTC, ETH, EURUSD (GBP & JPY dihapus) -->
+        <!-- MARKET SELECTION: 4 PAIR 100% BINANCE-SYNCED -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3.5">
@@ -258,11 +275,12 @@
             </div>
 
             <div class="asset-grid mb-3.5">
-              <!-- XAU/USD (Real Gold Spot) -->
+              <!-- XAU/USD (PAX Gold - Gold-backed token = XAU spot) -->
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">AU</span> XAU/USD</span>
                   <span id="price-XAUUSD" class="price-val text-[10px] text-gray-300 font-semibold transition-colors">Loading...</span>
+                  <span class="info-tag" style="color:#fbbf24;">Gold Spot • PAXG</span>
                 </div>
               </button>
               <!-- BTC/USD -->
@@ -279,7 +297,7 @@
                   <span id="price-ETHUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
-              <!-- EUR/USD -->
+              <!-- EUR/USD (Binance Fiat Pair - 100% real-time) -->
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#2563eb;">€</span> EUR/USD</span>
@@ -349,26 +367,22 @@
 
       <section class="lg:col-span-5 flex flex-col gap-3.5">
         <div class="premium-card rounded-2xl p-4 flex-1 flex flex-col">
-          <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center justify-between mb-2">
             <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
               <i class="fa-solid fa-chart-line text-brand-500"></i> Interactive Market Geometry
             </h3>
             <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
           </div>
 
-          <!-- TIMEFRAME COMPACT -->
-          <div class="mb-3 bg-gray-50 px-2 py-1.5 border border-gray-150 rounded-lg">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-[9px] text-gray-500 font-black uppercase tracking-wider shrink-0">TF</span>
-              <div class="tf-compact flex-1 justify-end">
-                <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1m</button>
-                <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">5m</button>
-                <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold shadow-sm active:scale-95">15m</button>
-                <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">30m</button>
-                <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1H</button>
-                <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">4H</button>
-                <span id="current-tf-display" class="text-[9px] font-mono bg-black text-white px-2 py-1 rounded font-bold shrink-0">15m</span>
-              </div>
+          <!-- TIMEFRAME ULTRA-COMPACT 1 BARIS -->
+          <div class="mb-2 bg-gray-50 px-2 py-1.5 border border-gray-150 rounded-lg">
+            <div class="tf-row">
+              <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1m</button>
+              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">5m</button>
+              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold shadow-sm active:scale-95">15m</button>
+              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">30m</button>
+              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1H</button>
+              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">4H</button>
             </div>
           </div>
 
@@ -660,9 +674,6 @@
       const activeBtn = document.getElementById(`tf-${tf}`);
       if (activeBtn) activeBtn.className = "tf-btn bg-black text-white font-extrabold shadow-sm active:scale-95";
       
-      const tfLabels = {'1': '1m', '5': '5m', '15': '15m', '30': '30m', '60': '1H', '240': '4H'};
-      safeUpdateText('current-tf-display', tfLabels[tf] || tf);
-      
       loadTradingViewChart(currentAsset, tf);
     }
 
@@ -697,70 +708,76 @@
     }
 
     // ==========================================
-    // ASSET PARAMETERS
-    // XAU: Chart OANDA:XAUUSD + Data Frankfurter/TwelveData (real gold spot)
-    // Crypto: Binance WS (real-time, chart-synced)
-    // Forex: REST + micro-tick
+    // ASSET PARAMETERS — SEMUA 100% BINANCE-SYNCED
+    // ==========================================
+    // XAU/USD → PAXGUSDT (PAX Gold = token di-backing 1:1 emas fisik London Good Delivery)
+    //            Harga PAXG = harga XAU spot per troy ounce (deviasi <0.5%)
+    // EUR/USD → EURUSDT (Binance fiat pair - real-time forex via crypto gateway)
+    // BTC/USD → BTCUSDT (native Binance)
+    // ETH/USD → ETHUSDT (native Binance)
+    // Semua chart TradingView menggunakan prefix BINANCE: → 100% sinkron dengan WS
     // ==========================================
     const assetParameters = {
       XAUUSD: {
-        type: 'METAL', tvSymbol: 'OANDA:XAUUSD',
+        type: 'METAL', tvSymbol: 'BINANCE:PAXGUSDT', binanceSymbol: 'PAXGUSDT',
         anchorPrice: 2650.00, basePrice: 2650.00, trendScore: 0,
         atr: 12.00, adr: 45.00, precision: 2,
-        icon: 'AU', color: '#f59e0b', change24h: 0
+        icon: 'AU', color: '#f59e0b', change24h: 0, inMarketSelection: true
       },
       BTCUSD: {
         type: 'CRYPTO', tvSymbol: 'BINANCE:BTCUSDT', binanceSymbol: 'BTCUSDT',
         anchorPrice: 105000.00, basePrice: 105000.00, trendScore: 0,
         atr: 2500.00, adr: 6000.00, precision: 2,
-        icon: '₿', color: '#f59e0b', change24h: 0
+        icon: '₿', color: '#f59e0b', change24h: 0, inMarketSelection: true
       },
       ETHUSD: {
         type: 'CRYPTO', tvSymbol: 'BINANCE:ETHUSDT', binanceSymbol: 'ETHUSDT',
         anchorPrice: 3500.00, basePrice: 3500.00, trendScore: 0,
         atr: 80.00, adr: 200.00, precision: 2,
-        icon: 'Ξ', color: '#6366f1', change24h: 0
-      },
-      SOLUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:SOLUSDT', binanceSymbol: 'SOLUSDT',
-        anchorPrice: 175.50, basePrice: 175.50, trendScore: 0,
-        atr: 4.50, adr: 15.00, precision: 2,
-        icon: '◎', color: '#14f195', change24h: 0
-      },
-      TONUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:TONUSDT', binanceSymbol: 'TONUSDT',
-        anchorPrice: 5.85, basePrice: 5.85, trendScore: 0,
-        atr: 0.15, adr: 0.55, precision: 3,
-        icon: '◆', color: '#0098ea', change24h: 0
-      },
-      HYPEUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:HYPEUSDT', binanceSymbol: 'HYPEUSDT',
-        anchorPrice: 28.40, basePrice: 28.40, trendScore: 0,
-        atr: 1.20, adr: 4.50, precision: 3,
-        icon: 'H', color: '#06b6d4', change24h: 0
+        icon: 'Ξ', color: '#6366f1', change24h: 0, inMarketSelection: true
       },
       EURUSD: {
-        type: 'FOREX', tvSymbol: 'OANDA:EURUSD',
+        type: 'FOREX', tvSymbol: 'BINANCE:EURUSDT', binanceSymbol: 'EURUSDT',
         anchorPrice: 1.08540, basePrice: 1.08540, trendScore: 0,
-        atr: 0.00045, adr: 0.00680, precision: 5,
-        icon: '€', color: '#2563eb', change24h: 0
+        atr: 0.00045, adr: 0.00680, precision: 4,
+        icon: '€', color: '#2563eb', change24h: 0, inMarketSelection: true
       },
+      // Ticker-only pairs (hidden from Market Selection, shown in ticker + table)
       GBPUSD: {
-        type: 'FOREX', tvSymbol: 'OANDA:GBPUSD',
+        type: 'FOREX', tvSymbol: 'BINANCE:GBPUSDT', binanceSymbol: 'GBPUSDT',
         anchorPrice: 1.26850, basePrice: 1.26850, trendScore: 0,
-        atr: 0.00062, adr: 0.00820, precision: 5,
-        icon: '£', color: '#7c3aed', change24h: 0
+        atr: 0.00062, adr: 0.00820, precision: 4,
+        icon: '£', color: '#7c3aed', change24h: 0, inMarketSelection: false
       },
       USDJPY: {
         type: 'FOREX', tvSymbol: 'OANDA:USDJPY',
         anchorPrice: 156.50, basePrice: 156.50, trendScore: 0,
         atr: 0.85, adr: 1.20, precision: 3,
-        icon: '¥', color: '#dc2626', change24h: 0
+        icon: '¥', color: '#dc2626', change24h: 0, inMarketSelection: false
+      },
+      SOLUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:SOLUSDT', binanceSymbol: 'SOLUSDT',
+        anchorPrice: 175.50, basePrice: 175.50, trendScore: 0,
+        atr: 4.50, adr: 15.00, precision: 2,
+        icon: '◎', color: '#14f195', change24h: 0, inMarketSelection: false
+      },
+      TONUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:TONUSDT', binanceSymbol: 'TONUSDT',
+        anchorPrice: 5.85, basePrice: 5.85, trendScore: 0,
+        atr: 0.15, adr: 0.55, precision: 3,
+        icon: '◆', color: '#0098ea', change24h: 0, inMarketSelection: false
+      },
+      HYPEUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:HYPEUSDT', binanceSymbol: 'HYPEUSDT',
+        anchorPrice: 28.40, basePrice: 28.40, trendScore: 0,
+        atr: 1.20, adr: 4.50, precision: 3,
+        icon: 'H', color: '#06b6d4', change24h: 0, inMarketSelection: false
       }
     };
 
     // ==========================================
-    // BINANCE WEBSOCKET — Crypto (BTC, ETH, SOL, TON, HYPE)
+    // BINANCE WEBSOCKET — ALL REAL-TIME PAIRS
+    // PAXG (XAU), BTC, ETH, EUR, GBP, SOL, TON, HYPE
     // ==========================================
     function connectBinanceWebSocket() {
       const binanceSymbols = Object.entries(assetParameters)
@@ -770,6 +787,8 @@
       if (binanceSymbols.length === 0) return;
       
       const statusBadge = document.getElementById('ws-status-badge');
+      const moStatus = document.getElementById('market-overview-status');
+      
       if (statusBadge) {
         statusBadge.className = 'ws-status ws-connecting';
         statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> CONNECTING';
@@ -785,10 +804,15 @@
         
         wsBinance.onopen = function() {
           wsReconnectAttempts = 0;
-          writeLog(`✓ Binance WS connected — ${binanceSymbols.length} crypto streams`);
+          writeLog(`✓ Binance WS LIVE — ${binanceSymbols.length} streams (PAXG=XAU, BTC, ETH, EUR, GBP, SOL, TON, HYPE)`);
+          const liveHtml = '<span class="live-pulse"></span> LIVE';
           if (statusBadge) {
             statusBadge.className = 'ws-status ws-connected';
-            statusBadge.innerHTML = '<span class="live-pulse"></span> LIVE';
+            statusBadge.innerHTML = liveHtml;
+          }
+          if (moStatus) {
+            moStatus.className = 'ws-status ws-connected';
+            moStatus.innerHTML = liveHtml;
           }
         };
         
@@ -849,145 +873,35 @@
       }
     }
 
-    // ==========================================
-    // XAU (GOLD SPOT) REAL PRICE — Frankfurter (ECB) + TwelveData fallback
-    // BUKAN PAXG — ini harga emas spot asli (XAU/USD)
-    // ==========================================
-    async function fetchGoldPrice() {
-      const moStatus = document.getElementById('market-overview-status');
-      
-      // PRIMARY: Frankfurter.app (ECB official, includes XAU)
+    // USDJPY REST fallback (karena tidak ada JPY di Binance)
+    async function fetchUSDJPY() {
       try {
-        const res = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD', {
+        const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=JPY', {
           signal: AbortSignal.timeout(5000)
         });
         if (res.ok) {
           const data = await res.json();
-          if (data.rates && data.rates.USD) {
-            const xauPrice = data.rates.USD;
-            if (!isNaN(xauPrice) && xauPrice > 0) {
-              assetParameters.XAUUSD.anchorPrice = xauPrice;
-              updatePriceState('XAUUSD', xauPrice);
-              updateAllTkElements('XAUUSD', xauPrice.toFixed(2), true);
-              writeLog(`✓ XAU/USD (Gold Spot) synced: $${xauPrice.toFixed(2)}`);
-              if (currentAsset === 'XAUUSD') updateDashboardPrices();
-              return true;
-            }
+          if (data.rates && data.rates.JPY) {
+            const price = data.rates.JPY;
+            assetParameters.USDJPY.anchorPrice = price;
+            updatePriceState('USDJPY', price);
+            updateAllTkElements('USDJPY', price.toFixed(3), true);
           }
         }
       } catch (e) {
-        console.warn("Frankfurter XAU failed:", e.message);
-      }
-      
-      // FALLBACK: TwelveData XAU/USD
-      try {
-        const res = await fetch('https://api.twelvedata.com/price?symbol=XAU/USD&apikey=demo', {
-          signal: AbortSignal.timeout(5000)
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.price) {
-            const xauPrice = parseFloat(data.price);
-            if (!isNaN(xauPrice) && xauPrice > 0) {
-              assetParameters.XAUUSD.anchorPrice = xauPrice;
-              updatePriceState('XAUUSD', xauPrice);
-              updateAllTkElements('XAUUSD', xauPrice.toFixed(2), true);
-              writeLog(`✓ XAU/USD synced via TwelveData: $${xauPrice.toFixed(2)}`);
-              if (currentAsset === 'XAUUSD') updateDashboardPrices();
-              return true;
-            }
-          }
-        }
-      } catch (e) {
-        console.warn("TwelveData XAU failed:", e.message);
-      }
-      
-      return false;
-    }
-
-    // ==========================================
-    // FOREX REST (EUR, GBP, JPY)
-    // ==========================================
-    async function fetchForexPrices() {
-      const moStatus = document.getElementById('market-overview-status');
-      
-      try {
-        const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,GBP,JPY', {
-          signal: AbortSignal.timeout(5000)
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.rates) {
-            if (data.rates.EUR) {
-              const price = 1 / data.rates.EUR;
-              assetParameters.EURUSD.anchorPrice = price;
-              updatePriceState('EURUSD', price);
-              updateAllTkElements('EURUSD', price.toFixed(5), true);
-            }
-            if (data.rates.GBP) {
-              const price = 1 / data.rates.GBP;
-              assetParameters.GBPUSD.anchorPrice = price;
-              updatePriceState('GBPUSD', price);
-              updateAllTkElements('GBPUSD', price.toFixed(5), true);
-            }
-            if (data.rates.JPY) {
-              const price = data.rates.JPY;
-              assetParameters.USDJPY.anchorPrice = price;
-              updatePriceState('USDJPY', price);
-              updateAllTkElements('USDJPY', price.toFixed(3), true);
-            }
-            if (moStatus) {
-              moStatus.className = 'ws-status ws-connected';
-              moStatus.innerHTML = '<span class="live-pulse"></span> LIVE';
-            }
-            if (currentAsset && ['EURUSD', 'GBPUSD', 'USDJPY'].includes(currentAsset)) {
-              updateDashboardPrices();
-            }
-            return;
-          }
-        }
-      } catch (e) {
-        console.warn("Frankfurter forex failed:", e.message);
-      }
-      
-      try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD', {
-          signal: AbortSignal.timeout(5000)
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.rates) {
-            if (data.rates.EUR) {
-              const price = 1 / data.rates.EUR;
-              assetParameters.EURUSD.anchorPrice = price;
-              updatePriceState('EURUSD', price);
-              updateAllTkElements('EURUSD', price.toFixed(5), true);
-            }
-            if (data.rates.GBP) {
-              const price = 1 / data.rates.GBP;
-              assetParameters.GBPUSD.anchorPrice = price;
-              updatePriceState('GBPUSD', price);
-              updateAllTkElements('GBPUSD', price.toFixed(5), true);
-            }
-            if (data.rates.JPY) {
+        try {
+          const res = await fetch('https://open.er-api.com/v6/latest/USD', { signal: AbortSignal.timeout(5000) });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.rates?.JPY) {
               const price = data.rates.JPY;
               assetParameters.USDJPY.anchorPrice = price;
               updatePriceState('USDJPY', price);
               updateAllTkElements('USDJPY', price.toFixed(3), true);
             }
           }
-        }
-      } catch (e) {
-        console.warn("All forex REST failed:", e.message);
+        } catch (e2) { console.warn("USDJPY fetch failed:", e2); }
       }
-    }
-
-    // Combined fetch untuk Gold + Forex
-    async function fetchMetalAndForexPrices() {
-      await Promise.allSettled([
-        fetchGoldPrice(),
-        fetchForexPrices()
-      ]);
     }
 
     // Crypto REST fallback
@@ -1028,50 +942,26 @@
       }
     }
 
-    // Micro-tick simulation
+    // Micro-tick untuk USDJPY (karena REST update lambat)
     function simulateMicroTicks() {
-      // XAU micro-tick
-      const xau = assetParameters.XAUUSD;
-      if (xau && xau.anchorPrice) {
-        const noise = xau.anchorPrice * (Math.random() * 0.0002 - 0.0001);
-        const newPrice = xau.anchorPrice + noise;
-        const oldPrice = xau.basePrice;
-        const moved = updatePriceState('XAUUSD', newPrice);
-        if (moved) {
-          updateAllTkElements('XAUUSD', newPrice.toFixed(2), newPrice > oldPrice);
-          if (currentAsset === 'XAUUSD') updateDashboardPrices();
-        }
+      const param = assetParameters.USDJPY;
+      if (!param || !param.anchorPrice) return;
+      const volatility = 0.000045;
+      const noise = param.anchorPrice * (Math.random() * volatility * 2 - volatility);
+      const newPrice = param.anchorPrice + noise;
+      const oldPrice = param.basePrice;
+      const moved = updatePriceState('USDJPY', newPrice);
+      if (moved) {
+        updateAllTkElements('USDJPY', newPrice.toFixed(3), newPrice > oldPrice);
+        if (currentAsset === 'USDJPY') updateDashboardPrices();
       }
-      
-      // Forex micro-tick
-      ['EURUSD', 'GBPUSD', 'USDJPY'].forEach(pair => {
-        const param = assetParameters[pair];
-        if (!param || !param.anchorPrice) return;
-        
-        let volatility = 0.000025;
-        if (pair === 'GBPUSD') volatility = 0.000035;
-        if (pair === 'USDJPY') volatility = 0.000045;
-        
-        const noise = param.anchorPrice * (Math.random() * volatility * 2 - volatility);
-        const newPrice = param.anchorPrice + noise;
-        
-        const oldPrice = param.basePrice;
-        const moved = updatePriceState(pair, newPrice);
-        
-        if (moved) {
-          updateAllTkElements(pair, newPrice.toFixed(param.precision), newPrice > oldPrice);
-          if (currentAsset === pair) updateDashboardPrices();
-        }
-      });
     }
 
-    // Helper: update semua elemen dengan data-tk="${pairKey}"
     function updateAllTkElements(pairKey, priceText, isUp) {
       const els = document.querySelectorAll(`[data-tk="${pairKey}"]`);
       els.forEach(el => {
         if (el.innerText !== priceText) {
           el.innerText = priceText;
-          
           if (el.tagName === 'TD') {
             el.classList.remove('tbl-flash-up', 'tbl-flash-down');
             void el.offsetWidth;
@@ -1100,7 +990,7 @@
 
       updateDashboardPrices();
       loadTradingViewChart(pair, currentTimeframe);
-      writeLog(`Activated chart for ${pair}`);
+      writeLog(`Activated chart for ${pair} → ${assetParameters[pair].tvSymbol}`);
     }
 
     function calculateDynamicSMC(pair) {
@@ -1143,7 +1033,7 @@
             param.expert2 = `📊 Profil volume intraday mengkonfirmasi support institusional kuat.`;
             param.expert3 = `📈 Deviasi VWAP melengkung ke atas, target breakout sesi London/NY.`;
         } else {
-            param.expert1 = `🟢 BULLISH OB terdeteksi. Konfirmasi rotasi likuiditas institusional bank sentral pada level harga ini.`;
+            param.expert1 = `🟢 BULLISH OB terdeteksi. Konfirmasi rotasi likuiditas institusional pada level harga ini.`;
             param.expert2 = `📊 Volume profile menunjukkan dominasi akumulasi di area Entry live saat ini.`;
             param.expert3 = `📈 Indikator momentum memberikan konfirmasi pergerakan pro-trend mata uang.`;
         }
@@ -1311,7 +1201,7 @@
       
       const oldPrice = param.basePrice;
       let threshold = 0.01;
-      if (param.precision === 5) threshold = 0.00005;
+      if (param.precision === 5 || param.precision === 4) threshold = 0.00005;
       else if (param.precision === 3) threshold = 0.005;
       
       if (Math.abs(newPrice - oldPrice) < threshold) return false;
@@ -1344,7 +1234,6 @@
       return true;
     }
 
-    // TICKER: Hapus "— 0.00%" — hanya tampilkan change jika ada nilai signifikan
     function renderTicker() {
       const track = document.getElementById('ticker-track');
       if (!track) return;
@@ -1383,15 +1272,15 @@
       if (!tbody) return;
       
       const assetLabels = {
-        XAUUSD: { name: 'Gold Spot', color: '#f59e0b', icon: 'AU' },
+        XAUUSD: { name: 'Gold Spot (PAXG)', color: '#f59e0b', icon: 'AU' },
         BTCUSD: { name: 'Bitcoin', color: '#f59e0b', icon: '₿' },
         ETHUSD: { name: 'Ethereum', color: '#6366f1', icon: 'Ξ' },
-        SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
-        TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' },
-        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' },
         EURUSD: { name: 'Euro', color: '#2563eb', icon: '€' },
         GBPUSD: { name: 'Sterling', color: '#7c3aed', icon: '£' },
-        USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' }
+        USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' },
+        SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
+        TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' },
+        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' }
       };
       
       tbody.innerHTML = Object.entries(assetParameters).map(([pair, param]) => {
@@ -1539,23 +1428,21 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Binance WS untuk Crypto (BTC, ETH, SOL, TON, HYPE)
+      // Single unified Binance WS - all pairs 100% chart-synced
       connectBinanceWebSocket();
       
-      // XAU Gold Spot + Forex REST polling setiap 3 detik
-      fetchMetalAndForexPrices();
-      setInterval(fetchMetalAndForexPrices, 3000);
+      // USDJPY REST polling (no Binance pair available)
+      fetchUSDJPY();
+      setInterval(fetchUSDJPY, 10000);
+      setInterval(simulateMicroTicks, 1500);
       
-      // Micro-tick simulation setiap 1 detik (XAU + Forex)
-      setInterval(simulateMicroTicks, 1000);
-      
-      // Re-render ticker & tabel berkala untuk pastikan SOL/TON/HYPE sinkron
+      // Re-render ticker + table berkala
       setInterval(() => {
         renderTicker();
         renderMarketTable();
       }, 4000);
       
-      // Fallback crypto REST jika WS putus
+      // Fallback crypto REST
       setInterval(() => {
         if (!wsBinance || wsBinance.readyState !== WebSocket.OPEN) {
           fetchCryptoREST();
@@ -1565,7 +1452,7 @@
       fetchNews();
       setInterval(fetchNews, 300000); 
       
-      writeLog("Cuandology V11.0 — XAU Gold Spot (OANDA) + Binance WS (BTC/ETH/SOL/TON/HYPE) + Forex REST.");
+      writeLog("Cuandology V12.0 — 100% Binance-Synced: PAXG (XAU), BTC, ETH, EUR, GBP, SOL, TON, HYPE.");
     }
 
     if (document.readyState === 'loading') {
