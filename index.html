@@ -69,7 +69,7 @@
       cursor: pointer;
     }
     @media (max-width: 768px) {
-      button, .asset-btn, .tab-btn, .tf-btn { min-height: 44px; min-width: 44px; }
+      button, .asset-btn, .tab-btn, .nav-btn { min-height: 44px; min-width: 44px; }
       .asset-btn { padding: 0.75rem 1rem; }
     }
     .asset-btn:active, .tab-btn:active, .tf-btn:active, button:active {
@@ -118,7 +118,6 @@
     .ticker-change { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
     .ticker-change.up { background: rgba(16, 185, 129, 0.4); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.5); }
     .ticker-change.down { background: rgba(239, 68, 68, 0.4); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.5); }
-    .ticker-change.flat { background: rgba(255, 255, 255, 0.2); color: #e0f7ff; border: 1px solid rgba(255,255,255,0.3); }
     .ticker-icon {
       width: 16px; height: 16px; border-radius: 4px; display: inline-flex;
       align-items: center; justify-content: center; font-size: 9px; color: #fff;
@@ -139,10 +138,24 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 0.5rem;
     }
-    @media (min-width: 640px) { .asset-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 640px) { .asset-grid { grid-template-columns: repeat(2, 1fr); } }
 
-    .tf-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
-    @media (max-width: 640px) { .tf-grid { grid-template-columns: repeat(3, 1fr); } }
+    /* TIMEFRAME COMPACT */
+    .tf-compact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+    .tf-btn {
+      font-size: 10px !important;
+      padding: 4px 10px !important;
+      min-height: 28px !important;
+      border-radius: 6px !important;
+      font-weight: 700 !important;
+      transition: all 0.15s !important;
+      line-height: 1 !important;
+    }
 
     .ws-status { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
     .ws-connected { background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -154,7 +167,6 @@
     @keyframes flashUp { 0% { background-color: rgba(16, 185, 129, 0.3); } 100% { background-color: transparent; } }
     @keyframes flashDown { 0% { background-color: rgba(239, 68, 68, 0.3); } 100% { background-color: transparent; } }
 
-    /* Table price flash */
     .tbl-flash-up { animation: tblFlashUp 0.6s ease-out; }
     .tbl-flash-down { animation: tblFlashDown 0.6s ease-out; }
     @keyframes tblFlashUp {
@@ -233,7 +245,7 @@
       
       <section class="lg:col-span-4 flex flex-col gap-3.5">
 
-        <!-- MARKET SELECTION — TANPA SOURCE BADGE -->
+        <!-- MARKET SELECTION: XAU, BTC, ETH, EURUSD (GBP & JPY dihapus) -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3.5">
@@ -246,7 +258,7 @@
             </div>
 
             <div class="asset-grid mb-3.5">
-              <!-- XAU/USD -->
+              <!-- XAU/USD (Real Gold Spot) -->
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">AU</span> XAU/USD</span>
@@ -272,20 +284,6 @@
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#2563eb;">€</span> EUR/USD</span>
                   <span id="price-EURUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <!-- GBP/USD -->
-              <button onclick="selectAsset('GBPUSD', 'FOREX')" id="btn-GBPUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#7c3aed;">£</span> GBP/USD</span>
-                  <span id="price-GBPUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
-                </div>
-              </button>
-              <!-- USD/JPY -->
-              <button onclick="selectAsset('USDJPY', 'FOREX')" id="btn-USDJPY" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
-                <div class="flex flex-col items-start">
-                  <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#dc2626;">¥</span> USD/JPY</span>
-                  <span id="price-USDJPY" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
             </div>
@@ -358,18 +356,19 @@
             <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
           </div>
 
-          <div class="mb-3 bg-gray-50 p-2 border border-gray-150 rounded-xl">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[9px] text-gray-400 font-black uppercase">TIMEFRAME</span>
-              <span id="current-tf-display" class="text-[9px] font-mono bg-black text-white px-2 py-0.5 rounded font-bold">15m</span>
-            </div>
-            <div class="tf-grid">
-              <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">1m</button>
-              <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">5m</button>
-              <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold text-[11px] py-2 rounded-lg shadow-sm transition-all active:scale-95">15m</button>
-              <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">30m</button>
-              <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">1H</button>
-              <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95">4H</button>
+          <!-- TIMEFRAME COMPACT -->
+          <div class="mb-3 bg-gray-50 px-2 py-1.5 border border-gray-150 rounded-lg">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[9px] text-gray-500 font-black uppercase tracking-wider shrink-0">TF</span>
+              <div class="tf-compact flex-1 justify-end">
+                <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1m</button>
+                <button onclick="changeTimeframe('5')" id="tf-5" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">5m</button>
+                <button onclick="changeTimeframe('15')" id="tf-15" class="tf-btn bg-black text-white font-extrabold shadow-sm active:scale-95">15m</button>
+                <button onclick="changeTimeframe('30')" id="tf-30" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">30m</button>
+                <button onclick="changeTimeframe('60')" id="tf-60" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1H</button>
+                <button onclick="changeTimeframe('240')" id="tf-240" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">4H</button>
+                <span id="current-tf-display" class="text-[9px] font-mono bg-black text-white px-2 py-1 rounded font-bold shrink-0">15m</span>
+              </div>
             </div>
           </div>
 
@@ -480,7 +479,6 @@
         </div>
       </div>
 
-      <!-- MARKET OVERVIEW - REALTIME -->
       <div class="premium-card rounded-2xl p-4">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xs font-extrabold tracking-wider text-gray-400 uppercase flex items-center gap-2">
@@ -606,9 +604,6 @@
     let wsReconnectAttempts = 0;
     const MAX_RECONNECT_ATTEMPTS = 15;
 
-    // Track last prices for flash effect di tabel
-    const lastTablePrices = {};
-
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const webapp = window.Telegram.WebApp;
@@ -660,10 +655,10 @@
     function changeTimeframe(tf) {
       currentTimeframe = tf;
       document.querySelectorAll('.tf-btn').forEach(btn => {
-        btn.className = "tf-btn bg-white hover:bg-gray-100 text-gray-600 font-bold text-[11px] py-2 rounded-lg border border-gray-200 transition-all active:scale-95";
+        btn.className = "tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95";
       });
       const activeBtn = document.getElementById(`tf-${tf}`);
-      if (activeBtn) activeBtn.className = "tf-btn bg-black text-white font-extrabold text-[11px] py-2 rounded-lg shadow-sm transition-all active:scale-95";
+      if (activeBtn) activeBtn.className = "tf-btn bg-black text-white font-extrabold shadow-sm active:scale-95";
       
       const tfLabels = {'1': '1m', '5': '5m', '15': '15m', '30': '30m', '60': '1H', '240': '4H'};
       safeUpdateText('current-tf-display', tfLabels[tf] || tf);
@@ -703,12 +698,13 @@
 
     // ==========================================
     // ASSET PARAMETERS
-    // Crypto & XAU → Binance WS (real-time, chart-synced)
-    // Forex → TwelveData REST + Frankfurter fallback + Micro-tick (stable, no WS errors)
+    // XAU: Chart OANDA:XAUUSD + Data Frankfurter/TwelveData (real gold spot)
+    // Crypto: Binance WS (real-time, chart-synced)
+    // Forex: REST + micro-tick
     // ==========================================
     const assetParameters = {
       XAUUSD: {
-        type: 'METAL', tvSymbol: 'BINANCE:PAXGUSDT', binanceSymbol: 'PAXGUSDT',
+        type: 'METAL', tvSymbol: 'OANDA:XAUUSD',
         anchorPrice: 2650.00, basePrice: 2650.00, trendScore: 0,
         atr: 12.00, adr: 45.00, precision: 2,
         icon: 'AU', color: '#f59e0b', change24h: 0
@@ -724,6 +720,24 @@
         anchorPrice: 3500.00, basePrice: 3500.00, trendScore: 0,
         atr: 80.00, adr: 200.00, precision: 2,
         icon: 'Ξ', color: '#6366f1', change24h: 0
+      },
+      SOLUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:SOLUSDT', binanceSymbol: 'SOLUSDT',
+        anchorPrice: 175.50, basePrice: 175.50, trendScore: 0,
+        atr: 4.50, adr: 15.00, precision: 2,
+        icon: '◎', color: '#14f195', change24h: 0
+      },
+      TONUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:TONUSDT', binanceSymbol: 'TONUSDT',
+        anchorPrice: 5.85, basePrice: 5.85, trendScore: 0,
+        atr: 0.15, adr: 0.55, precision: 3,
+        icon: '◆', color: '#0098ea', change24h: 0
+      },
+      HYPEUSD: {
+        type: 'CRYPTO', tvSymbol: 'BINANCE:HYPEUSDT', binanceSymbol: 'HYPEUSDT',
+        anchorPrice: 28.40, basePrice: 28.40, trendScore: 0,
+        atr: 1.20, adr: 4.50, precision: 3,
+        icon: 'H', color: '#06b6d4', change24h: 0
       },
       EURUSD: {
         type: 'FOREX', tvSymbol: 'OANDA:EURUSD',
@@ -742,30 +756,11 @@
         anchorPrice: 156.50, basePrice: 156.50, trendScore: 0,
         atr: 0.85, adr: 1.20, precision: 3,
         icon: '¥', color: '#dc2626', change24h: 0
-      },
-      // Ticker-only pairs (hidden from Market Selection)
-      SOLUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:SOLUSDT', binanceSymbol: 'SOLUSDT',
-        anchorPrice: 175.50, basePrice: 175.50, trendScore: 0,
-        atr: 4.50, adr: 15.00, precision: 2,
-        icon: '◎', color: '#14f195', change24h: 0
-      },
-      TONUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:TONUSDT', binanceSymbol: 'TONUSDT',
-        anchorPrice: 5.85, basePrice: 5.85, trendScore: 0,
-        atr: 0.15, adr: 0.55, precision: 3,
-        icon: '◆', color: '#0098ea', change24h: 0
-      },
-      HYPEUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:HYPEUSDT', binanceSymbol: 'HYPEUSDT',
-        anchorPrice: 28.40, basePrice: 28.40, trendScore: 0,
-        atr: 1.20, adr: 4.50, precision: 3,
-        icon: 'H', color: '#06b6d4', change24h: 0
       }
     };
 
     // ==========================================
-    // BINANCE WEBSOCKET — Crypto & PAX Gold (XAU)
+    // BINANCE WEBSOCKET — Crypto (BTC, ETH, SOL, TON, HYPE)
     // ==========================================
     function connectBinanceWebSocket() {
       const binanceSymbols = Object.entries(assetParameters)
@@ -790,7 +785,7 @@
         
         wsBinance.onopen = function() {
           wsReconnectAttempts = 0;
-          writeLog(`✓ Binance WS connected — ${binanceSymbols.length} streams`);
+          writeLog(`✓ Binance WS connected — ${binanceSymbols.length} crypto streams`);
           if (statusBadge) {
             statusBadge.className = 'ws-status ws-connected';
             statusBadge.innerHTML = '<span class="live-pulse"></span> LIVE';
@@ -821,7 +816,6 @@
                   
                   if (currentAsset === pairKey) updateDashboardPrices();
                   
-                  // Update all data-tk elements (ticker + table) — REALTIME
                   updateAllTkElements(pairKey, newPrice.toFixed(param.precision), newPrice > param.basePrice);
                 }
               }
@@ -856,62 +850,67 @@
     }
 
     // ==========================================
-    // FOREX REAL-TIME ENGINE (Multi-source fallback chain)
-    // Primary: TwelveData REST (price endpoint, stable)
-    // Fallback 1: Frankfurter.app (ECB official rates, no key)
-    // Fallback 2: open.er-api.com
-    // Fallback 3: Micro-tick simulation
+    // XAU (GOLD SPOT) REAL PRICE — Frankfurter (ECB) + TwelveData fallback
+    // BUKAN PAXG — ini harga emas spot asli (XAU/USD)
+    // ==========================================
+    async function fetchGoldPrice() {
+      const moStatus = document.getElementById('market-overview-status');
+      
+      // PRIMARY: Frankfurter.app (ECB official, includes XAU)
+      try {
+        const res = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD', {
+          signal: AbortSignal.timeout(5000)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.rates && data.rates.USD) {
+            const xauPrice = data.rates.USD;
+            if (!isNaN(xauPrice) && xauPrice > 0) {
+              assetParameters.XAUUSD.anchorPrice = xauPrice;
+              updatePriceState('XAUUSD', xauPrice);
+              updateAllTkElements('XAUUSD', xauPrice.toFixed(2), true);
+              writeLog(`✓ XAU/USD (Gold Spot) synced: $${xauPrice.toFixed(2)}`);
+              if (currentAsset === 'XAUUSD') updateDashboardPrices();
+              return true;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Frankfurter XAU failed:", e.message);
+      }
+      
+      // FALLBACK: TwelveData XAU/USD
+      try {
+        const res = await fetch('https://api.twelvedata.com/price?symbol=XAU/USD&apikey=demo', {
+          signal: AbortSignal.timeout(5000)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.price) {
+            const xauPrice = parseFloat(data.price);
+            if (!isNaN(xauPrice) && xauPrice > 0) {
+              assetParameters.XAUUSD.anchorPrice = xauPrice;
+              updatePriceState('XAUUSD', xauPrice);
+              updateAllTkElements('XAUUSD', xauPrice.toFixed(2), true);
+              writeLog(`✓ XAU/USD synced via TwelveData: $${xauPrice.toFixed(2)}`);
+              if (currentAsset === 'XAUUSD') updateDashboardPrices();
+              return true;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("TwelveData XAU failed:", e.message);
+      }
+      
+      return false;
+    }
+
+    // ==========================================
+    // FOREX REST (EUR, GBP, JPY)
     // ==========================================
     async function fetchForexPrices() {
       const moStatus = document.getElementById('market-overview-status');
       
-      // PRIMARY: TwelveData REST price endpoint (stable, no WS issues)
-      try {
-        const res = await fetch('https://api.twelvedata.com/price?symbol=EUR/USD,GBP/USD,USD/JPY&apikey=demo', { 
-          signal: AbortSignal.timeout(5000) 
-        });
-        if (res.ok) {
-          const data = await res.json();
-          let updated = 0;
-          
-          // TwelveData format: { "EUR/USD": { price: "1.08540" }, ... } atau array
-          if (data && typeof data === 'object') {
-            const priceMap = {
-              'EUR/USD': 'EURUSD',
-              'GBP/USD': 'GBPUSD', 
-              'USD/JPY': 'USDJPY'
-            };
-            
-            Object.entries(priceMap).forEach(([sym, pairKey]) => {
-              if (data[sym] && data[sym].price) {
-                const newPrice = parseFloat(data[sym].price);
-                if (!isNaN(newPrice) && newPrice > 0) {
-                  assetParameters[pairKey].anchorPrice = newPrice;
-                  updatePriceState(pairKey, newPrice);
-                  updateAllTkElements(pairKey, newPrice.toFixed(assetParameters[pairKey].precision), true);
-                  updated++;
-                }
-              }
-            });
-          }
-          
-          if (updated > 0) {
-            writeLog(`✓ Forex synced via TwelveData: EUR, GBP, JPY`);
-            if (moStatus) {
-              moStatus.className = 'ws-status ws-connected';
-              moStatus.innerHTML = '<span class="live-pulse"></span> LIVE';
-            }
-            if (currentAsset && ['EURUSD', 'GBPUSD', 'USDJPY'].includes(currentAsset)) {
-              updateDashboardPrices();
-            }
-            return;
-          }
-        }
-      } catch (e) {
-        console.warn("TwelveData REST failed:", e.message);
-      }
-      
-      // FALLBACK 1: Frankfurter.app (ECB official rates, gratis, no key)
       try {
         const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=EUR,GBP,JPY', {
           signal: AbortSignal.timeout(5000)
@@ -937,7 +936,6 @@
               updatePriceState('USDJPY', price);
               updateAllTkElements('USDJPY', price.toFixed(3), true);
             }
-            writeLog(`✓ Forex synced via Frankfurter (ECB)`);
             if (moStatus) {
               moStatus.className = 'ws-status ws-connected';
               moStatus.innerHTML = '<span class="live-pulse"></span> LIVE';
@@ -949,10 +947,9 @@
           }
         }
       } catch (e) {
-        console.warn("Frankfurter failed:", e.message);
+        console.warn("Frankfurter forex failed:", e.message);
       }
       
-      // FALLBACK 2: open.er-api.com
       try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD', {
           signal: AbortSignal.timeout(5000)
@@ -978,21 +975,19 @@
               updatePriceState('USDJPY', price);
               updateAllTkElements('USDJPY', price.toFixed(3), true);
             }
-            writeLog(`✓ Forex synced via open.er-api.com`);
-            if (moStatus) {
-              moStatus.className = 'ws-status ws-connected';
-              moStatus.innerHTML = '<span class="live-pulse"></span> LIVE';
-            }
-            return;
           }
         }
       } catch (e) {
         console.warn("All forex REST failed:", e.message);
-        if (moStatus) {
-          moStatus.className = 'ws-status ws-disconnected';
-          moStatus.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> OFFLINE';
-        }
       }
+    }
+
+    // Combined fetch untuk Gold + Forex
+    async function fetchMetalAndForexPrices() {
+      await Promise.allSettled([
+        fetchGoldPrice(),
+        fetchForexPrices()
+      ]);
     }
 
     // Crypto REST fallback
@@ -1033,14 +1028,26 @@
       }
     }
 
-    // Micro-tick simulation — memberikan feel real-time antara REST fetch
-    // Khusus untuk forex (karena REST update tiap 3 detik, micro-tick mengisi gap)
-    function simulateForexMicroTicks() {
+    // Micro-tick simulation
+    function simulateMicroTicks() {
+      // XAU micro-tick
+      const xau = assetParameters.XAUUSD;
+      if (xau && xau.anchorPrice) {
+        const noise = xau.anchorPrice * (Math.random() * 0.0002 - 0.0001);
+        const newPrice = xau.anchorPrice + noise;
+        const oldPrice = xau.basePrice;
+        const moved = updatePriceState('XAUUSD', newPrice);
+        if (moved) {
+          updateAllTkElements('XAUUSD', newPrice.toFixed(2), newPrice > oldPrice);
+          if (currentAsset === 'XAUUSD') updateDashboardPrices();
+        }
+      }
+      
+      // Forex micro-tick
       ['EURUSD', 'GBPUSD', 'USDJPY'].forEach(pair => {
         const param = assetParameters[pair];
         if (!param || !param.anchorPrice) return;
         
-        // Volatilitas realistis per pair forex (sangat kecil)
         let volatility = 0.000025;
         if (pair === 'GBPUSD') volatility = 0.000035;
         if (pair === 'USDJPY') volatility = 0.000045;
@@ -1059,14 +1066,12 @@
     }
 
     // Helper: update semua elemen dengan data-tk="${pairKey}"
-    // Termasuk ticker (2x duplicate) + tabel Market Overview
     function updateAllTkElements(pairKey, priceText, isUp) {
       const els = document.querySelectorAll(`[data-tk="${pairKey}"]`);
       els.forEach(el => {
         if (el.innerText !== priceText) {
           el.innerText = priceText;
           
-          // Flash effect khusus untuk tabel (bukan ticker)
           if (el.tagName === 'TD') {
             el.classList.remove('tbl-flash-up', 'tbl-flash-down');
             void el.offsetWidth;
@@ -1305,7 +1310,6 @@
       if (!param) return false;
       
       const oldPrice = param.basePrice;
-      // Threshold minimal per precision
       let threshold = 0.01;
       if (param.precision === 5) threshold = 0.00005;
       else if (param.precision === 3) threshold = 0.005;
@@ -1340,6 +1344,7 @@
       return true;
     }
 
+    // TICKER: Hapus "— 0.00%" — hanya tampilkan change jika ada nilai signifikan
     function renderTicker() {
       const track = document.getElementById('ticker-track');
       if (!track) return;
@@ -1348,16 +1353,24 @@
       Object.entries(assetParameters).forEach(([pair, param]) => {
         const price = param.basePrice ? param.basePrice.toFixed(param.precision) : '--';
         const change = param.change24h || 0;
-        const changeClass = change > 0.1 ? 'up' : change < -0.1 ? 'down' : 'flat';
-        const changeSign = change > 0 ? '+' : '';
-        const changeIcon = change > 0.1 ? '▲' : change < -0.1 ? '▼' : '—';
+        const hasChange = Math.abs(change) > 0.05;
+        
+        let changeHtml = '';
+        if (hasChange) {
+          const changeClass = change > 0 ? 'up' : 'down';
+          const changeSign = change > 0 ? '+' : '';
+          const changeIcon = change > 0 ? '▲' : '▼';
+          changeHtml = `<span class="ticker-change ${changeClass}">${changeIcon} ${changeSign}${change.toFixed(2)}%</span>`;
+        }
+        
+        const displaySymbol = pair === 'USDJPY' ? 'USD/JPY' : pair.replace('USD', '/USD');
         
         html += `
           <div class="ticker-item">
             <span class="ticker-icon" style="background:${param.color};">${param.icon}</span>
-            <span class="ticker-symbol">${pair.replace('USD','/USD').replace('JPY','/JPY')}</span>
+            <span class="ticker-symbol">${displaySymbol}</span>
             <span class="ticker-price" data-tk="${pair}">${price}</span>
-            <span class="ticker-change ${changeClass}">${changeIcon} ${changeSign}${change.toFixed(2)}%</span>
+            ${changeHtml}
           </div>
         `;
       });
@@ -1370,15 +1383,15 @@
       if (!tbody) return;
       
       const assetLabels = {
-        XAUUSD: { name: 'PAX Gold (XAU proxy)', color: '#f59e0b', icon: 'AU' },
+        XAUUSD: { name: 'Gold Spot', color: '#f59e0b', icon: 'AU' },
         BTCUSD: { name: 'Bitcoin', color: '#f59e0b', icon: '₿' },
         ETHUSD: { name: 'Ethereum', color: '#6366f1', icon: 'Ξ' },
-        EURUSD: { name: 'Euro', color: '#2563eb', icon: '€' },
-        GBPUSD: { name: 'Sterling', color: '#7c3aed', icon: '£' },
-        USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' },
         SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
         TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' },
-        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' }
+        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' },
+        EURUSD: { name: 'Euro', color: '#2563eb', icon: '€' },
+        GBPUSD: { name: 'Sterling', color: '#7c3aed', icon: '£' },
+        USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' }
       };
       
       tbody.innerHTML = Object.entries(assetParameters).map(([pair, param]) => {
@@ -1394,11 +1407,13 @@
         else if (ts <= -0.8) trendHtml = '<span class="bg-red-50 text-red-600 border border-red-100 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">🔴 SELL</span>';
         else trendHtml = '<span class="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] px-2 py-0.5 rounded-full font-sans font-extrabold">⚪ WAIT</span>';
         
+        const displayPair = pair === 'USDJPY' ? 'USD/JPY' : pair.replace('USD', '');
+        
         return `
           <tr class="hover:bg-gray-50/50 transition-colors cursor-pointer" onclick="selectAsset('${pair}','${param.type}');switchTab('dashboard');">
             <td class="p-3 font-sans font-bold flex items-center gap-1.5">
               <span class="ticker-icon" style="background:${label.color};">${label.icon}</span>
-              <span class="text-blue-500 font-black">${pair.replace('USD','').replace('JPY','')}</span>
+              <span class="text-blue-500 font-black">${displayPair}</span>
               <span class="text-gray-400 text-[10px] font-normal">(${label.name})</span>
             </td>
             <td class="p-3 font-bold text-gray-900" data-tk="${pair}">${price}</td>
@@ -1524,15 +1539,21 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Binance WS untuk Crypto & XAU (real-time)
+      // Binance WS untuk Crypto (BTC, ETH, SOL, TON, HYPE)
       connectBinanceWebSocket();
       
-      // Forex: REST polling setiap 3 detik (lebih agresif, lebih stabil dari WS)
-      fetchForexPrices();
-      setInterval(fetchForexPrices, 3000);
+      // XAU Gold Spot + Forex REST polling setiap 3 detik
+      fetchMetalAndForexPrices();
+      setInterval(fetchMetalAndForexPrices, 3000);
       
-      // Micro-tick simulation untuk forex setiap 1 detik (feel MT4 real-time)
-      setInterval(simulateForexMicroTicks, 1000);
+      // Micro-tick simulation setiap 1 detik (XAU + Forex)
+      setInterval(simulateMicroTicks, 1000);
+      
+      // Re-render ticker & tabel berkala untuk pastikan SOL/TON/HYPE sinkron
+      setInterval(() => {
+        renderTicker();
+        renderMarketTable();
+      }, 4000);
       
       // Fallback crypto REST jika WS putus
       setInterval(() => {
@@ -1544,7 +1565,7 @@
       fetchNews();
       setInterval(fetchNews, 300000); 
       
-      writeLog("Cuandology V10.0 — Binance WS (Crypto/XAU) + Forex REST (TwelveData/Frankfurter/OpenER) + Micro-tick.");
+      writeLog("Cuandology V11.0 — XAU Gold Spot (OANDA) + Binance WS (BTC/ETH/SOL/TON/HYPE) + Forex REST.");
     }
 
     if (document.readyState === 'loading') {
