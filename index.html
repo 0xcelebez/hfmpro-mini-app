@@ -86,20 +86,24 @@
       100% { background-color: transparent; }
     }
 
+    /* ============================================= */
+    /* RUNNING TEXT — UKURAN SAMA DENGAN BLOK JAM    */
+    /* Style: bg-gray-50, border-gray-150, rounded-xl*/
+    /* Font: 11px, compact, clean (light theme)      */
+    /* ============================================= */
     .ticker-wrap {
       width: 100%;
       overflow: hidden;
-      background: linear-gradient(90deg, #0078d4 0%, #005a9e 25%, #004578 50%, #005a9e 75%, #0078d4 100%);
-      border-bottom: 2px solid #00bcf2;
-      padding: 8px 0;
+      background-color: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 5px 0;
       position: relative;
-      box-shadow: inset 0 0 30px rgba(0, 188, 242, 0.3), 0 4px 15px rgba(0, 69, 120, 0.4);
     }
     .ticker-wrap::before, .ticker-wrap::after {
-      content: ""; position: absolute; top: 0; bottom: 0; width: 50px; z-index: 2; pointer-events: none;
+      content: ""; position: absolute; top: 0; bottom: 0; width: 30px; z-index: 2; pointer-events: none;
     }
-    .ticker-wrap::before { left: 0; background: linear-gradient(90deg, #004578 0%, transparent 100%); }
-    .ticker-wrap::after { right: 0; background: linear-gradient(270deg, #004578 0%, transparent 100%); }
+    .ticker-wrap::before { left: 0; background: linear-gradient(90deg, #f9fafb 0%, transparent 100%); }
+    .ticker-wrap::after { right: 0; background: linear-gradient(270deg, #f9fafb 0%, transparent 100%); }
     .ticker {
       display: inline-flex; white-space: nowrap; will-change: transform;
       animation: tickerScroll 55s linear infinite;
@@ -110,18 +114,18 @@
       100% { transform: translate3d(-50%, 0, 0); }
     }
     .ticker-item {
-      display: inline-flex; align-items: center; gap: 8px; padding: 0 20px;
-      border-right: 1px solid rgba(255,255,255,0.15); font-family: 'JetBrains Mono', monospace;
+      display: inline-flex; align-items: center; gap: 6px; padding: 3px 14px;
+      border-right: 1px solid #e5e7eb; font-family: 'JetBrains Mono', monospace;
     }
-    .ticker-symbol { color: #e0f7ff; font-weight: 700; font-size: 11px; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .ticker-price { color: #ffffff; font-weight: 800; font-size: 13px; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
-    .ticker-change { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
-    .ticker-change.up { background: rgba(16, 185, 129, 0.4); color: #a7f3d0; border: 1px solid rgba(16, 185, 129, 0.5); }
-    .ticker-change.down { background: rgba(239, 68, 68, 0.4); color: #fecaca; border: 1px solid rgba(239, 68, 68, 0.5); }
+    .ticker-symbol { color: #374151; font-weight: 700; font-size: 11px; letter-spacing: 0.3px; }
+    .ticker-price { color: #0f172a; font-weight: 800; font-size: 11px; }
+    .ticker-change { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
+    .ticker-change.up { background: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+    .ticker-change.down { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
     .ticker-icon {
-      width: 16px; height: 16px; border-radius: 4px; display: inline-flex;
-      align-items: center; justify-content: center; font-size: 9px; color: #fff;
-      font-weight: 900; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      width: 14px; height: 14px; border-radius: 3px; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 8px; color: #fff;
+      font-weight: 900;
     }
     .live-pulse {
       display: inline-block; width: 8px; height: 8px; border-radius: 50%;
@@ -139,9 +143,6 @@
       gap: 0.5rem;
     }
 
-    /* ========================================== */
-    /* TIMEFRAME ULTRA-COMPACT — 1 BARIS DI MOBILE */
-    /* ========================================== */
     .tf-row {
       display: flex;
       gap: 3px;
@@ -187,7 +188,6 @@
       100% { background-color: transparent; }
     }
 
-    /* Subtle info text */
     .info-tag {
       font-size: 8px;
       color: #94a3b8;
@@ -240,6 +240,7 @@
     </div>
   </header>
 
+  <!-- RUNNING TEXT — UKURAN SAMA DENGAN BLOK JAM & SESI -->
   <div class="ticker-wrap" aria-label="Live Market Ticker">
     <div class="ticker" id="ticker-track"></div>
   </div>
@@ -262,7 +263,7 @@
       
       <section class="lg:col-span-4 flex flex-col gap-3.5">
 
-        <!-- MARKET SELECTION: 4 PAIR 100% BINANCE-SYNCED -->
+        <!-- MARKET SELECTION: 4 PAIR (HYPE DIHAPUS) -->
         <div class="premium-card rounded-2xl p-4 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3.5">
@@ -275,7 +276,6 @@
             </div>
 
             <div class="asset-grid mb-3.5">
-              <!-- XAU/USD (PAX Gold - Gold-backed token = XAU spot) -->
               <button onclick="selectAsset('XAUUSD', 'METAL')" id="btn-XAUUSD" class="asset-btn bg-black text-white border border-black font-extrabold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">AU</span> XAU/USD</span>
@@ -283,21 +283,18 @@
                   <span class="info-tag" style="color:#fbbf24;">Gold Spot • PAXG</span>
                 </div>
               </button>
-              <!-- BTC/USD -->
               <button onclick="selectAsset('BTCUSD', 'CRYPTO')" id="btn-BTCUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#f59e0b;">₿</span> BTC/USD</span>
                   <span id="price-BTCUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
-              <!-- ETH/USD -->
               <button onclick="selectAsset('ETHUSD', 'CRYPTO')" id="btn-ETHUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#6366f1;">Ξ</span> ETH/USD</span>
                   <span id="price-ETHUSD" class="price-val text-[10px] text-gray-500 font-semibold transition-colors">Loading...</span>
                 </div>
               </button>
-              <!-- EUR/USD (Binance Fiat Pair - 100% real-time) -->
               <button onclick="selectAsset('EURUSD', 'FOREX')" id="btn-EURUSD" class="asset-btn bg-gray-50 border border-gray-150 text-gray-600 font-semibold text-xs py-3 px-3 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-100 active:scale-95 min-h-[56px]">
                 <div class="flex flex-col items-start">
                   <span class="flex items-center gap-1"><span class="ticker-icon" style="background:#2563eb;">€</span> EUR/USD</span>
@@ -374,7 +371,6 @@
             <span id="chart-pair-label" class="text-[10px] font-mono bg-gray-100 border border-gray-150 px-2.5 py-1 rounded-lg text-gray-800 font-bold">XAUUSD [METAL]</span>
           </div>
 
-          <!-- TIMEFRAME ULTRA-COMPACT 1 BARIS -->
           <div class="mb-2 bg-gray-50 px-2 py-1.5 border border-gray-150 rounded-lg">
             <div class="tf-row">
               <button onclick="changeTimeframe('1')" id="tf-1" class="tf-btn bg-white hover:bg-gray-100 text-gray-600 border border-gray-200 active:scale-95">1m</button>
@@ -708,14 +704,7 @@
     }
 
     // ==========================================
-    // ASSET PARAMETERS — SEMUA 100% BINANCE-SYNCED
-    // ==========================================
-    // XAU/USD → PAXGUSDT (PAX Gold = token di-backing 1:1 emas fisik London Good Delivery)
-    //            Harga PAXG = harga XAU spot per troy ounce (deviasi <0.5%)
-    // EUR/USD → EURUSDT (Binance fiat pair - real-time forex via crypto gateway)
-    // BTC/USD → BTCUSDT (native Binance)
-    // ETH/USD → ETHUSDT (native Binance)
-    // Semua chart TradingView menggunakan prefix BINANCE: → 100% sinkron dengan WS
+    // ASSET PARAMETERS (HYPE/HYPERLIQUID DIHAPUS)
     // ==========================================
     const assetParameters = {
       XAUUSD: {
@@ -742,7 +731,6 @@
         atr: 0.00045, adr: 0.00680, precision: 4,
         icon: '€', color: '#2563eb', change24h: 0, inMarketSelection: true
       },
-      // Ticker-only pairs (hidden from Market Selection, shown in ticker + table)
       GBPUSD: {
         type: 'FOREX', tvSymbol: 'BINANCE:GBPUSDT', binanceSymbol: 'GBPUSDT',
         anchorPrice: 1.26850, basePrice: 1.26850, trendScore: 0,
@@ -766,19 +754,9 @@
         anchorPrice: 5.85, basePrice: 5.85, trendScore: 0,
         atr: 0.15, adr: 0.55, precision: 3,
         icon: '◆', color: '#0098ea', change24h: 0, inMarketSelection: false
-      },
-      HYPEUSD: {
-        type: 'CRYPTO', tvSymbol: 'BINANCE:HYPEUSDT', binanceSymbol: 'HYPEUSDT',
-        anchorPrice: 28.40, basePrice: 28.40, trendScore: 0,
-        atr: 1.20, adr: 4.50, precision: 3,
-        icon: 'H', color: '#06b6d4', change24h: 0, inMarketSelection: false
       }
     };
 
-    // ==========================================
-    // BINANCE WEBSOCKET — ALL REAL-TIME PAIRS
-    // PAXG (XAU), BTC, ETH, EUR, GBP, SOL, TON, HYPE
-    // ==========================================
     function connectBinanceWebSocket() {
       const binanceSymbols = Object.entries(assetParameters)
         .filter(([_, p]) => p.binanceSymbol)
@@ -804,7 +782,7 @@
         
         wsBinance.onopen = function() {
           wsReconnectAttempts = 0;
-          writeLog(`✓ Binance WS LIVE — ${binanceSymbols.length} streams (PAXG=XAU, BTC, ETH, EUR, GBP, SOL, TON, HYPE)`);
+          writeLog(`✓ Binance WS LIVE — ${binanceSymbols.length} streams`);
           const liveHtml = '<span class="live-pulse"></span> LIVE';
           if (statusBadge) {
             statusBadge.className = 'ws-status ws-connected';
@@ -873,7 +851,6 @@
       }
     }
 
-    // USDJPY REST fallback (karena tidak ada JPY di Binance)
     async function fetchUSDJPY() {
       try {
         const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=JPY', {
@@ -904,7 +881,6 @@
       }
     }
 
-    // Crypto REST fallback
     async function fetchCryptoREST() {
       const binanceSymbols = Object.entries(assetParameters)
         .filter(([_, p]) => p.binanceSymbol)
@@ -942,7 +918,6 @@
       }
     }
 
-    // Micro-tick untuk USDJPY (karena REST update lambat)
     function simulateMicroTicks() {
       const param = assetParameters.USDJPY;
       if (!param || !param.anchorPrice) return;
@@ -990,7 +965,7 @@
 
       updateDashboardPrices();
       loadTradingViewChart(pair, currentTimeframe);
-      writeLog(`Activated chart for ${pair} → ${assetParameters[pair].tvSymbol}`);
+      writeLog(`Activated chart for ${pair}`);
     }
 
     function calculateDynamicSMC(pair) {
@@ -1279,8 +1254,7 @@
         GBPUSD: { name: 'Sterling', color: '#7c3aed', icon: '£' },
         USDJPY: { name: 'Yen', color: '#dc2626', icon: '¥' },
         SOLUSD: { name: 'Solana', color: '#14f195', icon: '◎' },
-        TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' },
-        HYPEUSD: { name: 'Hyperliquid', color: '#06b6d4', icon: 'H' }
+        TONUSD: { name: 'Toncoin', color: '#0098ea', icon: '◆' }
       };
       
       tbody.innerHTML = Object.entries(assetParameters).map(([pair, param]) => {
@@ -1428,21 +1402,17 @@
       updateMarketClockAndSessions();
       setInterval(updateMarketClockAndSessions, 1000);
       
-      // Single unified Binance WS - all pairs 100% chart-synced
       connectBinanceWebSocket();
       
-      // USDJPY REST polling (no Binance pair available)
       fetchUSDJPY();
       setInterval(fetchUSDJPY, 10000);
       setInterval(simulateMicroTicks, 1500);
       
-      // Re-render ticker + table berkala
       setInterval(() => {
         renderTicker();
         renderMarketTable();
       }, 4000);
       
-      // Fallback crypto REST
       setInterval(() => {
         if (!wsBinance || wsBinance.readyState !== WebSocket.OPEN) {
           fetchCryptoREST();
@@ -1452,7 +1422,7 @@
       fetchNews();
       setInterval(fetchNews, 300000); 
       
-      writeLog("Cuandology V12.0 — 100% Binance-Synced: PAXG (XAU), BTC, ETH, EUR, GBP, SOL, TON, HYPE.");
+      writeLog("Cuandology V13.0 — PAXG(XAU), BTC, ETH, EUR, GBP, SOL, TON synced.");
     }
 
     if (document.readyState === 'loading') {
